@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Content Engine · IBE MOTION</title>
+  <meta name="description" content="Een AI-video-engine voor je merk: video's van hoge kwaliteit, op hoog volume. Kies je branche.">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Doto:wght@600;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/engine.css">
+  <link rel="stylesheet" href="css/ibe-fx.css">
+  <style>
+    .choose { position: relative; min-height: 100vh; display: flex; align-items: center; overflow: hidden; }
+    .choose #hero-dots { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .4; }
+    .choose .ibe-morph { position: absolute; right: max(24px, calc((100vw - var(--max)) / 2)); top: 30%; transform: translateY(-50%); width: min(24vw, 300px); z-index: 3; }
+    .choose .wrap { position: relative; z-index: 2; width: 100%; padding-top: 60px; padding-bottom: 60px; }
+    .choose h1 { font: 600 clamp(38px, 5.6vw, 68px)/1.02 var(--font-display); letter-spacing: -.035em; margin: 0 0 18px; max-width: 760px; }
+    .choose h1 em { font-style: normal; font-family: var(--font-num); font-weight: 800; color: var(--accent); letter-spacing: -.02em; }
+    .pick { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 44px; max-width: 900px; }
+    .pick a { display: block; text-decoration: none; padding: 30px; border-radius: 20px; border: 1px solid var(--line-2); background: rgba(6,7,10,.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: border-color .2s, transform .2s; }
+    .pick a:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .pick b { display: block; font: 600 24px var(--font-display); letter-spacing: -.02em; margin: 12px 0 8px; }
+    .pick p { margin: 0 0 18px; color: var(--text-2); font-size: 15px; }
+    .pick span.go { color: var(--accent); font-weight: 600; font-size: 14.5px; }
+    @media (max-width: 1000px) { .choose .ibe-morph { display: none; } }
+    @media (max-width: 720px) { .pick { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="choose">
+    <canvas id="hero-dots" aria-hidden="true"></canvas>
+<div class="ibe-morph" id="hero-morph" title="Klik voor de volgende vorm" aria-hidden="true"></div>
+    <div class="wrap">
+      <div style="margin-bottom:46px"><a class="brand" href="#" data-land style="display:inline-flex"><img src="assets/lion-gold.png" alt=""><span><b>IBE MOTION</b><small>Content Engine</small></span></a></div>
+      <p class="eyebrow">Content Engine</p>
+      <h1>Een video-engine <em>voor je merk.</em></h1>
+      <p class="lead dim" style="max-width:560px;font-size:18px">AI-video's van hoge kwaliteit, op hoog volume en binnen 14 dagen geleverd. Geen draaidag, niets zelf monteren. Kies wat het beste bij je past.</p>
+      <div class="pick">
+        <a href="woonwinkels.html" data-land><span class="kicker">Voor woonwinkels en interieurzaken</span><b>Een video-engine voor je winkel. Elke maand nieuw in beeld.</b><p>Reels van je meubels en interieur voor je feed, je advertenties en het scherm in je winkel.</p><span class="go">Bekijk →</span></a>
+        <a href="webshops.html" data-land><span class="kicker">Voor webshops met een eigen product</span><b>Een video-engine voor je merk. Meer testen, sneller winnen.</b><p>Productvideo's in varianten, zodat je test wat verkoopt en opschaalt wat wint.</p><span class="go">Bekijk →</span></a>
+      </div>
+    </div>
+  </main>
+  <script src="js/lion-mask.js"></script>
+  <script src="js/ibe-dots.js"></script>
+  <script src="js/ibe-fx.js"></script>
+  <script>
+    IBEDots(document.getElementById('hero-dots'), { theme: 'dark', lion: null });
+    if (innerWidth > 1000) IBEMorph(document.getElementById('hero-morph'), { theme: 'dark', words: ['Aandrijving', 'Versnelling', 'Volle kracht'] });
+    IBEFx.words('.choose h1');
+  </script>
+</body>
+</html>

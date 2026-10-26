@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>KPI-dashboard tijdsbesparing · IBE MOTION</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Doto:wght@600;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/ai.css">
+  <link rel="stylesheet" href="css/ibe-form.css">
+  <style>
+    body { background: var(--bg); }
+    .bar { position: sticky; top: 0; z-index: 40; background: rgba(247,246,242,0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .bar .wrap { display: flex; align-items: center; gap: 12px; height: 66px; flex-wrap: wrap; }
+    .bar .sp { flex: 1; }
+    .sel { height: 40px; border-radius: 10px; border: 1px solid var(--line-2); background: var(--paper); padding: 0 12px; font: 600 14px var(--font); color: var(--text); max-width: 240px; }
+    .b2 { height: 40px; padding: 0 14px; font-size: 13.5px; border-radius: 10px; }
+    .client { padding: 40px 0 10px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; }
+    .client h1 { font: 600 clamp(32px, 4.4vw, 52px)/1.02 var(--font-display); letter-spacing: -.035em; margin: 6px 0 8px; outline: none; border-radius: 8px; }
+    .client h1[contenteditable=true]:hover, .client h1:focus { background: var(--paper); box-shadow: 0 0 0 1px var(--line-2); }
+    .meta { display: flex; gap: 10px; flex-wrap: wrap; }
+    .meta label { display: flex; align-items: center; gap: 8px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; font-size: 13px; color: var(--muted); }
+    .meta input { border: 0; background: none; font: 600 14px var(--font); color: var(--text); width: 90px; outline: none; }
+    .meta input[type=date] { width: 130px; }
+    .meta input.w { width: 160px; }
+    .tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 26px; }
+    .tile { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
+    .tile small { display: block; font: 500 10.5px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+    .tile b { display: block; font: 600 clamp(24px, 2.4vw, 32px)/1.15 var(--font-display); letter-spacing: -.03em; margin-top: 6px; white-space: nowrap; }
+    .tile b i { font-style: normal; font-size: 15px; color: var(--muted); margin-left: 4px; letter-spacing: 0; }
+    .tile span { font-size: 12.5px; color: var(--muted); }
+    .tile.dark { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .tile.dark small, .tile.dark span { color: #8b909b; }
+    .tile .ok { color: var(--green); } .tile .bad { color: var(--accent); }
+    .pnl { background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 24px; margin-top: 16px; }
+    .pnl-h { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+    .pnl-h h2 { font: 600 18px var(--font-display); margin: 0; letter-spacing: -.01em; }
+    .pnl-h p { margin: 0; color: var(--muted); font-size: 13px; }
+    .two { display: grid; grid-template-columns: 1.35fr 1fr; gap: 16px; }
+    canvas#chart { width: 100%; height: 280px; display: block; }
+    .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12.5px; color: var(--muted); margin-top: 10px; }
+    .legend i { display: inline-block; width: 18px; height: 0; border-top: 2px solid; vertical-align: middle; margin-right: 6px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { text-align: left; font: 500 10.5px var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 8px 8px; border-bottom: 1px solid var(--line-2); white-space: nowrap; }
+    td { padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+    td.n, th.n { text-align: right; }
+    td input, td select { width: 100%; border: 1px solid transparent; background: transparent; border-radius: 8px; padding: 7px 8px; font: 14px var(--font); color: var(--text); }
+    td input:hover, td select:hover { border-color: var(--line-2); background: var(--field); }
+    td input:focus, td select:focus { outline: none; border-color: var(--accent); background: #fff; }
+    td input.num { text-align: right; width: 76px; font-family: var(--font-display); font-weight: 600; }
+    td .del { border: 0; background: none; color: var(--muted); cursor: pointer; font-size: 18px; padding: 4px 8px; border-radius: 8px; }
+    td .del:hover { color: var(--accent); background: var(--accent-soft); }
+    .saved { font: 600 15px var(--font-display); }
+    .st { display: inline-block; font: 500 10.5px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border-radius: 99px; }
+    .st-gepland { background: var(--panel-2); color: var(--muted); } .st-bouw { background: #fff3df; color: #a8650a; } .st-live { background: #e3f6ea; color: var(--green); }
+    tfoot td { font-weight: 600; border-bottom: 0; padding-top: 12px; }
+    .add { margin-top: 12px; }
+    .empty { text-align: center; padding: 70px 20px; }
+    .empty h1 { font: 600 40px var(--font-display); letter-spacing: -.03em; margin: 0 0 10px; }
+    .note { color: var(--muted); font-size: 12.5px; padding: 26px 0 60px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px); background: var(--ink); color: #fff; padding: 11px 18px; border-radius: 12px; font-size: 14px; opacity: 0; transition: all .25s; z-index: 60; pointer-events: none; }
+    .toast.on { opacity: 1; transform: translateX(-50%); }
+    /* klantweergave: geen bewerkknoppen */
+    body.view .edit-only { display: none !important; }
+    body.view td input, body.view td select, body.view .meta input { pointer-events: none; border-color: transparent !important; background: none !important; -webkit-appearance: none; appearance: none; }
+    @media print {
+      .bar, .edit-only, .note .edit-only { display: none !important; }
+      body { background: #fff; }
+      td input, td select, .meta input { border: 0 !important; -webkit-appearance: none; appearance: none; }
+      .pnl, .tile { break-inside: avoid; }
+    }
+    @media (max-width: 1000px) { .tiles { grid-template-columns: repeat(2, 1fr); } .tiles .tile:first-child { grid-column: 1 / -1; } .two { grid-template-columns: 1fr; } .client { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) { .tbl-wrap { overflow-x: auto; } table { min-width: 560px; } .bar .wrap { height: auto; padding-top: 10px; padding-bottom: 10px; } }
+  </style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="wrap">
+    <a class="brand" href="index.html" data-land><img src="assets/lion-ink.png" alt=""><span><b>IBE MOTION</b><small>KPI-dashboard</small></span></a>
+    <span class="sp"></span>
+    <select class="sel edit-only" id="pick" aria-label="Kies een klant"></select>
+    <button class="btn b2 edit-only" id="b-new">+ Klant</button>
+    <label class="btn b2 edit-only" style="cursor:pointer">Importeer<input type="file" id="b-imp" accept=".json,application/json" hidden></label>
+    <button class="btn b2 edit-only" id="b-exp">Back-up</button>
+    <button class="btn b2" id="b-view">Klantweergave</button>
+    <button class="btn b2 primary" id="b-print">PDF</button>
+  </div>
+</div>
+
+<main class="wrap" id="app"></main>
+<div class="toast" id="toast"></div>
+
+<script src="js/lion-mask.js"></script>
+<script src="js/ibe-intro.js"></script>
+<script>
+// KPI-dashboard tijdsbesparing. Per klant: doel (5 tot 15 uur), uurtarief, taken met nulmeting en weekmetingen.
+// Alles staat in de opslag van deze browser (localStorage). Maak regelmatig een back-up met de knop "Back-up".
+// Een klant toevoegen kan ook met het KPI-startbestand uit de onboarding (Importeer).
+(function () {
+  const KEY = 'ibe-kpi-v1', GUARANTEE = 5;
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const nl = (n, d = 0) => (Number(n) || 0).toLocaleString('nl-NL', { minimumFractionDigits: d, maximumFractionDigits: d });
+  const h1 = (n) => nl(n, Number.isInteger(+n) ? 0 : 1);
+  const num = (v) => parseFloat(String(v == null ? '' : v).replace(',', '.')) || 0;
+  const uid = () => Math.random().toString(36).slice(2, 9);
+  const today = () => new Date().toISOString().slice(0, 10);
+  const nlDate = (d) => { try { return new Date(d + 'T12:00').toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' }); } catch (e) { return d; } };
+  const STATUS = [['gepland', 'Gepland'], ['bouw', 'In aanbouw'], ['live', 'Live']];
+
+  let db = load();
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || { clients: [], current: null }; } catch (e) { return { clients: [], current: null }; } }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) { toast('Opslaan lukt niet in deze browser. Maak een back-up.'); } }
+  const cur = () => db.clients.find((c) => c.id === db.current) || db.clients[0];
+  function toast(t) { const el = $('toast'); el.textContent = t; el.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('on'), 2200); }
+
+  function newClient(src) {
+    src = src || {};
+    const c = { id: uid(), klant: src.klant || 'Nieuwe klant', contact: src.contact || '', email: src.email || '', doel: num(src.doel) || 15, tarief: num(src.tarief) || 35, start: src.start || today(),
+      taken: (src.taken || []).map((t) => ({ id: t.id || uid(), naam: t.naam || '', wie: t.wie || '', nul: num(t.nul), nu: t.nu == null ? num(t.nul) : num(t.nu), status: t.status || 'gepland' })),
+      weken: (src.weken || []).map((w) => ({ id: w.id || uid(), datum: w.datum, uren: num(w.uren), notitie: w.notitie || '' })), notities: src.notities || '' };
+    db.clients.push(c); db.current = c.id; save(); return c;
+  }
+
+  // berekeningen
+  function stats(c) {
+    const weken = [...c.weken].sort((a, b) => a.datum.localeCompare(b.datum));
+    const last = weken[weken.length - 1];
+    const last4 = weken.slice(-4);
+    const avg4 = last4.length ? last4.reduce((a, w) => a + w.uren, 0) / last4.length : 0;
+    const total = weken.reduce((a, w) => a + w.uren, 0);
+    const nul = c.taken.reduce((a, t) => a + t.nul, 0);
+    const live = c.taken.filter((t) => t.status === 'live').reduce((a, t) => a + Math.max(0, t.nul - t.nu), 0);
+    const plan = c.taken.reduce((a, t) => a + Math.max(0, t.nul - t.nu), 0);
+    return { weken, last, avg4, total, nul, live, plan, value: total * c.tarief };
+  }
+
+  function render() {
+    const c = cur();
+    $('pick').innerHTML = db.clients.map((x) => `<option value="${x.id}" ${c && x.id === c.id ? 'selected' : ''}>${esc(x.klant)}</option>`).join('');
+    $('pick').style.display = db.clients.length ? '' : 'none';
+    if (!c) {
+      $('app').innerHTML = `<div class="empty"><p class="kicker">KPI-dashboard</p><h1>Nog geen klanten.</h1><p class="dim" style="max-width:520px;margin:0 auto 24px">Importeer het KPI-startbestand uit de onboarding, of begin met een lege klant. Een voorbeeld bekijken kan ook.</p>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><label class="btn red" style="cursor:pointer">Importeer startbestand<input type="file" accept=".json" hidden data-imp></label><button class="btn" data-act="blank">Lege klant</button><button class="btn" data-act="demo">Voorbeeld laden</button></div></div>`;
+      return;
+    }
+    const s = stats(c);
+    const lastH = s.last ? s.last.uren : 0;
+    const gOK = s.avg4 >= GUARANTEE;
+    $('app').innerHTML = `
+      <div class="client">
+        <div>
+          <p class="kicker">Tijdsbesparing · AI-implementatie</p>
+          <h1 contenteditable="true" spellcheck="false" id="c-name" class="ed">${esc(c.klant)}</h1>
+          <div class="meta">
+            <label>Contact <input class="w" data-f="contact" value="${esc(c.contact)}" placeholder="Naam"></label>
+            <label>Start <input type="date" data-f="start" value="${esc(c.start)}"></label>
+            <label>Doel <input data-f="doel" value="${h1(c.doel)}" inputmode="decimal" style="width:44px"> uur per week</label>
+            <label>Uurtarief € <input data-f="tarief" value="${h1(c.tarief)}" inputmode="decimal" style="width:54px"></label>
+          </div>
+        </div>
+        <button class="btn b2 ghost edit-only" data-act="delclient">Klant verwijderen</button>
+      </div>
+      <div class="tiles">
+        <div class="tile dark"><small>Bespaard laatste week</small><b>${h1(lastH)}<i>uur</i></b><span>${s.last ? 'week van ' + nlDate(s.last.datum) : 'nog geen meting'}</span></div>
+        <div class="tile"><small>Gem. laatste 4 weken</small><b>${h1(Math.round(s.avg4 * 10) / 10)}<i>uur</i></b><span>doel ${h1(c.doel)} uur · ${c.doel ? Math.round((s.avg4 / c.doel) * 100) : 0}%</span></div>
+        <div class="tile"><small>Totaal sinds start</small><b>${h1(s.total)}<i>uur</i></b><span>${nl(s.total / 40, 1)} werkweken</span></div>
+        <div class="tile"><small>Waarde</small><b>€ ${nl(s.value)}</b><span>tegen € ${h1(c.tarief)} per uur</span></div>
+        <div class="tile"><small>Garantie ${GUARANTEE} uur</small><b class="${s.weken.length ? (gOK ? 'ok' : 'bad') : ''}">${s.weken.length ? (gOK ? 'Gehaald' : 'Nog niet') : 'Nog meten'}</b><span>gemiddelde laatste 4 weken</span></div>
+      </div>
+      <div class="two">
+        <div class="pnl">
+          <div class="pnl-h"><h2>Bespaarde uren per week</h2><p>${s.weken.length} ${s.weken.length === 1 ? 'meting' : 'metingen'}</p></div>
+          <canvas id="chart"></canvas>
+          <div class="legend"><span><i style="border-color:#d2404c;border-top-width:8px;width:10px"></i>Bespaard</span><span><i style="border-color:#11131a;border-top-style:dashed"></i>Doel ${h1(c.doel)} uur</span><span><i style="border-color:#9c7c55;border-top-style:dotted"></i>Garantie ${GUARANTEE} uur</span></div>
+        </div>
+        <div class="pnl">
+          <div class="pnl-h"><h2>Weekmetingen</h2><button class="btn b2 edit-only" data-act="addweek">+ Week</button></div>
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>Week van</th><th class="n">Uren</th><th>Notitie</th><th class="edit-only"></th></tr></thead>
+            <tbody>${[...s.weken].reverse().map((w) => `<tr data-w="${w.id}"><td><input type="date" data-wf="datum" value="${esc(w.datum)}"></td><td class="n"><input class="num" data-wf="uren" value="${h1(w.uren)}" inputmode="decimal"></td><td><input data-wf="notitie" value="${esc(w.notitie)}" placeholder="Wat viel op?"></td><td class="edit-only"><button class="del" data-delw="${w.id}" aria-label="Verwijderen">×</button></td></tr>`).join('') || '<tr><td colspan="4" class="muted" style="padding:18px 8px">Nog geen metingen. Klik op + Week.</td></tr>'}</tbody>
+          </table></div>
+        </div>
+      </div>
+      <div class="pnl">
+        <div class="pnl-h"><h2>Taken en nulmeting</h2><p>Nulmeting = uren per week voor de automatisering. Nu = uren per week erna.</p></div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Taak</th><th>Wie</th><th class="n">Nulmeting</th><th class="n">Nu</th><th class="n">Bespaard</th><th>Status</th><th class="edit-only"></th></tr></thead>
+          <tbody>${c.taken.map((t) => `<tr data-t="${t.id}"><td><input data-tf="naam" value="${esc(t.naam)}" placeholder="Taak"></td><td><input data-tf="wie" value="${esc(t.wie)}" placeholder="Wie"></td>
+            <td class="n"><input class="num" data-tf="nul" value="${h1(t.nul)}" inputmode="decimal"></td><td class="n"><input class="num" data-tf="nu" value="${h1(t.nu)}" inputmode="decimal"></td>
+            <td class="n saved">${h1(Math.max(0, t.nul - t.nu))} u</td>
+            <td><select data-tf="status">${STATUS.map(([v, l]) => `<option value="${v}" ${t.status === v ? 'selected' : ''}>${l}</option>`).join('')}</select></td>
+            <td class="edit-only"><button class="del" data-delt="${t.id}" aria-label="Verwijderen">×</button></td></tr>`).join('') || '<tr><td colspan="7" class="muted" style="padding:18px 8px">Nog geen taken. Importeer de onboarding of voeg ze hieronder toe.</td></tr>'}</tbody>
+          <tfoot><tr><td colspan="2">Totaal</td><td class="n">${h1(s.nul)} u</td><td></td><td class="n">${h1(s.plan)} u</td><td colspan="2" class="muted" style="font-weight:500">${h1(s.live)} u per week staat live</td></tr></tfoot>
+        </table></div>
+        <button class="btn b2 add edit-only" data-act="addtask">+ Taak</button>
+      </div>
+      <div class="note"><span>IBE MOTION · KPI-dashboard · bijgewerkt ${nlDate(today())}</span><span class="edit-only">Opgeslagen in deze browser. Maak regelmatig een back-up.</span></div>`;
+    drawChart(c, s);
+  }
+
+  function drawChart(c, s) {
+    const cv = $('chart'); if (!cv) return;
+    const dpr = Math.min(2, devicePixelRatio || 1), W = cv.clientWidth, H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    const x = cv.getContext('2d'); x.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const L = 36, R = 10, T = 14, B = 26, w = W - L - R, h = H - T - B;
+    const max = Math.max(20, c.doel + 2, ...s.weken.map((k) => k.uren)) ;
+    const Y = (v) => T + h - (v / max) * h;
+    x.font = '500 10px "JetBrains Mono", monospace'; x.fillStyle = '#868b96'; x.textAlign = 'right'; x.textBaseline = 'middle';
+    for (let v = 0; v <= max; v += 5) { x.strokeStyle = 'rgba(17,19,26,0.07)'; x.beginPath(); x.moveTo(L, Y(v)); x.lineTo(W - R, Y(v)); x.stroke(); x.fillText(v + 'u', L - 8, Y(v)); }
+    const n = Math.max(s.weken.length, 1), gap = 6, bw = Math.max(4, Math.min(46, (w - gap * (n - 1)) / n));
+    const total = bw * s.weken.length + gap * (s.weken.length - 1), x0 = L + Math.max(0, (w - total) / 2);
+    x.textAlign = 'center'; x.textBaseline = 'top';
+    s.weken.forEach((k, i) => {
+      const bx = x0 + i * (bw + gap), by = Y(k.uren);
+      const g = x.createLinearGradient(0, by, 0, T + h); g.addColorStop(0, k.uren >= GUARANTEE ? '#d2404c' : '#e7a3a9'); g.addColorStop(1, k.uren >= GUARANTEE ? 'rgba(210,64,76,0.55)' : 'rgba(231,163,169,0.5)');
+      x.fillStyle = g; x.beginPath(); (x.roundRect ? x.roundRect(bx, by, bw, T + h - by, [5, 5, 0, 0]) : x.rect(bx, by, bw, T + h - by)); x.fill();
+      if (n <= 16 || i % 2 === 0) { x.fillStyle = '#868b96'; x.fillText(nlDate(k.datum), bx + bw / 2, T + h + 8); }
+    });
+    const line = (v, col, dash) => { x.strokeStyle = col; x.lineWidth = 1.5; x.setLineDash(dash); x.beginPath(); x.moveTo(L, Y(v)); x.lineTo(W - R, Y(v)); x.stroke(); x.setLineDash([]); };
+    line(c.doel, '#11131a', [6, 5]); line(GUARANTEE, '#9c7c55', [2, 4]);
+    if (!s.weken.length) { x.fillStyle = '#868b96'; x.font = '14px Inter, sans-serif'; x.textBaseline = 'middle'; x.fillText('De eerste weekmeting verschijnt hier.', L + w / 2, T + h / 2); }
+  }
+
+  // invoer
+  const app = $('app');
+  app.addEventListener('input', (e) => {
+    const c = cur(); if (!c) return; const t = e.target;
+    if (t.id === 'c-name') { c.klant = t.textContent.trim() || 'Klant'; save(); $('pick').querySelector(`option[value="${c.id}"]`).textContent = c.klant; return; }
+  });
+  app.addEventListener('change', (e) => {
+    const t = e.target;
+    if (t.dataset.imp != null) return imp(t.files[0]);
+    const c = cur(); if (!c) return;
+    if (t.dataset.f) { c[t.dataset.f] = ['doel', 'tarief'].includes(t.dataset.f) ? num(t.value) : t.value; }
+    const tr = t.closest('tr');
+    if (t.dataset.tf) { const k = c.taken.find((x) => x.id === tr.dataset.t); k[t.dataset.tf] = ['nul', 'nu'].includes(t.dataset.tf) ? num(t.value) : t.value; }
+    if (t.dataset.wf) { const k = c.weken.find((x) => x.id === tr.dataset.w); k[t.dataset.wf] = t.dataset.wf === 'uren' ? num(t.value) : t.value; }
+    save(); render();
+  });
+  app.addEventListener('keydown', (e) => { if (e.target.id === 'c-name' && e.key === 'Enter') { e.preventDefault(); e.target.blur(); } });
+  app.addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    const c = cur(), a = b.dataset.act;
+    if (a === 'blank') { newClient(); render(); }
+    if (a === 'demo') { demo(); render(); }
+    if (a === 'addtask') { c.taken.push({ id: uid(), naam: '', wie: '', nul: 0, nu: 0, status: 'gepland' }); save(); render(); app.querySelector('tr[data-t]:last-of-type input')?.focus(); }
+    if (a === 'addweek') {
+      const s = stats(c); const prev = s.last ? new Date(s.last.datum + 'T12:00') : null;
+      const d = prev ? new Date(prev.getTime() + 7 * 864e5) : new Date(); if (!prev) d.setDate(d.getDate() - ((d.getDay() + 6) % 7));
+      c.weken.push({ id: uid(), datum: d.toISOString().slice(0, 10), uren: Math.round(s.live * 10) / 10, notitie: '' }); save(); render();
+      toast('Week toegevoegd met de besparing van de live taken. Pas aan waar nodig.');
+    }
+    if (b.dataset.delt) { c.taken = c.taken.filter((x) => x.id !== b.dataset.delt); save(); render(); }
+    if (b.dataset.delw) { c.weken = c.weken.filter((x) => x.id !== b.dataset.delw); save(); render(); }
+    if (a === 'delclient' && confirm(`${c.klant} en alle metingen verwijderen? Maak eerst een back-up als je twijfelt.`)) { db.clients = db.clients.filter((x) => x.id !== c.id); db.current = db.clients[0]?.id || null; save(); render(); }
+  });
+
+  $('pick').onchange = (e) => { db.current = e.target.value; save(); render(); };
+  $('b-new').onclick = () => { newClient(); render(); setTimeout(() => { const n = $('c-name'); n.focus(); document.getSelection().selectAllChildren(n); }, 30); };
+  $('b-imp').onchange = (e) => imp(e.target.files[0]);
+  $('b-exp').onclick = () => {
+    const c = cur(); const all = !c || confirm('OK = alle klanten in één back-up. Annuleren = alleen ' + (c ? c.klant : '') + '.');
+    const data = all ? { ibeKpiBackup: 1, clients: db.clients } : Object.assign({ ibeKpi: 1 }, c);
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
+    a.download = all ? `KPI-back-up ${today()}.json` : `KPI - ${c.klant} - ${today()}.json`; document.body.appendChild(a); a.click(); a.remove();
+  };
+  $('b-view').onclick = () => { document.body.classList.toggle('view'); $('b-view').textContent = document.body.classList.contains('view') ? 'Bewerken' : 'Klantweergave'; const n = $('c-name'); if (n) n.contentEditable = !document.body.classList.contains('view'); };
+  $('b-print').onclick = () => window.print();
+  addEventListener('resize', () => { const c = cur(); if (c) drawChart(c, stats(c)); });
+
+  function imp(file) {
+    if (!file) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try {
+        const d = JSON.parse(r.result);
+        if (d.ibeKpiBackup && Array.isArray(d.clients)) {
+          let n = 0; d.clients.forEach((c) => { if (!db.clients.some((x) => x.id === c.id)) { db.clients.push(c); n++; } });
+          db.current = db.current || db.clients[0]?.id; save(); render(); toast(`${n} klant${n === 1 ? '' : 'en'} uit de back-up gehaald.`);
+        } else if (d.ibeKpi) { const c = newClient(d); render(); toast(`${c.klant} toegevoegd.`); }
+        else toast('Dit bestand herken ik niet als KPI-bestand.');
+      } catch (e) { toast('Dit bestand kon ik niet lezen.'); }
+    };
+    r.readAsText(file);
+  }
+
+  function demo() {
+    const start = new Date(); start.setDate(start.getDate() - 7 * 9 - ((start.getDay() + 6) % 7));
+    const wk = (i) => new Date(start.getTime() + i * 7 * 864e5).toISOString().slice(0, 10);
+    newClient({ klant: 'Voorbeeld bv', contact: 'Sanne de Vries', doel: 15, tarief: 35, start: wk(0),
+      taken: [
+        { naam: 'Offertes maken', wie: 'Sanne', nul: 6, nu: 1.5, status: 'live' },
+        { naam: 'Mail sorteren en beantwoorden', wie: 'Tom', nul: 5, nu: 2, status: 'live' },
+        { naam: 'Facturen en bonnetjes verwerken', wie: 'Sanne', nul: 4, nu: 1, status: 'live' },
+        { naam: 'Weekrapportage', wie: 'Tom', nul: 3, nu: 0.5, status: 'live' },
+        { naam: 'Planning bijwerken', wie: 'Lisa', nul: 4, nu: 2, status: 'bouw' },
+      ],
+      weken: [3, 6.5, 9, 10.5, 11, 12.5, 13, 13.5, 13].map((u, i) => ({ datum: wk(i), uren: u, notitie: i === 0 ? 'Offertes live' : i === 3 ? 'Mail live' : i === 5 ? 'Facturen en rapportage live' : '' })) });
+  }
+
+  render();
+
+  // opening met de echte cijfers van deze klant, net als in het Command Center
+  const c = cur(), s = c ? stats(c) : null;
+  IBEIntro.play({
+    title: 'IBE MOTION // KPI-DASHBOARD',
+    head: '> metingen laden',
+    lines: c ? [
+      { label: 'KLANT', v: c.klant.slice(0, 28) },
+      { label: 'DOEL', v: `${h1(c.doel)} uur per week` },
+      { label: 'LAATSTE', v: s.last ? `${h1(s.last.uren)} uur bespaard` : 'nog geen meting' },
+      { label: 'TOTAAL', v: `${h1(s.total)} uur sinds start` },
+      { label: 'WAARDE', v: `€ ${nl(s.value)}` },
+    ] : [{ label: 'KLANTEN', v: 'nog geen klanten' }, { label: 'IMPORT', v: 'startbestand onboarding' }],
+    online: 'DASHBOARD ONLINE',
+  });
+})();
+</script>
+</body>
+</html>

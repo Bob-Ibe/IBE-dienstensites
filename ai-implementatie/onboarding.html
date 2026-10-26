@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Onboarding AI-implementatie · IBE MOTION</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Doto:wght@600;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/ai.css">
+  <link rel="stylesheet" href="css/ibe-form.css">
+  <link rel="stylesheet" href="css/ibe-fx.css">
+  <style>
+    .ob-head { padding: 64px 0 34px; }
+    .ob-head h1 { font: 600 clamp(36px, 5vw, 60px)/1.02 var(--font-display); letter-spacing: -.035em; margin: 0 0 16px; }
+    .ob-head .lead { color: var(--text-2); font-size: 18px; max-width: 680px; margin: 0; }
+    .ob-route { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 30px; }
+    .ob-route span { font: 500 11px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; padding: 7px 12px; border-radius: 99px; border: 1px solid var(--line-2); color: var(--muted); background: var(--paper); }
+    .ob-route span.done { color: var(--text-2); }
+    .ob-route span.done::before { content: "✓ "; color: var(--green); }
+    .ob-route span.now { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .ob-grid { display: grid; grid-template-columns: 1fr 300px; gap: 32px; align-items: start; padding-bottom: 90px; }
+    .ob-side { position: sticky; top: 96px; display: grid; gap: 14px; }
+    .ob-card { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 20px; font-size: 14.5px; color: var(--text-2); }
+    .ob-card b { color: var(--text); display: block; margin-bottom: 6px; font: 600 15px var(--font-display); }
+    .ob-card a { color: var(--text); }
+    .ob-card.soon { background: var(--ink); color: #a4aab7; border-color: var(--ink); }
+    .ob-card.soon b { color: #fff; }
+    .ob-card.soon .tag { display: inline-block; font: 500 10px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--sand); margin-bottom: 8px; }
+    @media (max-width: 1000px) { .ob-grid { grid-template-columns: 1fr; } .ob-side { position: static; } }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html" data-land><img src="assets/lion-ink.png" alt=""><span><b>IBE MOTION</b><small>Onboarding</small></span></a>
+    <a class="btn" href="#" data-call data-land>Vraag? Bel of app Bob</a>
+  </div>
+</nav>
+
+<header class="ob-head">
+  <div class="wrap">
+    <p class="eyebrow">Onboarding · AI-implementatie</p>
+    <h1>Welkom. Nu gaan we je tijd terughalen.</h1>
+    <p class="lead">Bedankt voor je aanbetaling. Met deze onboarding leggen we vast hoe jullie werken, welke tools je gebruikt en waar de meeste tijd in gaat zitten. Daarmee bouwen we je KPI-dashboard en prikken we de implementatiedatum. Reken op ongeveer 30 minuten. Je kunt tussendoor stoppen, je antwoorden blijven bewaard op dit apparaat.</p>
+    <div class="ob-route">
+      <span class="done">Kennismaking</span><span class="done">Plan en prijs</span><span class="done">Aanbetaling</span><span class="now">Onboarding</span><span>KPI-dashboard</span><span>Implementatie</span><span>Opleveren</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap ob-grid">
+  <div class="wizard" id="wizard" data-land></div>
+  <aside class="ob-side">
+    <div class="ob-card" data-land><b>Waarom deze vragen?</b>Hoe beter we weten waar je tijd heen gaat, hoe gerichter we bouwen. De uren die je bij de tijdvreters invult, worden de nulmeting in je KPI-dashboard.</div>
+    <div class="ob-card"><b>Twijfel je over een antwoord?</b>Een schatting is prima. In de week van de implementatie meten we het samen precies. Vragen? <a href="#" data-call>Stuur Bob een bericht</a>.</div>
+    <div class="ob-card soon"><span class="tag">Binnenkort</span><b>Je eigen onboarding-assistent</b>Straks loopt een digitale assistent deze vragen met je door, als een gesprek. Tot die tijd vul je ze hier in.</div>
+  </aside>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span style="display:flex;align-items:center;gap:12px"><img src="assets/lion-ink.png" alt="">IBE MOTION · Landgraaf · KvK 98929879</span>
+    <span>Onboarding AI-implementatie</span>
+  </div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/lion-mask.js"></script>
+<script src="js/ibe-intro.js"></script>
+<script src="js/jspdf.umd.min.js"></script>
+<script src="js/ibe-fx.js"></script>
+<script src="js/ibe-form.js"></script>
+<script>
+IBEIntro.play({
+  title: 'IBE MOTION // ONBOARDING',
+  head: '> onboarding starten',
+  lines: [
+    { label: 'AANBETALING', v: 'ontvangen, plek vast' },
+    { label: 'WORKFLOW', v: 'in kaart brengen' },
+    { label: 'TOOLS', v: 'koppelingen bepalen' },
+    { label: 'TIJDVRETERS', v: 'nulmeting per taak' },
+    { label: 'DATUM', v: 'implementatie inplannen' },
+  ],
+  online: 'KLAAR VOOR START',
+});
+
+const slug = (s) => (s || 'klant').replace(/[^\w\- ]+/g, '').trim() || 'klant';
+const num = (v) => parseFloat(String(v || '').replace(',', '.')) || 0;
+
+// Startbestand voor het KPI-dashboard: klantgegevens, doel en de tijdvreters als nulmeting.
+function kpiStart(d) {
+  const today = new Date().toISOString().slice(0, 10);
+  const start = {
+    ibeKpi: 1,
+    klant: d.bedrijf || 'Nieuwe klant', contact: d.naam || '', email: d.email || '',
+    doel: Number(d.uren) || 10, tarief: num(d.tarief) || 35, start: d.datum1 || today,
+    taken: (d.taken || []).filter((t) => t.taak).map((t, i) => ({ id: 't' + Date.now().toString(36) + i, naam: t.taak, wie: t.wie || '', nul: num(t.uur), nu: num(t.uur), status: 'gepland' })),
+    weken: [], notities: d.succes || '',
+  };
+  const blob = new Blob([JSON.stringify(start, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = `KPI-start - ${slug(d.bedrijf)}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+
+const form = IBEForm(document.getElementById('wizard'), {
+  key: 'ibe-ai-onboarding',
+  title: 'Onboarding AI-implementatie',
+  sub: 'Onboarding',
+  pdfName: 'Onboarding AI-implementatie',
+  callLabel: 'Laat Bob het weten',
+  callWa: true,
+  callTopic: 'de onboarding is ingevuld. Ik stuur je de PDF en het KPI-startbestand.',
+  done: { title: 'Je onboarding is klaar.', text: 'Download de PDF en het KPI-startbestand en stuur ze allebei naar Bob. Hij zet je dashboard klaar en bevestigt de implementatiedatum binnen een werkdag.' },
+  extra: [{ label: 'Download KPI-startbestand', onClick: kpiStart }],
+  steps: [
+    { title: 'Jullie bedrijf', short: 'Bedrijf', intro: 'De basis, zodat we weten met wie we werken.', fields: [
+      { id: 'bedrijf', half: true, label: 'Bedrijfsnaam', type: 'text', required: true, auto: 'organization' },
+      { id: 'naam', half: true, label: 'Je naam', type: 'text', required: true, auto: 'name' },
+      { id: 'rol', half: true, label: 'Je functie', type: 'text' },
+      { id: 'email', half: true, label: 'E-mailadres', type: 'email', required: true, auto: 'email' },
+      { id: 'telefoon', half: true, label: 'Telefoonnummer', type: 'tel', auto: 'tel' },
+      { id: 'teamgrootte', half: true, label: 'Hoeveel mensen werken er?', type: 'text', placeholder: 'Bijv. 8' },
+      { id: 'rollen', label: 'Wie doen het werk op de computer, en wat doen ze vooral?', type: 'textarea', placeholder: 'Bijv. Sanne: offertes en mail. Tom: planning en inkoop.' },
+    ] },
+    { title: 'Zo werken jullie nu', short: 'Workflow', intro: 'Beschrijf het zoals je het aan een nieuwe collega zou uitleggen.', fields: [
+      { id: 'proces', label: 'Wat is jullie belangrijkste proces, van begin tot eind?', help: 'Bijv. van aanvraag tot factuur: wat gebeurt er, wie doet het en in welk programma?', type: 'textarea', rows: 5, required: true },
+      { id: 'week', label: 'Hoe ziet een gewone werkweek eruit op kantoor?', type: 'textarea' },
+      { id: 'mis', label: 'Waar gaat het vaak mis of blijft werk liggen?', type: 'textarea' },
+    ] },
+    { title: 'Systemen en tools', short: 'Tools', intro: 'Hiermee bepalen we wat we aan elkaar kunnen koppelen.', fields: [
+      { id: 'tools', label: 'Welke software gebruiken jullie?', type: 'chips', required: true, other: 'Andere software, namelijk...', options: ['Gmail', 'Outlook', 'Google Drive', 'OneDrive of SharePoint', 'Excel', 'Google Sheets', 'Exact', 'Moneybird', 'e-Boekhouden', 'Snelstart', 'AFAS', 'Shopify', 'WooCommerce', 'HubSpot', 'Teamleader', 'Pipedrive', 'Notion', 'Trello of Asana', 'WhatsApp Business', 'Teams', 'Slack', 'Calendly', 'Eigen software'] },
+      { id: 'beheer', label: 'Wie beheert de accounts en wachtwoorden?', type: 'text' },
+      { id: 'toegang', label: 'Kunnen we tijdelijk toegang krijgen tot de systemen die nodig zijn?', type: 'choice', options: ['Ja', 'Ja, na overleg', 'Dat gaat lastig'] },
+    ] },
+    { title: 'Waar gaat de tijd heen?', short: 'Tijdvreters', intro: 'Dit is de belangrijkste stap. Deze uren worden de nulmeting in je KPI-dashboard.', fields: [
+      { id: 'taken', label: 'Welke digitale taken kosten de meeste tijd?', help: 'Zet er zoveel neer als je kunt. Een schatting in uren per week is goed genoeg, we meten het later precies.', type: 'tasks', required: true },
+      { id: 'eerst', label: 'Welke taak wil je als eerste kwijt?', type: 'text' },
+    ] },
+    { title: 'Je doelen', short: 'Doel', intro: 'Hier zetten we het doel voor je dashboard.', fields: [
+      { id: 'uren', label: 'Hoeveel uur per week wil je terug?', type: 'range', min: 5, max: 15, step: 1, value: 10, unit: 'uur per week' },
+      { id: 'tarief', half: true, label: 'Wat kost een uur van je team gemiddeld?', help: 'In euro. Zo laat het dashboard ook de waarde zien.', type: 'text', placeholder: '35' },
+      { id: 'besteden', label: 'Wat gaan jullie met de vrije tijd doen?', type: 'chips', options: ['Meer klanten helpen', 'Nieuwe diensten ontwikkelen', 'Betere service', 'Minder werkdruk', 'Eerder naar huis', 'Meer tijd voor familie'] },
+      { id: 'succes', label: 'Wanneer is dit voor jou geslaagd?', type: 'textarea', placeholder: 'Bijv. offertes gaan dezelfde dag de deur uit en niemand werkt meer in het weekend.' },
+    ] },
+    { title: 'Privacy en afspraken', short: 'Afspraken', fields: [
+      { id: 'gevoelig', label: 'Werken jullie met gevoelige gegevens?', type: 'choice', options: ['Nee', 'Ja, klantgegevens', 'Ja, medische of financiële gegevens'] },
+      { id: 'gevoelig_uitleg', label: 'Toelichting', type: 'textarea', placeholder: 'Wat moeten we weten over hoe jullie met deze gegevens omgaan?' },
+      { id: 'contact', label: 'Wie is ons aanspreekpunt tijdens de implementatie?', type: 'text', placeholder: 'Naam en telefoonnummer' },
+    ] },
+    { title: 'Implementatiedatum', short: 'Datum', intro: 'Kies twee momenten. Bob bevestigt de datum binnen een werkdag.', fields: [
+      { id: 'datum1', half: true, label: 'Voorkeursdatum', type: 'date', required: true },
+      { id: 'datum2', half: true, label: 'Tweede optie', type: 'date' },
+      { id: 'dagdeel', label: 'Dagdeel', type: 'choice', options: ['Ochtend', 'Middag', 'Maakt niet uit'] },
+      { id: 'locatie', label: 'Waar?', type: 'choice', options: ['Bij ons op kantoor', 'Online', 'Maakt niet uit'] },
+    ] },
+  ],
+});
+window.__formData = form.data;
+document.querySelectorAll('[data-call]').forEach((b) => b.addEventListener('click', (e) => { e.preventDefault(); IBEForm.call(form.data(), { wa: true, topic: 'ik heb een vraag over de onboarding.' }); }));
+</script>
+</body>
+</html>
