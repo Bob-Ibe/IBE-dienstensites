@@ -4,13 +4,13 @@
   if (hero && window.IBEDots) IBEDots(hero, { theme: 'dark', lion: null }); // alleen nog een zachte textuur, de leeuw zit in de morph
   const morph = document.getElementById('hero-morph');
   // onder de leeuw de namen van de pakketten
-  if (morph && window.IBEMorph) IBEMorph(morph, { theme: 'dark', shapes: ['leeuw', 'orb', 'kubus', 'camera', 'play'], words: ['Aandrijving', 'Versnelling', 'Volle kracht'] });
+  if (morph && window.IBEMorph) IBEMorph(morph, { theme: 'dark', shapes: ['leeuw', 'orb', 'kubus-producten', 'camera', 'play'], words: ['Aandrijving', 'Versnelling', 'Volle kracht'] });
   if (window.IBEDither) document.querySelectorAll('canvas.fx-dither').forEach((c) => IBEDither(c, { top: c.dataset.top, bottom: c.dataset.bottom, mode: c.dataset.mode }));
   if (window.IBEFx) {
     IBEFx.words('.hero h1, .head h2, .problem .big');
     IBEFx.highlight('.hl', 'zwerm'); // zwarte site: zwerm van dots rond de belangrijke woorden
     IBEFx.count('.stat b, .fact b, .pack .count');
-    IBEFx.sticky('Start de inventarisatie', '#start', '#start');
+    IBEFx.sticky('Plan een meeting', '#start', '#start');
   }
 
   const io = 'IntersectionObserver' in window ? new IntersectionObserver((en) => en.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.15 }) : null;
@@ -21,12 +21,15 @@
   document.querySelectorAll('.phone video').forEach((v) => {
     if (vio) vio.observe(v);
     // leeuw-loader tot de video echt kan spelen
-    if (window.IBELoader && v.readyState < 3) {
+    if (window.IBELoader && v.readyState < 2) {
       const ov = document.createElement('div'); ov.className = 'vload'; ov.append(IBELoader.make('zoeken', 46));
       v.after(ov);
-      const done = () => { ov.classList.add('gone'); setTimeout(() => ov.remove(), 450); };
-      v.addEventListener('canplay', done, { once: true }); v.addEventListener('error', done, { once: true });
+      let gone = false;
+      const done = () => { if (gone) return; gone = true; ov.classList.add('gone'); setTimeout(() => ov.remove(), 450); };
+      ['loadeddata', 'canplay', 'playing', 'error'].forEach((ev) => v.addEventListener(ev, done, { once: true }));
+      setTimeout(done, 4000); // nooit langer dan een paar seconden voor de video hangen
     }
+    v.play().catch(() => {});
   });
   document.querySelectorAll('.phone .snd').forEach((b) => b.addEventListener('click', () => {
     const v = b.parentElement.querySelector('video');

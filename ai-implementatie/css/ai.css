@@ -153,7 +153,7 @@ input[type=range] { accent-color: var(--accent); }
 .result .chip small { display: block; font: 500 10px var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: #8b909b; }
 .result .chip b { font: 600 19px var(--font-display); }
 .result .means { margin-top: 18px; font-size: 14.5px; color: #d7dae2; position: relative; }
-.calc-note { grid-column: 1 / -1; display: flex; gap: 14px; align-items: flex-start; background: var(--accent-soft); border-radius: 14px; padding: 16px 18px; font-size: 14.5px; color: var(--text-2); margin-top: -10px; }
+.calc-note { grid-column: 1 / -1; display: block; background: none; border: 1.5px dashed rgba(var(--accent-rgb), .45); border-radius: 14px; padding: 16px 18px; font-size: 14.5px; color: var(--text-2); margin-top: -10px; }
 .calc-note b { color: var(--text); }
 
 /* rekensom groter uitgelicht */
@@ -207,6 +207,10 @@ h2.xl { font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; }
 .wk-chips button { all: unset; cursor: pointer; font: 600 13px var(--font); padding: 7px 13px; border-radius: 99px; border: 1px solid rgba(255,255,255,.14); color: #a4aab7; }
 .wk-chips button::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--c); margin-right: 8px; }
 .wk-chips button.on { color: #fff; border-color: var(--c); background: color-mix(in srgb, var(--c) 18%, transparent); }
+/* pixelmannetjes aan het werk in de blokken met klantwerk */
+.wk-b.k { position: relative; }
+.wk-b.k canvas.wk-px { position: absolute; left: 50%; bottom: 6px; transform: translateX(-50%); width: min(84px, calc(100% - 8px)); aspect-ratio: 4 / 3; image-rendering: pixelated; image-rendering: crisp-edges; pointer-events: none; }
+.wk-quote { margin: 26px auto 4px; max-width: 760px; text-align: center; font: 800 clamp(17px, 2vw, 23px)/1.35 var(--font-num); color: var(--accent); letter-spacing: .01em; }
 #wk-year { margin: 0; color: #a4aab7; font-size: 14.5px; flex: 1 1 260px; }
 #wk-year b { color: #fff; }
 
@@ -378,3 +382,19 @@ footer img { width: 24px; }
 .end-band.dark { background: #0b0d12; color: #eceef3; }
 .end-band.dark .contact { background: radial-gradient(600px 300px at 0% 0%, rgba(var(--accent-rgb), 0.14), transparent 70%), #11131a; border: 1px solid rgba(255,255,255,.08); }
 .end-band.dark footer { border-top-color: rgba(255,255,255,.08); color: #8b909b; }
+
+/* telefoon: niets breder dan het scherm */
+.br-body > *, .calc > *, .kpi-split > *, .contact > * { min-width: 0; }
+@media (max-width: 560px) {
+  .br-info { padding: 20px; }
+  .kpi-demo { padding: 18px; }
+  .kd-tile b { font-size: 18px; }
+  .br-row { grid-template-columns: 1fr 58px 64px; font-size: 13px; padding: 9px 10px; }
+  .br-row span:nth-child(n+2) { white-space: nowrap; }
+  .wk-b.k, .wk-b.a i { hyphens: auto; -webkit-hyphens: auto; overflow-wrap: anywhere; }
+  .wk-b.k:has(.wk-px) > span { display: none; }
+  .wk-b.k canvas.wk-px { bottom: 50%; transform: translate(-50%, 50%); }
+  .worth { padding: 12px 14px; }
+  .worth input[type=range] { width: 100%; }
+  .wk-quote { font-size: 16px; }
+}

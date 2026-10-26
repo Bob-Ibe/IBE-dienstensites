@@ -102,6 +102,8 @@
     const canvas = wrap.querySelector('canvas'), ctx = canvas.getContext('2d'), hint = wrap.querySelector('.qr-hint');
     const cam = wrap.dataset.model === 'camera', name = cam ? 'de camera' : 'de boom';
     const blocks = cam ? (CAM = CAM || cameraModel()) : (TREE = TREE || treeModel());
+    // rechtsboven een grapje met een gebogen pijl naar de boom; verdwijnt als de QR-code in beeld is
+    if (!cam) wrap.insertAdjacentHTML('beforeend', '<div class="qr-note" aria-hidden="true"><span>Dit is een spar :)</span><svg viewBox="0 0 90 70" fill="none"><path d="M78 6 C 82 34, 60 56, 18 58" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="1 6"/><path d="M27 50 L 15 58 L 27 65" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>');
     let W = 0, dpr = 1, yaw = Math.PI / 4, k = 0, from = 0, to = 0, t0 = 0, vis = false, auto = 0, last = performance.now();
 
     function resize() { dpr = Math.min(2, devicePixelRatio || 1); W = canvas.clientWidth; canvas.width = canvas.height = W * dpr; }

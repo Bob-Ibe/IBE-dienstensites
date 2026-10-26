@@ -26,14 +26,16 @@
   /* ---------------- logo-morph ---------------- */
   // IBEMorph(host, { theme, shapes: ['leeuw', 'orb', ...], words: ['Tijdswinst', ...] })
   // Vormen: leeuw, orb, kubus, camera, play, zandloper, netwerk. Platte vormen (leeuw, camera, play) kijken naar voren en golven.
-  const SHAPE_FLAT = { leeuw: 1, camera: 1, play: 1 }, SHAPE_BREATHE = { orb: 1 };
+  const SHAPE_FLAT = { leeuw: 1, camera: 1, play: 1, puzzel: 1 }, SHAPE_BREATHE = { orb: 1 };
+  // kubussen draaien op twee assen; de kubus met de persoon breekt open voordat hij verder morpht
+  const SHAPE_TUMBLE = { kubus: 1, 'kubus-producten': 1, 'kubus-persoon': 1 }, SHAPE_BREAK = { 'kubus-persoon': 1 };
   function IBEMorph(host, opt) {
     opt = Object.assign({ theme: 'dark', hold: 3.6, dur: 2.3, shapes: ['leeuw', 'orb', 'kubus', 'camera', 'play'], words: null }, opt || {});
     const canvas = document.createElement('canvas');
     host.appendChild(canvas);
     const word = opt.words ? host.appendChild(Object.assign(document.createElement('span'), { className: 'ibe-morph-word' })) : null;
     const ctx = canvas.getContext('2d'), vis = watch(host), SH = opt.shapes;
-    const FL = SH.map((s) => SHAPE_FLAT[s] || 0), BR = SH.map((s) => SHAPE_BREATHE[s] || 0);
+    const FL = SH.map((s) => SHAPE_FLAT[s] || 0), BR = SH.map((s) => SHAPE_BREATHE[s] || 0), TU = SH.map((s) => SHAPE_TUMBLE[s] || 0), BK = SH.map((s) => SHAPE_BREAK[s] || 0);
     let N = 2000, W = 0, H = 0, dpr = 1, targets = null, cur = 0, from = 0, mStart = -1, holdStart = performance.now();
     let last = performance.now(), angle = 0, mouse = null, energy = 0, wi = 0;
     let ox, oy, delay, seed;
@@ -47,14 +49,40 @@
       for (let i = 0; i < N; i++) { const y = 1 - ((i + 0.5) / N) * 2, r = Math.sqrt(1 - y * y), th = i * 2.39996, R = 0.78 + rs() * 0.05; a.push([Math.cos(th) * r * R, y * R, Math.sin(th) * r * R]); }
       return a;
     }
-    function cube() {
+    // Kubus van lijnen. Elk punt krijgt een label: 0 = rand, 1 = persoon, 2+ = product. Die zweven rechtop in de kubus.
+    function cube(content) {
       const s = 0.56, a = [], V = [[-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1], [-1, -1, 1], [1, -1, 1], [1, 1, 1], [-1, 1, 1]];
       const E = [[0, 1], [1, 2], [2, 3], [3, 0], [4, 5], [5, 6], [6, 7], [7, 4], [0, 4], [1, 5], [2, 6], [3, 7]];
-      for (let i = 0; i < N; i++) {
+      const nEdge = content ? Math.round(N * 0.6) : N;
+      for (let i = 0; i < nEdge; i++) {
         const [p, q] = E[i % 12], t = Math.random(), r = 0.055 * Math.sqrt(Math.random()), u = Math.random() * 6.283, v = Math.acos(2 * Math.random() - 1);
         const off = [Math.sin(v) * Math.cos(u), Math.sin(v) * Math.sin(u), Math.cos(v)];
-        a.push([0, 1, 2].map((k) => (V[p][k] + (V[q][k] - V[p][k]) * t) * s + r * off[k]));
+        const pt = [0, 1, 2].map((k) => (V[p][k] + (V[q][k] - V[p][k]) * t) * s + r * off[k]); pt.push(0); a.push(pt);
       }
+      const C = [null, [0, 0, 0], [-0.22, 0.08, 0.12], [0.21, -0.13, -0.1], [0.05, 0.25, 0.2]];
+      const cyl = (x0, y0, z0, x1, y1, z1, r) => { const t = Math.random(), u = Math.random() * 6.283; return [x0 + (x1 - x0) * t + Math.cos(u) * r, y0 + (y1 - y0) * t, z0 + (z1 - z0) * t + Math.sin(u) * r]; };
+      const ball = (cx, cy, cz, rx, ry, rz) => { const u = Math.random() * 6.283, v = Math.acos(2 * Math.random() - 1); return [cx + Math.sin(v) * Math.cos(u) * rx, cy + Math.cos(v) * ry, cz + Math.sin(v) * Math.sin(u) * rz]; };
+      for (let i = nEdge; i < N; i++) {
+        const k = Math.random();
+        if (content === 'persoon') {
+          // een staand persoon, zonder gezicht: alleen de vorm, in dots
+          const side = Math.random() < 0.5 ? -1 : 1;
+          const pt = k < 0.18 ? ball(0, -0.31, 0, 0.075, 0.08, 0.075) : k < 0.5 ? ball(0, -0.1, 0, 0.1, 0.13, 0.06)
+            : k < 0.7 ? cyl(side * 0.12, -0.2, 0, side * 0.15, 0.05, 0.02, 0.03) : cyl(side * 0.05, 0.02, 0, side * 0.06, 0.36, 0, 0.038);
+          pt.push(1); a.push(pt);
+        } else {
+          // producten: een flesje, een doosje met lint en een potje
+          const tag = 2 + (i % 3), [cx, cy, cz] = C[tag];
+          let q;
+          if (tag === 2) q = k < 0.7 ? cyl(0, -0.06, 0, 0, 0.12, 0, 0.07) : k < 0.88 ? cyl(0, -0.12, 0, 0, -0.06, 0, 0.03) : cyl(0, -0.16, 0, 0, -0.12, 0, 0.036);
+          else if (tag === 3) {
+            const f = (Math.random() * 6) | 0, u = (Math.random() - 0.5) * 0.16, v = k < 0.3 ? (Math.random() - 0.5) * 0.02 : (Math.random() - 0.5) * 0.16, w = f % 2 ? 0.08 : -0.08;
+            q = f < 2 ? [w, u, v] : f < 4 ? [u, w, v] : [u, v, w];
+          } else q = k < 0.75 ? cyl(0, -0.05, 0, 0, 0.05, 0, 0.085) : cyl(0, -0.075, 0, 0, -0.05, 0, 0.092);
+          a.push([cx + q[0], cy + q[1], cz + q[2], tag]);
+        }
+      }
+      a.centers = C;
       return a;
     }
     // zandloper: glas, boven- en onderplaat, drie staanders en zand dat naar beneden loopt
@@ -111,12 +139,20 @@
       o.fillStyle = '#d8d8d8'; o.beginPath(); o.arc(110, 108, 19, 0, 6.283); o.fill();
       o.fillStyle = '#fff'; o.beginPath(); o.arc(176, 76, 8, 0, 6.283); o.fill();
     }), 1.62, 0.55);
+    // puzzelstuk: vierkant met twee nokjes en twee uitsparingen, de rand lichter (dichterbij)
+    const puzzle = () => fromCanvas(pad(220, 220, (o) => {
+      const pth = new Path2D(); pth.rect(50, 60, 110, 110); pth.arc(105, 46, 24, 0, 6.283); pth.moveTo(198, 115); pth.arc(174, 115, 24, 0, 6.283);
+      o.fillStyle = '#8c8c8c'; o.fill(pth);
+      o.globalCompositeOperation = 'destination-out'; o.beginPath(); o.arc(50, 115, 22, 0, 6.283); o.arc(105, 170, 22, 0, 6.283); o.fill();
+      o.globalCompositeOperation = 'source-atop'; o.strokeStyle = '#fff'; o.lineWidth = 22; o.stroke(pth);
+      o.beginPath(); o.arc(50, 115, 22, 0, 6.283); o.stroke(); o.beginPath(); o.arc(105, 170, 22, 0, 6.283); o.stroke();
+    }), 1.55, 0.5);
     // play-knop: ring met een driehoek
     const play = () => fromCanvas(pad(200, 200, (o) => {
       o.lineWidth = 16; o.beginPath(); o.arc(100, 100, 88, 0, 6.283); o.stroke();
       o.beginPath(); o.moveTo(80, 58); o.lineTo(80, 142); o.lineTo(148, 100); o.closePath(); o.lineJoin = 'round'; o.lineWidth = 10; o.fill(); o.stroke();
     }), 1.55);
-    const GEN = { orb: sphere, kubus: cube, camera, play, zandloper: hourglass, netwerk: network };
+    const GEN = { orb: sphere, kubus: () => cube(), 'kubus-producten': () => cube('producten'), 'kubus-persoon': () => cube('persoon'), camera, play, puzzel: puzzle, zandloper: hourglass, netwerk: network };
 
     function resize() { const r = host.getBoundingClientRect(); dpr = Math.min(2, devicePixelRatio || 1); W = r.width; H = r.height; canvas.width = W * dpr; canvas.height = H * dpr; }
     function setWord() {
@@ -131,12 +167,20 @@
 
     // Elke vorm draait in zijn eigen stand: platte vormen kijken naar voren en wiegen, 3D-vormen draaien rond.
     // De morph loopt tussen die twee standen in, dus er hoeft nooit snel bijgedraaid te worden.
-    function pose(flat, t) { const ry = flat ? Math.sin(t * 0.7) * 0.28 : angle, rx = (flat ? 0 : 0.3) + Math.sin(t * 0.5) * 0.06; return [Math.cos(ry), Math.sin(ry), Math.cos(rx), Math.sin(rx)]; }
+    function pose(flat, t, tumble) { const ry = flat ? Math.sin(t * 0.7) * 0.28 : angle, rx = tumble ? angle * 0.62 : (flat ? 0 : 0.3) + Math.sin(t * 0.5) * 0.06; return [Math.cos(ry), Math.sin(ry), Math.cos(rx), Math.sin(rx)]; }
     const waveAt = (x, y, t) => Math.sin(x * 5 + t * 1.1) * Math.cos(y * 6 - t * 0.8) * 0.6 + Math.sin((x + y) * 3 - t * 0.6) * 0.4;
-    function place(q, P, flat, br, t, out) {
-      let x = q[0], y = q[1], z = q[2];
-      if (flat) z += waveAt(x, y, t) * 0.09 * (1 + energy * 0.8); // golf door de platte vormen, zoals het doek in het Command Center
-      if (br) { const k = 1 + Math.sin(t * 1.4 + y * 3) * 0.025; x *= k; y *= k; z *= k; }
+    // S = { P: stand, PT: stand voor de rand van een draaiende kubus, flat, br, centers }
+    function place(q, S, t, out) {
+      let x = q[0], y = q[1], z = q[2], P = S.P;
+      const tag = q[3] || 0;
+      if (S.flat) z += waveAt(x, y, t) * 0.09 * (1 + energy * 0.8); // golf door de platte vormen, zoals het doek in het Command Center
+      if (S.br) { const k = 1 + Math.sin(t * 1.4 + y * 3) * 0.025; x *= k; y *= k; z *= k; }
+      if (S.PT && tag === 0) P = S.PT; // de rand van de kubus draait op twee assen, de inhoud blijft rechtop
+      if (tag >= 2 && S.centers) {
+        // producten zweven en draaien om hun eigen as
+        const [cx, cy, cz] = S.centers[tag], a = t * 0.9 + tag, c = Math.cos(a), sn = Math.sin(a), dx = x - cx, dz = z - cz;
+        x = cx + dx * c - dz * sn; z = cz + dx * sn + dz * c; y += Math.sin(t * 1.3 + tag * 2) * 0.035;
+      }
       const x1 = x * P[0] + z * P[1], z1 = -x * P[1] + z * P[0];
       out[0] = x1; out[1] = y * P[2] - z1 * P[3]; out[2] = y * P[3] + z1 * P[2];
     }
@@ -150,13 +194,20 @@
       if (mStart >= 0) { g = (now - mStart) / 1000 / opt.dur; if (g >= 1) { g = 1; mStart = -1; holdStart = now; from = cur; } }
       angle += dt * 0.5;
       energy += ((mouse ? 1 : 0) - energy) * 0.06;
-      const PA = pose(FL[from], t), PB = pose(FL[cur], t);
+      const SA = { P: pose(FL[from], t), PT: TU[from] ? pose(0, t, 1) : null, flat: FL[from], br: BR[from], centers: targets[from].centers };
+      const SB = { P: pose(FL[cur], t), PT: TU[cur] ? pose(0, t, 1) : null, flat: FL[cur], br: BR[cur], centers: targets[cur].centers };
+      const breaking = BK[from] && mStart >= 0, burst = breaking ? ease(clamp(g / 0.35)) * 0.42 : 0;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
       const R = Math.min(W, H) * 0.46, X0 = W / 2, Y0 = H / 2, A = targets[from], B = targets[cur], dotBase = Math.max(0.6, W / 330);
       for (let i = 0; i < N; i++) {
-        const p = g >= 1 ? 1 : ease(clamp((g - delay[i]) / 0.7));
-        place(A[i], PA, FL[from], BR[from], t, qa);
-        if (p > 0) place(B[i], PB, FL[cur], BR[cur], t, qb); else { qb[0] = qa[0]; qb[1] = qa[1]; qb[2] = qa[2]; }
+        let p = g >= 1 ? 1 : ease(clamp((g - delay[i]) / 0.7));
+        place(A[i], SA, t, qa);
+        if (breaking) {
+          // de kubus breekt eerst open (de randen vliegen naar buiten), daarna morpht alles naar de volgende vorm
+          if (!(A[i][3] || 0)) { const d = Math.hypot(qa[0], qa[1], qa[2]) || 1; qa[0] += (qa[0] / d) * burst; qa[1] += (qa[1] / d) * burst; qa[2] += (qa[2] / d) * burst; p = ease(clamp((g - 0.35 - delay[i] * 0.4) / 0.55)); }
+          else p = ease(clamp((g - 0.3 - delay[i] * 0.5) / 0.6));
+        }
+        if (p > 0) place(B[i], SB, t, qb); else { qb[0] = qa[0]; qb[1] = qa[1]; qb[2] = qa[2]; }
         const drift = Math.sin(Math.PI * p) * 0.08;
         const x1 = qa[0] + (qb[0] - qa[0]) * p + Math.sin(seed[i] + t) * drift;
         const y1 = qa[1] + (qb[1] - qa[1]) * p + Math.cos(seed[i] * 1.3 + t) * drift;
@@ -183,7 +234,7 @@
       N = Math.round(clamp((W * H) / 45, 900, 2400));
       ox = new Float32Array(N); oy = new Float32Array(N); delay = new Float32Array(N); seed = new Float32Array(N);
       for (let i = 0; i < N; i++) { delay[i] = Math.random() * 0.3; seed[i] = Math.random() * 6.283; }
-      targets = SH.map((s) => order(s === 'leeuw' ? lion(img) : GEN[s]()));
+      targets = SH.map((s) => { const a = s === 'leeuw' ? lion(img) : GEN[s](), c = a.centers; order(a); a.centers = c; return a; });
       host.dataset.shape = SH[0]; setWord();
       frame(performance.now());
       requestAnimationFrame(loop);

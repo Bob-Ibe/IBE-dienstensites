@@ -12,7 +12,7 @@
     IBEDots($('vsl-dots'), { theme: 'dark', lion: { x: 0.5, y: 0.5, size: 0.86 } });
   }
   // AI-site: zandloper (tijd) en een netwerk van tools, met onder de leeuw wat het de ondernemer oplevert
-  if (window.IBEMorph) IBEMorph($('hero-morph'), { theme: 'light', shapes: ['leeuw', 'zandloper', 'kubus', 'camera', 'netwerk'], words: ['Tijdswinst', 'Efficiëntie', 'Overzicht', 'Minder fouten', 'Rust in je hoofd', 'Ruimte om te groeien'] });
+  if (window.IBEMorph) IBEMorph($('hero-morph'), { theme: 'light', shapes: ['leeuw', 'zandloper', 'kubus-persoon', 'puzzel', 'netwerk'], words: ['Tijdswinst', 'Efficiëntie', 'Overzicht', 'Minder fouten', 'Rust in je hoofd', 'Ruimte om te groeien'] });
   if (window.IBEDither) document.querySelectorAll('canvas.fx-dither').forEach((cv) => IBEDither(cv, { top: cv.dataset.top, bottom: cv.dataset.bottom, mode: cv.dataset.mode }));
   if (window.IBEFx) {
     IBEFx.words('.hero h1, .head h2');
@@ -50,6 +50,44 @@
     ? `<div class="wk-b a" style="flex-grow:${b[1]}" data-d="${b[1]}" data-s="${b[3]}"><i class="wk-red"><span>${b[0]}</span></i><i class="wk-free"><span>vrij</span></i></div>`
     : `<div class="wk-b k" style="flex-grow:${b[1]}"><span>${b[0]}</span></div>`).join('')}</div></div>`).join('')
     + '<div class="wk-hours">' + Array.from({ length: 6 }, (_, i) => `<span>${8 + i * 2}:00</span>`).join('') + '</div>';
+  // Pixelmannetjes aan het werk in de blokken met klantwerk: box 1, 3 en 5 (bovenste rij) en 7 en 9 (onderste rij).
+  // Elk doet iets anders op zijn scherm: planning, rapportage, offertes, facturen en administratie.
+  (function workers() {
+    const days = [...document.querySelectorAll('.wk-day')], spots = [[0, 0, 'planning'], [2, 0, 'rapportage'], [4, 0, 'offertes'], [1, 1, 'facturen'], [3, 1, 'administratie']];
+    const SK = '#f0c3a0', HAIR = '#2a1d18', SHIRT = '#d2404c', DESK = '#5a4636', FRAME = '#2a2c33', SCREEN = '#0f1116', DIM = '#3a3d45', GREEN = '#6fe3a1', PAPER = '#d7dae2', GOLD = '#e0a458';
+    const list = spots.map(([d, k, task], i) => {
+      const box = days[d] && days[d].querySelectorAll('.wk-b.k')[k];
+      if (!box) return null;
+      const cv = document.createElement('canvas'); cv.className = 'wk-px'; cv.width = 32; cv.height = 24; cv.setAttribute('aria-hidden', 'true'); box.appendChild(cv);
+      return { c: cv.getContext('2d'), task, seed: i * 1.7 };
+    }).filter(Boolean);
+    function draw(w, t) {
+      const c = w.c, P = (x, y, ww, h, col) => { c.fillStyle = col; c.fillRect(x, y, ww, h); };
+      const f = Math.floor(t * 6 + w.seed) % 4, slow = Math.floor(t * 1.5 + w.seed);
+      c.clearRect(0, 0, 32, 24);
+      // scherm
+      P(17, 3, 13, 11, FRAME); P(18, 4, 11, 9, SCREEN); P(22, 14, 3, 2, FRAME);
+      if (w.task === 'planning') { for (let i = 0; i < 6; i++) P(19 + (i % 3) * 3, 5 + Math.floor(i / 3) * 4, 2, 3, i === slow % 6 ? SHIRT : DIM); }
+      if (w.task === 'rapportage') { for (let i = 0; i < 3; i++) { const h = 2 + ((f + i * 2) % 4) + i; P(19 + i * 3, 12 - h, 2, h, GREEN); } }
+      if (w.task === 'offertes') { for (let i = 0; i < 3; i++) P(19, 5 + i * 2, Math.min(9, ((t * 7 + i * 4 + w.seed) % 12) | 0), 1, PAPER); P(26, 11, 2, 1, SHIRT); }
+      if (w.task === 'facturen') { P(19, 5, 3, 1, GOLD); P(19, 6, 1, 3, GOLD); P(19, 9, 3, 1, GOLD); P(18, 7, 3, 1, GOLD); for (let i = 0; i < 3; i++) P(23, 5 + i * 2, 5, 1, slow % 3 === i ? GREEN : PAPER); }
+      if (w.task === 'administratie') { P(19, 7, 4, 4, GOLD); P(19, 6, 2, 1, GOLD); P(24, 7, 4, 4, GOLD); P(24, 6, 2, 1, GOLD); const x = 20 + ((t * 4 + w.seed) % 6); P(Math.floor(x), 5, 2, 2, PAPER); }
+      // bureau, toetsenbord en stoel
+      P(0, 16, 32, 2, DESK); P(2, 18, 2, 6, DESK); P(28, 18, 2, 6, DESK); P(13, 15, 5, 1, '#8b909b'); P(3, 8, 2, 11, DIM);
+      // het mannetje: kijkt naar zijn scherm, knikt af en toe en typt
+      const hy = 4 + (f === 3 ? 1 : 0);
+      P(7, hy, 5, 2, HAIR); P(7, hy + 2, 5, 3, SK); P(11, hy + 3, 1, 1, HAIR); P(6, hy + 1, 1, 2, HAIR);
+      P(6, hy + 5, 7, 7, SHIRT); P(12, hy + 6, 3, 2, SHIRT);
+      P(14, 15 - (f % 2), 2, 1, SK); P(16, 15 - ((f + 1) % 2), 2, 1, SK);
+      P(7, 18, 2, 5, '#26282e'); P(10, 18, 2, 5, '#26282e');
+    }
+    let last = 0;
+    const vis = { on: false };
+    if ('IntersectionObserver' in window) new IntersectionObserver((en) => { vis.on = en[0].isIntersecting; }).observe($('wk-grid')); else vis.on = true;
+    const loop = (now) => { if (vis.on && now - last > 110) { last = now; list.forEach((w) => draw(w, now / 1000)); } requestAnimationFrame(loop); };
+    list.forEach((w) => draw(w, 0));
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) requestAnimationFrame(loop);
+  })();
   $('wk-auto').innerHTML = AUTO.map(([t]) => `<span class="wk-a">${t}</span>`).join('');
   $('wk-use').innerHTML = USE.map(([l, col], i) => `<button type="button" class="${i === use ? 'on' : ''}" data-u="${i}" style="--c:${col}">${l}</button>`).join('');
   function week() {

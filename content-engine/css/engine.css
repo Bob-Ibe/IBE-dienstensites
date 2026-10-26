@@ -261,7 +261,8 @@ footer img { width: 26px; opacity: .8; }
 .light-band .phone { border-color: rgba(17,19,26,.18); box-shadow: 0 40px 70px -40px rgba(17,19,26,.55); }
 .light-band .phone.empty { background: repeating-linear-gradient(135deg, rgba(17,19,26,.03) 0 10px, transparent 10px 20px); border-color: rgba(17,19,26,.2); }
 .light-band .phone.empty span { color: #6c7280; }
-.phone .vload { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(13,16,22,.55); transition: opacity .4s; z-index: 1; }
+.phone .vload { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(13,16,22,.55); transition: opacity .4s; z-index: 1; pointer-events: none; }
+.phone .snd, .phone .lbl { z-index: 2; }
 .phone .vload.gone { opacity: 0; pointer-events: none; }
 
 /* contact met boom-QR */
