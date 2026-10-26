@@ -210,7 +210,7 @@ h2.xl { font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; }
 /* pixelmannetjes aan het werk in de blokken met klantwerk */
 .wk-b.k { position: relative; }
 .wk-b.k canvas.wk-px { position: absolute; left: 50%; bottom: 6px; transform: translateX(-50%); width: min(84px, calc(100% - 8px)); aspect-ratio: 4 / 3; image-rendering: pixelated; image-rendering: crisp-edges; pointer-events: none; }
-.wk-quote { margin: 34px auto 4px; max-width: 760px; text-align: center; font: 800 clamp(17px, 2vw, 23px)/1.35 var(--font-num); color: var(--accent); letter-spacing: .01em; }
+.wk-quote { margin: 34px auto 4px; max-width: 760px; text-align: center; font: 800 clamp(17px, 2vw, 23px)/1.35 var(--font-num); color: #fff; letter-spacing: .01em; }
 #wk-year { margin: 0; color: #a4aab7; font-size: 14.5px; flex: 1 1 260px; }
 #wk-year b { color: #fff; }
 
