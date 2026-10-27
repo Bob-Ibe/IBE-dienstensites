@@ -1,6 +1,6 @@
 // IBE MOTION · openingsanimatie (zelfde opbouw als in het Command Center).
 // 1. het dotpatroon loopt van rechtsboven naar linksonder over het scherm, met de leeuw erin;
-// 2. alles wordt grijs, er verschijnt een HUD met een boot-log die past bij deze pagina;
+// 2. alles wordt grijs en er draait een vizier rond de leeuw (geen tekst in de hoeken);
 // 3. de leeuw pulseert twee keer rood, glitcht en trekt samen tot een fel punt;
 // 4. een schokgolf opent het scherm en de dots vliegen naar de randen van de blokken op de pagina.
 // Overslaan met klik, Esc, spatie of Enter. Speelt een keer per bezoek (sessie); ?intro forceert hem.
@@ -36,7 +36,7 @@
       const el = document.createElement('div');
       el.className = 'ibe-intro';
       el.setAttribute('aria-hidden', 'true');
-      el.innerHTML = '<canvas></canvas><span class="ibe-intro-skip">klik om over te slaan</span>';
+      el.innerHTML = '<canvas></canvas>';
       document.body.appendChild(el);
       document.documentElement.classList.add('ibe-intro-on');
       const canvas = el.querySelector('canvas'), ctx = canvas.getContext('2d');
@@ -126,29 +126,14 @@
         ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, rad * 3, 0, 6.2832); ctx.fill();
       }
 
-      // HUD: hoeken, kopregels, vizier rond de leeuw en de boot-log
+      // HUD: alleen het vizier rond de leeuw. Hoekteksten en boot-log zijn bewust weggelaten.
       function drawHud(e) {
         const a = clamp((e - S.fill + 250) / 400) * (1 - clamp(((e - S.implode) / T.implode) * 2));
         if (a <= 0) return;
         const ePulse = e - S.pulse;
         const pulse = ePulse > 0 && ePulse < T.pulse ? Math.max(0, Math.sin((ePulse / T.pulse) * Math.PI * 4 - Math.PI / 2) * 0.5 + 0.5) ** 1.6 : 0;
-        const m = Math.max(16, Math.min(W, H) * 0.035), fs = W < 600 ? 9.5 : 11;
         ctx.save();
         ctx.globalAlpha = a; ctx.lineWidth = 1;
-        ctx.strokeStyle = 'rgba(255,255,255,0.32)';
-        const L = 16;
-        for (const [x, y, sx, sy] of [[m, m, 1, 1], [W - m, m, -1, 1], [m, H - m, 1, -1], [W - m, H - m, -1, -1]]) {
-          ctx.beginPath(); ctx.moveTo(x, y + L * sy); ctx.lineTo(x, y); ctx.lineTo(x + L * sx, y); ctx.stroke();
-        }
-        ctx.font = `500 ${fs}px ${MONO}`; ctx.textBaseline = 'top';
-        ctx.fillStyle = 'rgba(255,255,255,0.45)';
-        ctx.textAlign = 'left'; ctx.fillText(opt.title, m + 8, m + 8);
-        const n = new Date(), p2 = (v) => String(v).padStart(2, '0');
-        if (W > 560) {
-          ctx.textAlign = 'right';
-          ctx.fillText(`${p2(n.getDate())}.${p2(n.getMonth() + 1)}.${n.getFullYear()}  ${p2(n.getHours())}:${p2(n.getMinutes())}:${p2(n.getSeconds())}`, W - m - 8, m + 8);
-        }
-        ctx.textAlign = 'left';
         const R = lion.size * 0.6, rot = e / 1000;
         const ringCol = mixA([255, 255, 255], RED, pulse);
         ctx.strokeStyle = rgba(ringCol, 0.16 + pulse * 0.25);
@@ -162,37 +147,6 @@
           const s = a0 + rot * 0.7 * dir;
           ctx.beginPath(); ctx.arc(lion.x, lion.y, Math.max(1, rr), s, s + len); ctx.stroke();
         }
-        ctx.lineWidth = 1;
-        // boot-log linksonder
-        const all = [{ head: opt.head }].concat(opt.lines, [{ online: true }]);
-        const lh = fs * 1.8, cw = ctx.measureText('0').width;
-        const bx = m + 8, by = H - m - 30 - all.length * lh;
-        const bw = Math.min(W - 2 * m - 16, cw * 46);
-        ctx.fillStyle = 'rgba(6,7,10,0.62)';
-        ctx.fillRect(bx - 8, by - 8, bw + 16, all.length * lh + 22);
-        const b0 = S.fill - 100, b1 = S.implode - 220, slot = (b1 - b0) / all.length;
-        const maxChars = Math.floor(bw / cw);
-        all.forEach((ln, i) => {
-          const tl = e - b0 - i * slot;
-          if (tl <= 0) return;
-          const y = by + i * lh;
-          let segs;
-          if (ln.head) segs = [[ln.head, 'rgba(255,255,255,0.5)']];
-          else if (ln.online) segs = [[opt.online, rgba(RED, 1)]];
-          else segs = [[ln.label + ' ', 'rgba(255,255,255,0.82)'], ['·'.repeat(Math.max(2, 11 - ln.label.length)), 'rgba(255,255,255,0.25)'], [' OK', rgba(RED, 1)], [ln.v ? '  ' + ln.v : '', 'rgba(255,255,255,0.92)']];
-          const full = Math.min(maxChars, segs.reduce((s, x) => s + x[0].length, 0));
-          let left = Math.floor(clamp(tl / (slot * 0.75)) * full), x = bx;
-          for (const [txt, col] of segs) {
-            if (left <= 0) break;
-            const part = txt.slice(0, left); left -= part.length;
-            ctx.fillStyle = col; ctx.fillText(part, x, y); x += part.length * cw;
-          }
-          const typing = tl < slot * 0.75 || i === all.length - 1;
-          if (typing && Math.floor(e / 120) % 2 === 0) { ctx.fillStyle = rgba(RED, 0.9); ctx.fillRect(x + 2, y, cw * 0.6, fs * 1.1); }
-        });
-        const prog = clamp((e - b0) / (b1 - b0));
-        ctx.fillStyle = 'rgba(255,255,255,0.12)'; ctx.fillRect(bx, by + all.length * lh + 4, bw, 2);
-        ctx.fillStyle = rgba(RED, 1); ctx.fillRect(bx, by + all.length * lh + 4, bw * prog, 2);
         ctx.restore();
       }
 
@@ -231,7 +185,6 @@
         if (!land) land = initLand();
         const eW = e - S.wave, pWave = clamp(eW / T.wave), pLand = clamp((e - S.land) / T.land);
         el.style.backgroundColor = 'transparent';
-        el.querySelector('.ibe-intro-skip').style.opacity = 0;
         const R = ease(pWave) * maxD * 1.25;
         const dim = 0.6 * (1 - ease(pLand));
         ctx.fillStyle = '#06070a'; ctx.fillRect(0, 0, W, H);
