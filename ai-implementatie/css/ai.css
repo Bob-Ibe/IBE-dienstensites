@@ -209,8 +209,8 @@ h2.xl { font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; }
 .wk-chips button.on { color: #fff; border-color: var(--c); background: color-mix(in srgb, var(--c) 18%, transparent); }
 /* pixelmannetjes aan het werk in de blokken met klantwerk */
 .wk-b.k { position: relative; }
-.wk-b.k canvas.wk-px { position: absolute; left: 50%; bottom: 6px; transform: translateX(-50%); width: min(84px, calc(100% - 8px)); aspect-ratio: 4 / 3; image-rendering: pixelated; image-rendering: crisp-edges; pointer-events: none; }
-.wk-quote { margin: 34px auto 4px; max-width: 760px; text-align: center; font: 800 clamp(17px, 2vw, 23px)/1.35 var(--font-num); color: #fff; letter-spacing: .01em; }
+.wk-b.k canvas.wk-px { position: absolute; left: 50%; bottom: 6px; transform: translateX(-50%); width: min(44px, calc(100% - 8px)); aspect-ratio: 4 / 3; image-rendering: pixelated; image-rendering: crisp-edges; pointer-events: none; }
+.wk-quote { margin: 68px auto 4px; max-width: 760px; text-align: center; font: 800 clamp(17px, 2vw, 23px)/1.35 var(--font-num); color: #fff; letter-spacing: .01em; }
 #wk-year { margin: 0; color: #a4aab7; font-size: 14.5px; flex: 1 1 260px; }
 #wk-year b { color: #fff; }
 
@@ -397,4 +397,96 @@ footer img { width: 24px; }
   .worth { padding: 12px 14px; }
   .worth input[type=range] { width: 100%; }
   .wk-quote { font-size: 16px; }
+}
+
+/* ---------- 27 okt: taalknop, ring, HQ, prijsopbouw ---------- */
+.nav-r { display: flex; align-items: center; gap: 10px; }
+.lang-btn { all: unset; cursor: pointer; display: inline-flex; border: 1px solid var(--line-2); border-radius: 99px; padding: 3px; font: 600 11px var(--font-mono); letter-spacing: .08em; background: var(--paper); }
+.lang-btn span { padding: 5px 9px; border-radius: 99px; color: var(--muted); transition: background .2s, color .2s; }
+.lang-btn:not(.en) span:first-child, .lang-btn.en span:last-child { background: var(--ink); color: #fff; }
+.lang-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* wat we overnemen: Business Operations HQ als donkere kaart */
+.card.hq { background: var(--ink); border-color: var(--ink); color: #eceef3; }
+.card.hq p { color: #a4aab7; }
+.card.hq .ico { background: rgba(var(--accent-rgb), .2); color: #ff6b76; }
+.card.hq .tag { background: rgba(255,255,255,.08); color: var(--sand); }
+
+/* de ring: de sectie blijft staan en de kaarten draaien mee met het scrollen (JS zet de hoogte) */
+.ring-meta { display: none; }
+.ring-sec.ring-on { padding: 0; }
+.ring-on .ring-pin { position: sticky; top: 68px; height: calc(100svh - 68px); display: flex; flex-direction: column; justify-content: center; overflow: hidden;
+  background: radial-gradient(640px 360px at 50% 62%, rgba(var(--accent-rgb), .07), transparent 70%); }
+.ring-on .ring-pin > .wrap { width: 100%; }
+.ring-on .head { margin-bottom: 8px; }
+.ring-on .head h2 { margin-bottom: 10px; }
+.ring-on .ring { height: clamp(290px, calc(100svh - 68px - 290px), 430px); }
+.ring-on .ring-cards { display: block; position: relative; height: 100%; perspective: 1100px; }
+.ring-on .ring-cards .card { position: absolute; left: 50%; top: 50%; width: min(360px, 82vw); transition: none; will-change: transform, opacity, filter; box-shadow: 0 24px 50px -30px rgba(17,19,26,.35); }
+.ring-on .ring-cards .card.front { border-color: rgba(var(--accent-rgb), .45); box-shadow: 0 34px 70px -34px rgba(17,19,26,.45), 0 0 0 4px rgba(var(--accent-rgb), .06); }
+.ring-on .ring-cards .card.hq.front { border-color: var(--accent); }
+.ring-on .ring-cards .card:hover { transform: none; }
+.ring-on .ring-meta { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 10px; }
+.ring-n { font: 800 15px var(--font-num); color: var(--accent); min-width: 64px; text-align: right; }
+.ring-dots { display: flex; gap: 6px; }
+.ring-dots i { width: 7px; height: 7px; border-radius: 2px; background: var(--line-2); cursor: pointer; transition: background .25s, transform .25s; }
+.ring-dots i.on { background: var(--accent); transform: scale(1.35); }
+.ring-hint { font: 500 10.5px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); min-width: 64px; }
+
+/* branches: HQ-blok */
+.br-hq { display: grid; grid-template-columns: 38px 1fr; gap: 14px; margin-top: 18px; padding: 16px 18px; border-radius: 14px; background: var(--ink); color: #eceef3; }
+.br-hq b { display: block; font: 600 15px var(--font-display); margin-bottom: 4px; }
+.br-hq p { margin: 0; font-size: 13.5px; color: #a4aab7; line-height: 1.55; }
+.br-hq-ico { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; width: 38px; height: 38px; padding: 7px; border-radius: 10px; background: rgba(var(--accent-rgb), .2); }
+.br-hq-ico i { border-radius: 2px; background: #ff6b76; }
+.br-hq-ico i:nth-child(2), .br-hq-ico i:nth-child(3) { opacity: .5; }
+
+/* prijsopbouw: vier treden onder elkaar, de prijzen gevormd door dots */
+.tiers-wrap { margin-top: 90px; }
+.tiers-head { text-align: center; margin-bottom: 30px; }
+.tiers-head .sub { margin: 0 auto; }
+.tiers-val { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; margin: 0 auto 44px; max-width: 640px; color: var(--text-2); }
+.tiers-val b { font: 900 clamp(44px, 7vw, 84px)/1 var(--font-num); color: var(--ink); letter-spacing: -.01em; }
+.tiers-val b i { font: 600 .3em var(--font); font-style: normal; color: var(--text-2); letter-spacing: 0; }
+.tiers-val small { font-size: 14px; color: var(--muted); }
+.tiers { position: relative; display: grid; gap: 14px; max-width: 1000px; margin: 0 auto; }
+.tiers-cv { position: absolute; left: 0; top: 0; pointer-events: none; z-index: 3; }
+.tiers-rail { position: absolute; left: 49px; top: 40px; bottom: 40px; width: 2px; background: var(--line-2); z-index: 1; }
+.tiers-rail i { display: block; width: 100%; height: 0; background: var(--accent); box-shadow: 0 0 10px rgba(var(--accent-rgb), .5); }
+.tier { position: relative; display: grid; grid-template-columns: 52px 1fr auto; gap: 24px; align-items: center; padding: 26px 32px 26px 24px; border-radius: 20px; background: var(--paper); border: 1px solid var(--line); }
+.tier.now { border-color: rgba(var(--accent-rgb), .45); box-shadow: 0 30px 60px -40px rgba(var(--accent-rgb), .5); }
+.tier.ent { background: var(--ink); border-color: var(--ink); color: #eceef3; }
+.t-node { position: relative; z-index: 2; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; font: 600 13px var(--font-mono); border: 1px solid var(--line-2); background: var(--paper); color: var(--muted); transition: background .4s, color .4s, border-color .4s; }
+.tier.lit .t-node { background: var(--accent); border-color: var(--accent); color: #fff; }
+.tier.ent .t-node { background: #1b1e27; border-color: rgba(255,255,255,.12); }
+.tier.ent.lit .t-node { background: var(--accent); border-color: var(--accent); }
+.t-k { margin: 0 0 6px; font: 500 10.5px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.tier.ent .t-k { color: var(--sand); }
+.tier h3 { margin: 0 0 6px; }
+.t-d { margin: 0; color: var(--text-2); font-size: 14.5px; max-width: 420px; }
+.tier.ent .t-d { color: #a4aab7; }
+.t-price { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.t-amt { display: inline-block; font: 700 clamp(40px, 5.6vw, 72px)/1.05 var(--font-display); letter-spacing: 0; color: var(--ink); white-space: nowrap; transition: color .3s; }
+.tier.ent .t-amt { color: #fff; }
+.tiers.dots-on .t-amt { color: transparent; }
+.t-x { font: 500 11px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.tier.ent .t-x { color: #8b909b; }
+.t-spots { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 14px; color: var(--text-2); }
+.t-spots b { color: var(--accent); }
+.t-spots .sq { display: inline-flex; gap: 5px; }
+.t-spots .sq i { width: 14px; height: 14px; border-radius: 3px; border: 1.5px solid rgba(var(--accent-rgb), .55); }
+.t-spots .sq i.on { background: var(--accent); border-color: var(--accent); }
+
+@media (max-width: 820px) {
+  .nav-r { gap: 8px; }
+  .tier { grid-template-columns: 40px 1fr; gap: 14px 16px; padding: 22px 20px 22px 16px; }
+  .t-node { width: 40px; height: 40px; font-size: 12px; }
+  .tiers-rail { left: 36px; }
+  .t-price { grid-column: 2; align-items: flex-start; text-align: left; }
+}
+@media (max-width: 560px) {
+  .lang-btn span { padding: 4px 7px; }
+  .nav-r .btn { display: none; } /* op mobiel staat de knop onderin (fx-sticky) */
+  .ring-on .head .sub { display: none; }
+  .ring-hint { display: none; }
 }

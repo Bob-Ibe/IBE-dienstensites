@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI-implementatie · IBE MOTION</title>
-  <meta name="description" content="We geven je 5 tot 15 uur per week terug, anders betaal je ons niks. IBE MOTION neemt het terugkerende werk op de computer over voor ondernemers en MKB-Nederland.">
+  <title data-i="t.title">AI-implementatie · IBE MOTION</title>
+  <meta name="description" data-i-attr="content:t.desc" content="We geven je 5 tot 15 uur per week terug, anders betaal je ons niks. IBE MOTION neemt het terugkerende werk op de computer over voor ondernemers en MKB-Nederland.">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,43 +18,46 @@
 
 <nav class="nav">
   <div class="wrap">
-    <a class="brand" href="#top" data-land><img src="assets/lion-ink.png" alt=""><span><b>IBE MOTION</b><small>AI-implementatie</small></span></a>
+    <a class="brand" href="#top" data-land><img src="assets/lion-ink.png" alt=""><span><b>IBE MOTION</b><small data-i="nav.sub">AI-implementatie</small></span></a>
     <div class="nav-links">
-      <a href="#waarde">Waarde</a><a href="#rekensom">Rekensom</a><a href="#branches">Branches</a><a href="#werkwijze">Werkwijze</a><a href="#prijs">Prijs</a>
+      <a href="#waarde" data-i="nav.waarde">Waarde</a><a href="#rekensom" data-i="nav.rekensom">Rekensom</a><a href="#branches" data-i="nav.branches">Branches</a><a href="#werkwijze" data-i="nav.werkwijze">Werkwijze</a><a href="#prijs" data-i="nav.prijs">Prijs</a>
     </div>
-    <a class="btn primary" href="#start" data-land>Plan een inventarisatie</a>
+    <div class="nav-r">
+      <button type="button" class="lang-btn" id="lang-btn"><span>NL</span><span>EN</span></button>
+      <a class="btn primary" href="#start" data-land data-i="nav.cta">Plan een inventarisatie</a>
+    </div>
   </div>
 </nav>
 
 <header class="hero" id="top">
   <canvas id="hero-dots" aria-hidden="true"></canvas>
   <div class="wrap">
-    <div class="ibe-morph hero-morph" id="hero-morph" title="Klik voor de volgende vorm" aria-hidden="true"></div>
-    <p class="eyebrow">AI-implementatie · voor ondernemers en MKB-Nederland</p>
-    <h1>We geven je <span class="hl">5 tot 15 uur</span> per week terug.</h1>
-    <span class="h1b">Anders betaal je ons niks.</span>
-    <p class="lead">We nemen het terugkerende werk op de computer over: mail, offertes, administratie en planning. We meten het samen in je eigen dashboard. Halen we gemiddeld geen 5 uur per week, dan betaal je ons niks.</p>
+    <div class="ibe-morph hero-morph" id="hero-morph" title="Klik voor de volgende vorm" data-i-attr="title:hero.morph" aria-hidden="true"></div>
+    <p class="eyebrow" data-i="hero.eyebrow">AI-implementatie · voor ondernemers en MKB-Nederland</p>
+    <h1 data-i="hero.h1">We geven je <span class="hl">5 tot 15 uur</span> per week terug.</h1>
+    <span class="h1b" data-i="hero.h1b">Anders betaal je ons niks.</span>
+    <p class="lead" data-i="hero.lead">We nemen het terugkerende werk op de computer over: mail, offertes, administratie en planning. We meten het samen in je eigen dashboard. Halen we gemiddeld geen 5 uur per week, dan betaal je ons niks.</p>
     <div class="cta">
-      <a class="btn red" href="#rekensom" data-land>Bereken je tijdwinst <span class="arr">→</span></a>
-      <a class="btn" href="#start" data-land>Plan een kennismaking</a>
+      <a class="btn red" href="#rekensom" data-land><span data-i="hero.cta1">Bereken je tijdwinst</span> <span class="arr">→</span></a>
+      <a class="btn" href="#start" data-land data-i="hero.cta2">Plan een kennismaking</a>
     </div>
     <div class="worth" data-land>
-      <span><b id="w-h">10 uur</b> per week is <b id="w-v">€ 16.100</b> per jaar</span>
-      <input type="range" min="5" max="15" value="10" id="w-r" aria-label="Uren per week" autocomplete="off">
-      <label class="w-rate">bij <span>€ <input type="number" id="w-rate" value="35" min="0" step="1" inputmode="decimal" autocomplete="off" aria-label="Uurloon in euro"></span> per uur</label>
-      <a href="#rekensom">Reken het uit voor jouw bedrijf →</a>
+      <span data-i="hero.worth"><b id="w-h">10 uur</b> per week is <b id="w-v">€ 16.100</b> per jaar</span>
+      <input type="range" min="5" max="15" value="10" id="w-r" aria-label="Uren per week" data-i-attr="aria-label:hero.worthAria" autocomplete="off">
+      <label class="w-rate"><span data-i="hero.at">bij</span> <span>€ <input type="number" id="w-rate" value="35" min="0" step="1" inputmode="decimal" autocomplete="off" aria-label="Uurloon in euro" data-i-attr="aria-label:hero.rateAria"></span> <span data-i="hero.perHour">per uur</span></label>
+      <a href="#rekensom" data-i="hero.worthLink">Reken het uit voor jouw bedrijf →</a>
     </div>
     <div class="vsl" id="vsl" data-land>
       <canvas id="vsl-dots" aria-hidden="true"></canvas>
       <span class="corner">IBE MOTION · AI</span><span class="corner r" id="vsl-len">Video · 3 min</span>
       <div class="vsl-in">
-        <button class="play" id="vsl-play" aria-label="Video afspelen"><svg width="30" height="30" viewBox="0 0 24 24" fill="#fff"><path d="M7 4.5v15l13-7.5z"/></svg></button>
-        <b>Hoe we 5 tot 15 uur per week vrijmaken</b>
-        <small id="vsl-sub">De video staat hier binnenkort. Tot die tijd vertel ik het je graag zelf.</small>
+        <button class="play" id="vsl-play" aria-label="Video afspelen" data-i-attr="aria-label:vsl.aria"><svg width="30" height="30" viewBox="0 0 24 24" fill="#fff"><path d="M7 4.5v15l13-7.5z"/></svg></button>
+        <b data-i="vsl.title">Hoe we 5 tot 15 uur per week vrijmaken</b>
+        <small id="vsl-sub" data-i="vsl.sub">De video staat hier binnenkort. Tot die tijd vertel ik het je graag zelf.</small>
       </div>
     </div>
     <div class="trust">
-      <span>Doel: 5 tot 15 uur per week</span><span>Garantie op 5 uur</span><span>Werkt met je huidige software</span>
+      <span data-i="trust.1">Doel: 5 tot 15 uur per week</span><span data-i="trust.2">Garantie op 5 uur</span><span data-i="trust.3">Werkt met je huidige software</span>
     </div>
   </div>
 </header>
@@ -64,26 +67,26 @@
   <div class="wrap">
     <div class="week-head">
       <div class="rv">
-        <p class="kicker">De echte waarde</p>
-        <h2 class="wk-title">Zo ziet <span class="hl"><em id="wk-title-h">10 uur</em></span> per week terug eruit.</h2>
+        <p class="kicker" data-i="wk.kicker">De echte waarde</p>
+        <h2 class="wk-title" data-i="wk.title">Zo ziet <span class="hl"><em id="wk-title-h">10 uur</em></span> per week terug eruit.</h2>
       </div>
-      <p class="dim rv">Dit is een gewone week van een ondernemer met een klein team. Alles in rood is werk op de computer dat elke week terugkomt. Sleep de schuif naar "na" en kijk wat er van je week overblijft.</p>
+      <p class="dim rv" data-i="wk.sub">Dit is een gewone week van een ondernemer met een klein team. Alles in rood is werk op de computer dat elke week terugkomt. Sleep de schuif naar "na" en kijk wat er van je week overblijft.</p>
     </div>
     <div class="week rv" data-land>
       <div class="wk-ctrl">
-        <span class="wk-lbl">Voor</span>
-        <input type="range" min="0" max="100" value="0" id="wk-r" aria-label="Van voor naar na">
-        <span class="wk-lbl">Na</span>
+        <span class="wk-lbl" data-i="wk.voor">Voor</span>
+        <input type="range" min="0" max="100" value="0" id="wk-r" aria-label="Van voor naar na" data-i-attr="aria-label:wk.aria">
+        <span class="wk-lbl" data-i="wk.na">Na</span>
         <div class="wk-out"><b id="wk-free">0 uur</b><span id="wk-days">Sleep de schuif</span></div>
       </div>
       <div class="wk-grid" id="wk-grid"></div>
-      <div class="wk-auto"><span class="wk-auto-t">Loopt automatisch</span><div id="wk-auto"></div></div>
+      <div class="wk-auto"><span class="wk-auto-t" data-i="wk.auto">Loopt automatisch</span><div id="wk-auto"></div></div>
       <div class="wk-use">
-        <span class="wk-auto-t">Wat doe je met die tijd?</span>
+        <span class="wk-auto-t" data-i="wk.use">Wat doe je met die tijd?</span>
         <div class="wk-chips" id="wk-use"></div>
         <p id="wk-year"></p>
       </div>
-      <p class="wk-quote">Tijd is maakbaar. Je kunt zelf kiezen wat je doet met de bespaarde tijd. Je optimaliseert voor meer geld, tijd met familie of groei van je bedrijf.</p>
+      <p class="wk-quote" data-i="wk.quote">Tijd is maakbaar. Je kunt zelf kiezen wat je doet met de bespaarde tijd. Je optimaliseert voor meer geld, tijd met familie of groei van je bedrijf.</p>
     </div>
   </div>
 </section>
@@ -92,58 +95,67 @@
 <section id="rekensom" class="calc-band">
   <div class="wrap">
     <div class="head center rv">
-      <p class="kicker">De rekensom</p>
-      <h2 class="xl"><span class="hl">Wat levert het je op</span>?</h2>
-      <p class="sub">Kies hoeveel mensen het werk op de computer doen, wat een uur kost en hoeveel uur we per persoon overnemen. Je ziet direct wat het waard is.</p>
+      <p class="kicker" data-i="calc.kicker">De rekensom</p>
+      <h2 class="xl" data-i="calc.title"><span class="hl">Wat levert het je op</span>?</h2>
+      <p class="sub" data-i="calc.sub">Kies hoeveel mensen het werk op de computer doen, wat een uur kost en hoeveel uur we per persoon overnemen. Je ziet direct wat het waard is.</p>
     </div>
     <div class="calc rv" data-land>
       <div>
-        <div class="ctrl"><label class="l">Hoeveel mensen doen het digitale werk?</label>
-          <div class="stepper"><button type="button" id="c-min" aria-label="Minder">−</button><output id="c-people">3 personen</output><button type="button" id="c-plus" aria-label="Meer">+</button></div></div>
-        <div class="ctrl"><label class="l" for="c-rate">Wat kost een uur van je team?</label>
-          <span class="money">€ <input id="c-rate" type="number" inputmode="decimal" value="35" min="0" step="1"> per uur</span>
-          <p class="muted" style="font-size:13px;margin:8px 0 0">Loonkosten per uur, gemiddeld over het team.</p></div>
-        <div class="ctrl" style="margin-bottom:0"><div class="rng"><label class="l" for="c-hours">Uren per persoon per week die we overnemen</label><b id="c-hv">5 uur</b></div>
+        <div class="ctrl"><label class="l" data-i="calc.people">Hoeveel mensen doen het digitale werk?</label>
+          <div class="stepper"><button type="button" id="c-min" aria-label="Minder" data-i-attr="aria-label:calc.less">−</button><output id="c-people">3 personen</output><button type="button" id="c-plus" aria-label="Meer" data-i-attr="aria-label:calc.more">+</button></div></div>
+        <div class="ctrl"><label class="l" for="c-rate" data-i="calc.rate">Wat kost een uur van je team?</label>
+          <span class="money">€ <input id="c-rate" type="number" inputmode="decimal" value="35" min="0" step="1"> <span data-i="hero.perHour">per uur</span></span>
+          <p class="muted" style="font-size:13px;margin:8px 0 0" data-i="calc.rateNote">Loonkosten per uur, gemiddeld over het team.</p></div>
+        <div class="ctrl" style="margin-bottom:0"><div class="rng"><label class="l" for="c-hours" data-i="calc.hours">Uren per persoon per week die we overnemen</label><b id="c-hv">5 uur</b></div>
           <input id="c-hours" type="range" min="1" max="15" value="5">
-          <div class="scale"><span>1 uur</span><span>8 uur</span><span>15 uur</span></div></div>
+          <div class="scale"><span data-i="calc.s1">1 uur</span><span data-i="calc.s8">8 uur</span><span data-i="calc.s15">15 uur</span></div></div>
       </div>
       <div class="result">
-        <span class="rl">Tijd terug per jaar</span>
+        <span class="rl" data-i="calc.year">Tijd terug per jaar</span>
         <div class="rbig" id="r-hours">690 uur</div>
         <div class="rsub" id="r-money">± € 24.150 aan werk dat naar iets beters gaat</div>
         <div class="chips">
-          <div class="chip"><small>Per week</small><b id="r-week">15 uur</b></div>
-          <div class="chip"><small>Per maand</small><b id="r-month">€ 2.013</b></div>
-          <div class="chip"><small>Werkweken</small><b id="r-weeks">17</b></div>
+          <div class="chip"><small data-i="calc.pw">Per week</small><b id="r-week">15 uur</b></div>
+          <div class="chip"><small data-i="calc.pm">Per maand</small><b id="r-month">€ 2.013</b></div>
+          <div class="chip"><small data-i="calc.ww">Werkweken</small><b id="r-weeks">17</b></div>
         </div>
         <div class="payback">
-          <div><small>Terugverdiend in</small><b id="r-pay">3 weken</b></div>
+          <div><small data-i="calc.pay">Terugverdiend in</small><b id="r-pay">3 weken</b></div>
           <div class="pb-bars">
-            <div><span>Investering, vanaf</span><i class="pb-in" id="pb-in"></i><em>€ 1.500</em></div>
-            <div><span>Waarde eerste jaar</span><i class="pb-out" id="pb-out"></i><em id="pb-out-v">€ 24.150</em></div>
+            <div><span data-i="calc.inv">Investering, vanaf</span><i class="pb-in" id="pb-in"></i><em id="pb-in-v">€ 1.500</em></div>
+            <div><span data-i="calc.val">Waarde eerste jaar</span><i class="pb-out" id="pb-out"></i><em id="pb-out-v">€ 24.150</em></div>
           </div>
         </div>
         <p class="means" id="r-means"></p>
       </div>
-      <div class="calc-note"><span><b>Geen mensen vervangen, tenzij jij dat wilt.</b> Meestal gaan de uren naar werk dat meer oplevert. Wil je met minder mensen hetzelfde werk doen, dan kan dat ook en nemen we dat mee in het plan. Dit is een indicatie op basis van 46 werkweken per jaar. De echte besparing meten we samen, in je eigen KPI-dashboard.</span></div>
+      <div class="calc-note"><span data-i="calc.note"><b>Geen mensen vervangen, tenzij jij dat wilt.</b> Meestal gaan de uren naar werk dat meer oplevert. Wil je met minder mensen hetzelfde werk doen, dan kan dat ook en nemen we dat mee in het plan. Dit is een indicatie op basis van 46 werkweken per jaar. De echte besparing meten we samen, in je eigen KPI-dashboard.</span></div>
     </div>
   </div>
 </section>
 
-<section id="wat" style="padding-top:20px">
-  <div class="wrap">
-    <div class="head rv">
-      <p class="kicker">Wat we overnemen</p>
-      <h2>Het werk dat elke dag terugkomt.</h2>
-      <p class="sub">Geen standaardpakket. We kijken waar bij jou de meeste uren in gaan zitten en beginnen daar.</p>
-    </div>
-    <div class="grid g3">
-      <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></div><h3>Mail en klantvragen</h3><p>Mail wordt gesorteerd, standaardvragen krijgen een voorstel voor een antwoord en niets blijft liggen.</p><span class="tag">Vaak de grootste tijdwinst</span></div>
-      <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg></div><h3>Offertes en orders</h3><p>Van aanvraag naar offerte in minuten, met de juiste prijzen en jullie eigen opmaak.</p></div>
-      <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-6"/></svg></div><h3>Administratie en facturen</h3><p>Bonnetjes, facturen en betalingen worden verwerkt en klaargezet in je boekhouding.</p></div>
-      <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div><h3>Planning en afspraken</h3><p>Afspraken, herinneringen en roosters die zichzelf bijwerken, zonder heen en weer mailen.</p></div>
-      <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6"/><rect x="12" y="7" width="3" height="10"/><rect x="17" y="13" width="3" height="4"/></svg></div><h3>Rapportages en overzichten</h3><p>De cijfers die je elke week bij elkaar zoekt, staan elke maandag vanzelf klaar.</p></div>
-      <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="m8.6 10.6 6.8-3.2M8.6 13.4l6.8 3.2"/></svg></div><h3>Koppelingen</h3><p>Je systemen praten met elkaar. Geen overtypen meer van het ene programma in het andere.</p><span class="tag">Werkt met wat je al hebt</span></div>
+<!-- Wat we overnemen: zonder JS (of met minder beweging) een gewoon raster, anders een draaiende ring die met het scrollen meedraait -->
+<section id="wat" class="ring-sec">
+  <div class="ring-pin">
+    <div class="wrap">
+      <div class="head center rv">
+        <p class="kicker" data-i="wat.kicker">Wat we overnemen</p>
+        <h2 data-i="wat.title">Het werk dat elke dag terugkomt.</h2>
+        <p class="sub" data-i="wat.sub">Geen standaardpakket. We kijken waar bij jou de meeste uren in gaan zitten en beginnen daar.</p>
+      </div>
+      <div class="ring" id="ring">
+        <div class="grid g3 ring-cards">
+          <div class="card hq rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></div><h3>Business Operations HQ</h3><p data-i="wat.hq">Al je bedrijfsdata samen in één overzicht: personeel, projecturen, lopende projecten, planning, to-do's, omzet en openstaande facturen. Je ziet in één oogopslag hoe je bedrijf ervoor staat.</p><span class="tag" data-i="wat.hqTag">Alles in één overzicht</span></div>
+          <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></div><h3 data-i="wat.mailT">Mail en klantvragen</h3><p data-i="wat.mail">Mail wordt gesorteerd, standaardvragen krijgen een voorstel voor een antwoord en niets blijft liggen.</p></div>
+          <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg></div><h3 data-i="wat.offT">Offertes en inkooporders</h3><p data-i="wat.off">Van aanvraag naar offerte in minuten, met de juiste prijzen en jullie eigen opmaak. Inkooporders bij je leveranciers staan op tijd klaar.</p></div>
+          <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-6"/></svg></div><h3 data-i="wat.admT">Administratie en facturen</h3><p data-i="wat.adm">Bonnetjes, facturen en betalingen worden verwerkt en klaargezet in je boekhouding.</p></div>
+          <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div><h3 data-i="wat.planT">Planning en afspraken</h3><p data-i="wat.plan">Afspraken, herinneringen en roosters die zichzelf bijwerken, zonder heen en weer mailen.</p></div>
+          <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6"/><rect x="12" y="7" width="3" height="10"/><rect x="17" y="13" width="3" height="4"/></svg></div><h3 data-i="wat.repT">Rapportages en overzichten</h3><p data-i="wat.rep">De cijfers die je elke week bij elkaar zoekt, staan elke maandag vanzelf klaar.</p></div>
+          <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="m8.6 10.6 6.8-3.2M8.6 13.4l6.8 3.2"/></svg></div><h3 data-i="wat.kopT">Koppelingen</h3><p data-i="wat.kop">Je systemen praten met elkaar. Geen overtypen meer van het ene programma in het andere.</p><span class="tag" data-i="wat.kopTag">Werkt met wat je al hebt</span></div>
+          <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 8.7l5.4-.8z"/></svg></div><h3 data-i="wat.cusT">Maatwerk</h3><p data-i="wat.cus">We kijken wat voor jouw bedrijf het meeste waard is en bouwen precies dat. Een eigen klantportaal, een tool voor je werkvloer of iets wat nog niemand heeft.</p><span class="tag" data-i="wat.cusTag">Custom werk</span></div>
+          <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M9 9.5h6M9 12.5h4"/></svg></div><h3 data-i="wat.swT">Eigen software in plaats van abonnementen</h3><p data-i="wat.sw">Betaal je elke maand voor software waar je maar een deel van gebruikt? Wij bouwen het na, precies zoals jullie werken. Zo bespaar je op de abonnementskosten.</p><span class="tag" data-i="wat.swTag">Bespaart abonnementskosten</span></div>
+        </div>
+      </div>
+      <div class="ring-meta" aria-hidden="true"><span class="ring-n" id="ring-n">01 / 09</span><div class="ring-dots" id="ring-dots"></div><span class="ring-hint" data-i="wat.hint">Scroll om te draaien</span></div>
     </div>
   </div>
 </section>
@@ -151,12 +163,12 @@
 <section style="padding-top:20px">
   <div class="wrap">
     <div class="guarantee rv" data-land>
-      <div class="seal"><span><b>5</b>UUR PER<br>WEEK</span></div>
+      <div class="seal"><span data-i="gar.seal"><b>5</b>UUR PER<br>WEEK</span></div>
       <div>
-        <h3>Halen we geen vijf uur per week met onze systemen, dan krijg je <span class="hl">je geld terug</span>.</h3>
-        <p>We meten het samen in je KPI-dashboard, vanaf de nulmeting. Blijft de besparing onder de 5 uur per week, dan krijg je je aanbetaling terug. Jij loopt geen risico. Afhankelijk van de grootte van je bedrijf mikken we op 10 tot 15 uur besparing per week.</p>
+        <h3 data-i="gar.title">Halen we geen vijf uur per week met onze systemen, dan krijg je <span class="hl">je geld terug</span>.</h3>
+        <p data-i="gar.text">We meten het samen in je KPI-dashboard, vanaf de nulmeting. Blijft de besparing onder de 5 uur per week, dan krijg je je aanbetaling terug. Jij loopt geen risico. Afhankelijk van de grootte van je bedrijf mikken we op 10 tot 15 uur besparing per week.</p>
       </div>
-      <a class="btn red" href="#start">Plan een kennismaking</a>
+      <a class="btn red" href="#start" data-i="hero.cta2">Plan een kennismaking</a>
     </div>
   </div>
 </section>
@@ -164,18 +176,18 @@
 <section id="werkwijze">
   <div class="wrap">
     <div class="head center rv">
-      <p class="kicker">Werkwijze</p>
-      <h2>Van inventarisatie tot AI-systemen die jou je tijd teruggeven.</h2>
-      <p class="sub">Een kort traject met een <span class="hl">vaste prijs</span>, een vaste datum en een meetbaar doel.</p>
+      <p class="kicker" data-i="ww.kicker">Werkwijze</p>
+      <h2 data-i="ww.title">Van inventarisatie tot AI-systemen die jou je tijd teruggeven.</h2>
+      <p class="sub" data-i="ww.sub">Een kort traject met een <span class="hl">vaste prijs</span>, een vaste datum en een meetbaar doel.</p>
     </div>
     <div class="route rv">
-      <div class="rs"><div><h3>Kennismaking</h3><p>In 30 minuten kijken we waar je tijd heen gaat en wat er te winnen valt. Vrijblijvend, online of bij jou op kantoor.</p></div><span class="when">30 minuten</span></div>
-      <div class="rs"><div><h3>Plan en vaste prijs</h3><p>Je krijgt een plan: wat we bouwen, wat het oplevert en wat het kost. Geen open eind en geen uurtje-factuurtje.</p></div><span class="when">Binnen 3 dagen</span></div>
-      <div class="rs pay"><div><h3>Aanbetaling</h3><p>Met de aanbetaling ligt je plek vast en plannen we de startdatum. Je betaalt het traject in één keer vooraf.</p><span class="pill">Volledig vooraf</span></div><span class="when">Start</span></div>
-      <div class="rs"><div><h3>Onboarding</h3><p>Je vult online in hoe jullie werken: welke systemen en tools je gebruikt en welke taken de meeste tijd kosten. Binnenkort helpt een digitale assistent je hier stap voor stap doorheen.</p></div><span class="when">30 minuten</span></div>
-      <div class="rs"><div><h3>Je KPI-dashboard</h3><p>We leggen de nulmeting per taak vast en zetten het doel: 5 tot 15 uur per week. Vanaf dan zie je elke week wat het oplevert.</p></div><span class="when">Week 1</span></div>
-      <div class="rs"><div><h3>Implementatie op een vaste datum</h3><p>We prikken samen een datum en bouwen. Je team krijgt uitleg, zodat iedereen er meteen mee kan werken.</p></div><span class="when">1 tot 2 weken</span></div>
-      <div class="rs pay"><div><h3>Meten, opleveren en nazorg</h3><p>We meten de besparing in je dashboard. Halen we het doel niet, dan geldt de garantie. Daarna blijven we je helpen: de nazorg loopt tot 2 maanden na de implementatie.</p><span class="pill">2 maanden nazorg</span></div><span class="when">Na 4 weken</span></div>
+      <div class="rs"><div><h3 data-i="ww.1t">Kennismaking</h3><p data-i="ww.1">In 30 minuten kijken we waar je tijd heen gaat en wat er te winnen valt. Vrijblijvend, online of bij jou op kantoor.</p></div><span class="when" data-i="ww.30">30 minuten</span></div>
+      <div class="rs"><div><h3 data-i="ww.2t">Plan en vaste prijs</h3><p data-i="ww.2">Je krijgt een plan: wat we bouwen, wat het oplevert en wat het kost. Geen open eind en geen uurtje-factuurtje.</p></div><span class="when" data-i="ww.2w">Binnen 3 dagen</span></div>
+      <div class="rs pay"><div><h3 data-i="ww.3t">Aanbetaling</h3><p data-i="ww.3">Met de aanbetaling ligt je plek vast en plannen we de startdatum. Je betaalt het traject in één keer vooraf.</p></div><span class="when">Start</span></div>
+      <div class="rs"><div><h3 data-i="ww.4t">Onboarding</h3><p data-i="ww.4">Je vult online in hoe jullie werken: welke systemen en tools je gebruikt en welke taken de meeste tijd kosten. Binnenkort helpt een digitale assistent je hier stap voor stap doorheen.</p></div><span class="when" data-i="ww.30">30 minuten</span></div>
+      <div class="rs"><div><h3 data-i="ww.5t">Je KPI-dashboard</h3><p data-i="ww.5">We leggen de nulmeting per taak vast en zetten het doel: 5 tot 15 uur per week. Vanaf dan zie je elke week wat het oplevert.</p></div><span class="when" data-i="ww.5w">Week 1</span></div>
+      <div class="rs"><div><h3 data-i="ww.6t">Implementatie op een vaste datum</h3><p data-i="ww.6">We prikken samen een datum en bouwen. Je team krijgt uitleg, zodat iedereen er meteen mee kan werken.</p></div><span class="when" data-i="ww.6w">1 tot 2 weken</span></div>
+      <div class="rs pay"><div><h3 data-i="ww.7t">Meten, opleveren en nazorg</h3><p data-i="ww.7">We meten de besparing in je dashboard. Halen we het doel niet, dan geldt de garantie. Daarna blijven we je helpen: de nazorg loopt tot 2 maanden na de implementatie.</p><span class="pill" data-i="ww.7p">2 maanden nazorg</span></div><span class="when" data-i="ww.7w">Na 4 weken</span></div>
     </div>
   </div>
 </section>
@@ -183,16 +195,16 @@
 <section id="branches" style="padding-top:40px">
   <div class="wrap">
     <div class="head center rv">
-      <p class="kicker">Per branche</p>
-      <h2>Wat het bij <span class="hl">jouw zaak</span> inhoudt.</h2>
-      <p class="sub">Kies je branche. Dit zijn de niches waar wij ons in specialiseren. Je ziet waar de uren nu heen gaan, wat we bouwen, met welke systemen, en hoe je eigen dashboard eruitziet.</p>
+      <p class="kicker" data-i="br.kicker">Per branche</p>
+      <h2 data-i="br.title">Wat het bij <span class="hl">jouw zaak</span> inhoudt.</h2>
+      <p class="sub" data-i="br.sub">Kies je branche. Dit zijn de niches waar wij ons in specialiseren. Je ziet waar de uren nu heen gaan, wat we bouwen, met welke systemen, en hoe je eigen dashboard eruitziet.</p>
     </div>
-    <div class="br-tabs rv" id="br-tabs" role="tablist" aria-label="Kies je branche"></div>
+    <div class="br-tabs rv" id="br-tabs" role="tablist" aria-label="Kies je branche" data-i-attr="aria-label:br.aria"></div>
     <div class="br-body rv" id="br-body" data-land>
       <div class="br-info" id="br-info"></div>
       <div class="kpi-demo" id="br-dash"></div>
     </div>
-    <p class="muted" style="text-align:center;font-size:13.5px;margin:18px auto 0;max-width:640px">De uren zijn een indicatie per branche. Hoeveel het bij jou is, meten we vanaf de nulmeting in je eigen dashboard.</p>
+    <p class="muted" style="text-align:center;font-size:13.5px;margin:18px auto 0;max-width:640px" data-i="br.note">De uren zijn een indicatie per branche. Hoeveel het bij jou is, meten we vanaf de nulmeting in je eigen dashboard.</p>
   </div>
 </section>
 
@@ -200,11 +212,65 @@
   <div class="wrap">
     <div class="price rv" data-land>
       <div>
-        <p class="kicker">Prijs</p>
-        <div class="p-big">Trajecten vanaf € 1.500 <span>excl. btw</span></div>
-        <p class="dim" style="margin:12px 0 0;max-width:620px">Een vaste prijs na de kennismaking, in één keer vooraf betaald. Met de garantie op 5 uur per week en 2 maanden nazorg.</p>
+        <p class="kicker" data-i="pr.kicker">Prijs</p>
+        <div class="p-big" data-i="pr.big">Trajecten vanaf € 1.500 <span>excl. btw</span></div>
+        <p class="dim" style="margin:12px 0 0;max-width:620px" data-i="pr.text">Een vaste prijs na de kennismaking, in één keer vooraf betaald. Met de garantie op 5 uur per week en 2 maanden nazorg.</p>
       </div>
-      <a class="btn red" href="#start">Plan een kennismaking <span class="arr">→</span></a>
+      <a class="btn red" href="#start"><span data-i="hero.cta2">Plan een kennismaking</span> <span class="arr">→</span></a>
+    </div>
+
+    <!-- Prijsopbouw: de rode dots vormen trede voor trede de prijzen, van boven naar beneden -->
+    <div class="tiers-wrap">
+      <div class="tiers-head rv">
+        <p class="kicker" data-i="ti.kicker">Prijsopbouw</p>
+        <h2 data-i="ti.title">Hoe eerder je instapt, hoe <span class="hl">voordeliger</span>.</h2>
+        <p class="sub" data-i="ti.sub">Wat we opleveren is veel waard. Daarom gaat de prijs omhoog per vier bedrijven die we geholpen hebben.</p>
+      </div>
+      <div class="tiers-val rv">
+        <span data-i="ti.val1">Bij gemiddeld 10 uur per week en € 50 per uur ga je erop vooruit met</span>
+        <b><span id="ti-month">€ 1.917</span> <i data-i="ti.pm">per maand</i></b>
+        <small id="ti-year">Dat is € 23.000 per jaar.</small>
+      </div>
+      <div class="tiers" id="tiers">
+        <canvas class="tiers-cv" aria-hidden="true"></canvas>
+        <div class="tiers-rail" aria-hidden="true"><i></i></div>
+        <div class="tier now">
+          <span class="t-node" aria-hidden="true">1</span>
+          <div class="t-info">
+            <p class="t-k" data-i="ti.1k">Trede 1 · nu</p>
+            <h3 data-i="ti.1t">De eerste 4 bedrijven</h3>
+            <div class="t-spots" id="t-spots"></div>
+          </div>
+          <div class="t-price"><b class="t-amt" data-i="ti.1a">€ 1.500</b><small class="t-x" data-i="ti.excl">excl. btw · terugverdiend in <span data-pay="1500">3 weken</span></small></div>
+        </div>
+        <div class="tier">
+          <span class="t-node" aria-hidden="true">2</span>
+          <div class="t-info">
+            <p class="t-k" data-i="ti.2k">Trede 2</p>
+            <h3 data-i="ti.2t">Na 4 geholpen bedrijven</h3>
+            <p class="t-d" data-i="ti.2d">Dezelfde aanpak, dezelfde garantie en nazorg.</p>
+          </div>
+          <div class="t-price"><b class="t-amt" data-i="ti.2a">€ 2.500</b><small class="t-x" data-i="ti.excl2">excl. btw · terugverdiend in <span data-pay="2500">5 weken</span></small></div>
+        </div>
+        <div class="tier">
+          <span class="t-node" aria-hidden="true">3</span>
+          <div class="t-info">
+            <p class="t-k" data-i="ti.3k">Trede 3</p>
+            <h3 data-i="ti.3t">Na 8 geholpen bedrijven</h3>
+            <p class="t-d" data-i="ti.3d">Nog steeds in een paar maanden terugverdiend.</p>
+          </div>
+          <div class="t-price"><b class="t-amt" data-i="ti.3a">€ 4.000</b><small class="t-x" data-i="ti.excl3">excl. btw · terugverdiend in <span data-pay="4000">8 weken</span></small></div>
+        </div>
+        <div class="tier ent">
+          <span class="t-node" aria-hidden="true">4</span>
+          <div class="t-info">
+            <p class="t-k">Enterprise</p>
+            <h3 data-i="ti.4t">Voor grotere bedrijven</h3>
+            <p class="t-d" data-i="ti.4d">Custom werk, helemaal afgestemd op jouw organisatie. De prijs bepalen we samen.</p>
+          </div>
+          <div class="t-price"><b class="t-amt" data-i="ti.4a">Op maat</b><small class="t-x" data-i="ti.4x">custom werk</small></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -212,15 +278,15 @@
 <section id="start" style="padding-top:40px">
   <div class="wrap start-grid">
     <aside class="start-side rv">
-      <p class="kicker">Kennismaking</p>
-      <h2>Plan je kennismaking.</h2>
-      <p class="dim">Beantwoord vooraf een paar korte vragen. Dan kom ik naar de call met de eerste ideeën in plaats van met vragen.</p>
+      <p class="kicker" data-i="st.kicker">Kennismaking</p>
+      <h2 data-i="st.title">Plan je kennismaking.</h2>
+      <p class="dim" data-i="st.sub">Beantwoord vooraf een paar korte vragen. Dan kom ik naar de call met de eerste ideeën in plaats van met vragen.</p>
       <ol>
-        <li><span class="num">1</span><div><b>Vul de vragen in</b>Ongeveer 5 minuten.</div></li>
-        <li><span class="num">2</span><div><b>Download de PDF</b>En stuur hem naar Bob via mail of WhatsApp.</div></li>
-        <li><span class="num">3</span><div><b>Plan je call</b>Kies een moment dat jou uitkomt.</div></li>
+        <li><span class="num">1</span><div data-i="st.1"><b>Vul de vragen in</b>Ongeveer 5 minuten.</div></li>
+        <li><span class="num">2</span><div data-i="st.2"><b>Download de PDF</b>En stuur hem naar Bob via mail of WhatsApp.</div></li>
+        <li><span class="num">3</span><div data-i="st.3"><b>Plan je call</b>Kies een moment dat jou uitkomt.</div></li>
       </ol>
-      <p class="alt">Liever eerst even bellen? <a data-c="tel" href="#"><b></b></a></p>
+      <p class="alt"><span data-i="st.alt">Liever eerst even bellen?</span> <a data-c="tel" href="#"><b></b></a></p>
     </aside>
     <div class="wizard rv" id="wizard"></div>
   </div>
@@ -228,14 +294,14 @@
 
 <section id="faq" style="padding-top:20px">
   <div class="wrap">
-    <div class="head center rv"><p class="kicker">Vragen</p><h2>Goed om te weten.</h2></div>
+    <div class="head center rv"><p class="kicker" data-i="fq.kicker">Vragen</p><h2 data-i="fq.title">Goed om te weten.</h2></div>
     <div class="faq rv">
-      <details><summary>Vervangt dit mensen?</summary><p>Alleen als jij dat wilt. Meestal nemen we taken over en geen banen: je team houdt tijd over voor werk waar ze echt verschil maken, zoals klanten, kwaliteit en nieuwe ideeën. Wil je met minder mensen hetzelfde werk doen, dan kan dat ook. Dat bespreken we eerlijk in de kennismaking.</p></details>
-      <details><summary>Is mijn data veilig?</summary><p>We werken in jullie eigen accounts en systemen, met alleen de toegang die nodig is. Na de oplevering kun je die toegang intrekken. Gevoelige gegevens bespreken we vooraf in de onboarding.</p></details>
-      <details><summary>Moeten we nieuwe software leren?</summary><p>Nauwelijks. We bouwen op wat jullie al gebruiken, zoals je mail, je boekhouding en je planning. Je team krijgt uitleg bij de oplevering.</p></details>
-      <details><summary>Hoe snel staat het?</summary><p>Na de onboarding prikken we een vaste datum. De meeste trajecten staan binnen een tot twee weken.</p></details>
-      <details><summary>Hoe werkt de garantie precies?</summary><p>We leggen vooraf een nulmeting vast per taak. Na de oplevering meten we samen in je KPI-dashboard. Blijft de besparing onder de 5 uur per week, dan krijg je je aanbetaling terug.</p></details>
-      <details><summary>Wat als er later iets verandert?</summary><p>Dan passen we het aan. Je kunt me altijd bereiken voor vragen en kleine wijzigingen, en grotere uitbreidingen spreken we vooraf met een vaste prijs af.</p></details>
+      <details><summary data-i="fq.1q">Vervangt dit mensen?</summary><p data-i="fq.1a">Alleen als jij dat wilt. Meestal nemen we taken over en geen banen: je team houdt tijd over voor werk waar ze echt verschil maken, zoals klanten, kwaliteit en nieuwe ideeën. Wil je met minder mensen hetzelfde werk doen, dan kan dat ook. Dat bespreken we eerlijk in de kennismaking.</p></details>
+      <details><summary data-i="fq.2q">Is mijn data veilig?</summary><p data-i="fq.2a">We werken in jullie eigen accounts en systemen, met alleen de toegang die nodig is. Na de oplevering kun je die toegang intrekken. Gevoelige gegevens bespreken we vooraf in de onboarding.</p></details>
+      <details><summary data-i="fq.3q">Moeten we nieuwe software leren?</summary><p data-i="fq.3a">Een beetje, en dat gaat sneller dan je denkt. We bouwen op wat jullie al gebruiken, zoals je mail, je boekhouding en je planning. Wel leren we je team werken met de AI-systemen die we neerzetten. Dat doen we heel interactief, samen achter de computer, en met mijn hulp heb je het snel onder de knie.</p></details>
+      <details><summary data-i="fq.4q">Hoe snel staat het?</summary><p data-i="fq.4a">Na de onboarding prikken we een vaste datum. De meeste trajecten staan binnen een tot twee weken.</p></details>
+      <details><summary data-i="fq.5q">Hoe werkt de garantie precies?</summary><p data-i="fq.5a">We leggen vooraf een nulmeting vast per taak. Na de oplevering meten we samen in je KPI-dashboard. Blijft de besparing onder de 5 uur per week, dan krijg je je aanbetaling terug.</p></details>
+      <details><summary data-i="fq.6q">Wat als er later iets verandert?</summary><p data-i="fq.6a">Dan passen we het aan. Je kunt me altijd bereiken voor vragen en kleine wijzigingen, en grotere uitbreidingen spreken we vooraf met een vaste prijs af.</p></details>
     </div>
   </div>
 </section>
@@ -247,17 +313,17 @@
     <div class="contact has-qr rv" data-land>
       <div>
         <p class="kicker">Contact</p>
-        <h2>Even sparren?</h2>
-        <p class="dim">Bel me, stuur een appje of plan direct een call. In 30 minuten weet je hoeveel tijd er bij jou te winnen valt.</p>
-        <a class="btn red" href="#" data-call style="margin-top:12px">Plan je call <span class="arr">→</span></a>
+        <h2 data-i="ct.title">Even sparren?</h2>
+        <p class="dim" data-i="ct.sub">Bel me, stuur een appje of plan direct een call. In 30 minuten weet je hoeveel tijd er bij jou te winnen valt.</p>
+        <a class="btn red" href="#" data-call style="margin-top:12px"><span data-i="ct.call">Plan je call</span> <span class="arr">→</span></a>
       </div>
       <div class="contact-list">
-        <a data-c="tel" href="#"><b></b><span>Telefoon</span></a>
-        <a data-c="wa" href="#" target="_blank" rel="noopener"><b>Stuur een bericht</b><span>WhatsApp</span></a>
+        <a data-c="tel" href="#"><b></b><span data-i="ct.tel">Telefoon</span></a>
+        <a data-c="wa" href="#" target="_blank" rel="noopener"><b data-i="ct.wa">Stuur een bericht</b><span>WhatsApp</span></a>
         <a data-c="mail" href="#"><b></b><span>Mail</span></a>
         <div><b>Bob · IBE MOTION</b><span>Contact</span></div>
       </div>
-      <div class="qr-tree" id="qr-tree"><canvas aria-label="QR-code naar WhatsApp"></canvas><p class="qr-hint">Klik op de boom · <b>scan voor WhatsApp</b></p></div>
+      <div class="qr-tree" id="qr-tree"><canvas aria-label="QR-code naar WhatsApp"></canvas><p class="qr-hint" data-i="ct.qr">Klik op de boom · <b>scan voor direct WhatsApp-contact met Bob</b></p></div>
     </div>
   </div>
 </section>
@@ -265,12 +331,14 @@
 <footer>
   <div class="wrap">
     <span style="display:flex;align-items:center;gap:12px"><img src="assets/lion-gold.png" alt="">IBE MOTION · Landgraaf · KvK 98929879</span>
-    <span>AI-implementatie · 5 tot 15 uur per week terug door AI-systemen</span>
+    <span data-i="ft.line">AI-implementatie · 5 tot 15 uur per week terug door AI-systemen</span>
   </div>
 </footer>
 </div>
 
 <script src="js/config.js"></script>
+<script src="js/en.js"></script>
+<script src="js/i18n.js"></script>
 <script src="js/lion-mask.js"></script>
 <script src="js/ibe-intro.js"></script>
 <script src="js/ibe-dots.js"></script>
@@ -279,20 +347,33 @@
 <script src="js/jspdf.umd.min.js"></script>
 <script src="js/ibe-form.js"></script>
 <script>
-IBEIntro.play({
+const T = IBEI18n.t; // T('Nederlands', 'English')
+
+IBEIntro.play(T({
   title: 'IBE MOTION // AI-IMPLEMENTATIE',
   head: '> tijd vrijmaken',
   lines: [
     { label: 'INBOX', v: 'mail sorteert zichzelf' },
     { label: 'OFFERTES', v: 'klaar in minuten' },
-    { label: 'ADMIN', v: 'loopt op de achtergrond' },
+    { label: 'HQ', v: 'alles in één overzicht' },
     { label: 'KPI', v: 'doel 5 tot 15 uur per week' },
     { label: 'TIJD', v: 'terug naar jou' },
   ],
   online: 'TIJD VRIJGEMAAKT',
-});
+}, {
+  title: 'IBE MOTION // AI IMPLEMENTATION',
+  head: '> freeing up time',
+  lines: [
+    { label: 'INBOX', v: 'mail sorts itself' },
+    { label: 'QUOTES', v: 'ready in minutes' },
+    { label: 'HQ', v: 'everything in one view' },
+    { label: 'KPI', v: 'goal 5 to 15 hours a week' },
+    { label: 'TIME', v: 'back to you' },
+  ],
+  online: 'TIME FREED UP',
+}));
 
-const form = IBEForm(document.getElementById('wizard'), {
+const form = IBEForm(document.getElementById('wizard'), T({
   key: 'ibe-ai-intake',
   title: 'Kennismaking AI-implementatie',
   sub: 'Intake',
@@ -311,21 +392,58 @@ const form = IBEForm(document.getElementById('wizard'), {
       { id: 'digitaal', label: 'Hoeveel mensen doen vooral werk op de computer?', type: 'text', placeholder: 'Bijv. 3' },
     ] },
     { title: 'Waar gaat de tijd heen?', short: 'Tijd', intro: 'Kort is goed. In de call en de onboarding gaan we dieper.', fields: [
-      { id: 'tijdvreters', label: 'Welke taken kosten nu de meeste tijd?', help: 'Denk aan mail, offertes, bestellingen, administratie, planning of rapportages.', type: 'textarea', required: true },
-      { id: 'vragen', label: 'Welke vragen krijgen jullie steeds opnieuw?', type: 'textarea', placeholder: 'Bijv. levertijd, prijzen, status van een order.' },
-      { id: 'ergernis', label: 'Welk klusje zou je morgen al kwijt willen?', type: 'text' },
+      { id: 'tijdvreters', label: 'Welke taken kosten nu de meeste tijd?', help: 'Zet per taak erbij hoeveel uur per week je ermee bezig bent en hoeveel mensen ervoor verantwoordelijk zijn.', type: 'tasks', required: true,
+        cols: ['Taak', 'Aantal mensen', 'Uur per week'], whoUnit: 'mensen', ph: ['Bijv. offertes maken', '2', '6'] },
+      { id: 'processen', label: 'Welke herhalende processen zijn er in jullie bedrijf?', type: 'textarea', placeholder: 'Denk bijvoorbeeld aan inkoop, orders verwerken, roosters maken of facturen versturen.' },
+      { id: 'ergernis', label: 'Welke taken zou je morgen al kwijt willen zijn?', type: 'text' },
     ] },
     { title: 'Welke systemen gebruik je?', short: 'Systemen', fields: [
       { id: 'tools', label: 'Vink aan wat jullie gebruiken', type: 'chips', other: 'Andere software, namelijk...', options: ['Gmail', 'Outlook', 'Google Drive', 'OneDrive of SharePoint', 'Excel', 'Google Sheets', 'Exact', 'Moneybird', 'e-Boekhouden', 'Snelstart', 'Shopify', 'WooCommerce', 'HubSpot', 'Teamleader', 'WhatsApp Business', 'Teams', 'Slack', 'Eigen software'] },
     ] },
     { title: 'Je doel', short: 'Doel', fields: [
-      { id: 'uren', label: 'Hoeveel uur per week wil je terug?', type: 'range', min: 5, max: 15, step: 1, value: 10, unit: 'uur per week' },
+      { id: 'uren', label: 'Hoeveel uur per week wil je terug?', type: 'range', min: 5, max: 15, step: 1, value: 10, unit: 'uur per week',
+        worth: { rate: 50, weeks: 46, label: 'per maand terug', note: (y) => `Dat is ${y} per jaar, gerekend met € 50 per uur.` } },
       { id: 'besteden', label: 'Wat ga je met die tijd doen?', type: 'chips', options: ['Meer klanten helpen', 'Nieuwe diensten ontwikkelen', 'Betere service', 'Minder werkdruk in het team', 'Eerder naar huis', 'Meer tijd voor familie'] },
       { id: 'start', label: 'Wanneer wil je starten?', type: 'choice', options: ['Zo snel mogelijk', 'Volgende maand', 'Over 2 tot 3 maanden', 'Ik oriënteer me nog'] },
       { id: 'opmerkingen', label: 'Nog iets wat ik moet weten?', type: 'textarea' },
     ] },
   ],
-});
+}, {
+  key: 'ibe-ai-intake-en',
+  title: 'Intro call AI implementation',
+  sub: 'Intake',
+  pdfName: 'Intake AI implementation',
+  done: { title: 'This is your intake.', text: 'Have one more look at the overview. Download the PDF, send it to Bob and then book the call. That way we go straight to your biggest time wasters.' },
+  steps: [
+    { title: 'You and your company', short: 'Company', fields: [
+      { id: 'bedrijf', half: true, label: 'Company name', type: 'text', required: true, auto: 'organization' },
+      { id: 'naam', half: true, label: 'Your name', type: 'text', required: true, auto: 'name' },
+      { id: 'rol', half: true, label: 'Your role', type: 'text', placeholder: 'E.g. owner, operations' },
+      { id: 'email', half: true, label: 'Email address', type: 'email', required: true, auto: 'email' },
+      { id: 'telefoon', half: true, label: 'Phone number', type: 'tel', auto: 'tel' },
+      { id: 'website', half: true, label: 'Website', type: 'url', placeholder: 'https://' },
+      { id: 'team', label: 'How big is your team?', type: 'choice', options: ['1 to 5', '6 to 15', '16 to 50', 'More than 50'] },
+      { id: 'branche', label: 'What industry are you in?', type: 'choice', options: ['Activities and events', 'Interior store', 'Landscaping', 'Car garage', 'Real estate', 'Something else'] },
+      { id: 'digitaal', label: 'How many people mainly work on a computer?', type: 'text', placeholder: 'E.g. 3' },
+    ] },
+    { title: 'Where does the time go?', short: 'Time', intro: 'Short is fine. We go deeper in the call and the onboarding.', fields: [
+      { id: 'tijdvreters', label: 'Which tasks take the most time right now?', help: 'For each task, add how many hours a week it takes and how many people are responsible for it.', type: 'tasks', required: true,
+        cols: ['Task', 'Number of people', 'Hours per week'], whoUnit: 'people', ph: ['E.g. making quotes', '2', '6'] },
+      { id: 'processen', label: 'Which processes keep repeating in your business?', type: 'textarea', placeholder: 'For example purchasing, processing orders, making schedules or sending invoices.' },
+      { id: 'ergernis', label: 'Which tasks would you like to be rid of tomorrow?', type: 'text' },
+    ] },
+    { title: 'Which systems do you use?', short: 'Systems', fields: [
+      { id: 'tools', label: 'Tick what you use', type: 'chips', other: 'Other software, namely...', options: ['Gmail', 'Outlook', 'Google Drive', 'OneDrive or SharePoint', 'Excel', 'Google Sheets', 'Exact', 'Moneybird', 'e-Boekhouden', 'Snelstart', 'Shopify', 'WooCommerce', 'HubSpot', 'Teamleader', 'WhatsApp Business', 'Teams', 'Slack', 'Own software'] },
+    ] },
+    { title: 'Your goal', short: 'Goal', fields: [
+      { id: 'uren', label: 'How many hours a week do you want back?', type: 'range', min: 5, max: 15, step: 1, value: 10, unit: 'hours a week',
+        worth: { rate: 50, weeks: 46, label: 'back every month', note: (y) => `That is ${y} a year, at €50 an hour.` } },
+      { id: 'besteden', label: 'What will you do with that time?', type: 'chips', options: ['Help more customers', 'Develop new services', 'Better service', 'Less pressure on the team', 'Go home earlier', 'More time for family'] },
+      { id: 'start', label: 'When do you want to start?', type: 'choice', options: ['As soon as possible', 'Next month', 'In 2 to 3 months', 'Just exploring'] },
+      { id: 'opmerkingen', label: 'Anything else I should know?', type: 'textarea' },
+    ] },
+  ],
+}));
 window.__formData = form.data;
 </script>
 <script src="js/ai.js"></script>

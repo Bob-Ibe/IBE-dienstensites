@@ -5,6 +5,8 @@
 // Veldtypes: text, email, tel, url, date, textarea, choice (een keuze), chips (meerdere), styles (kaarten met kleurstalen),
 //            range ({min,max,step,unit}), tasks (rijen: taak, wie, uur per week)
 (function () {
+  // Taal: Engels als de pagina dat zegt (js/i18n.js op de AI-site), anders Nederlands
+  const EN = !!(window.IBEI18n && window.IBEI18n.en), L = (nl, en) => (EN ? en : nl), LOC = EN ? 'en-GB' : 'nl-NL';
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const opt = (o) => (typeof o === 'string' ? { v: o, label: o } : o);
   const store = {
@@ -14,11 +16,18 @@
 
   function valueText(f, v) {
     if (v == null || v === '' || (Array.isArray(v) && !v.length)) return '';
-    if (f.type === 'tasks') return v.filter((r) => r.taak).map((r) => `${r.taak}${r.wie ? ' (' + r.wie + ')' : ''}: ${r.uur || '?'} uur per week`).join('\n');
+    if (f.type === 'tasks') return v.filter((r) => r.taak).map((r) => `${r.taak}${r.wie ? ' (' + r.wie + (f.whoUnit ? ' ' + f.whoUnit : '') + ')' : ''}: ${r.uur || '?'} ${L('uur per week', 'hours a week')}`).join('\n');
     if (f.type === 'range') return `${v}${f.unit ? ' ' + f.unit : ''}`;
-    if (f.type === 'date') { try { return new Date(v + 'T12:00').toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) { return v; } }
+    if (f.type === 'date') { try { return new Date(v + 'T12:00').toLocaleDateString(LOC, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) { return v; } }
     const map = (x) => { const o = (f.options || []).map(opt).find((o) => o.v === x); return o ? o.label : x; };
     return Array.isArray(v) ? v.map(map).join(', ') : map(v);
+  }
+
+  // Bedrag onder een schuif met uren: f.worth = { rate, weeks, label, note(jaarbedrag) }
+  function worthHTML(f, v) {
+    const w = f.worth, eur = (n) => (EN ? '€' : '€ ') + Math.round(n).toLocaleString(LOC);
+    const year = v * w.rate * (w.weeks || 46);
+    return `<b>${eur(year / 12)}</b><span>${esc(w.label || '')}</span>${w.note ? `<small>${esc(w.note(eur(year)))}</small>` : ''}`;
   }
 
   function IBEForm(root, cfg) {
@@ -52,19 +61,20 @@
       if (f.type === 'range') {
         const val = v != null ? v : f.value;
         if (data[f.id] == null) data[f.id] = val;
-        return `<div class="f">${head}<div class="f-range"><input type="range" id="f_${f.id}" data-id="${f.id}" min="${f.min}" max="${f.max}" step="${f.step || 1}" value="${val}"><output data-out="${f.id}">${val} ${esc(f.unit || '')}</output></div></div>`;
+        return `<div class="f">${head}<div class="f-range"><input type="range" id="f_${f.id}" data-id="${f.id}" min="${f.min}" max="${f.max}" step="${f.step || 1}" value="${val}"><output data-out="${f.id}">${val} ${esc(f.unit || '')}</output></div>${f.worth ? `<div class="f-worth" data-worth="${f.id}">${worthHTML(f, val)}</div>` : ''}</div>`;
       }
       if (f.type === 'tasks') {
-        const rows = (v && v.length ? v : [{}, {}, {}]);
+        const rows = (v && v.length ? v : [{}, {}, {}]), cols = f.cols || [L('Taak', 'Task'), L('Wie doet het', 'Who does it'), L('Uur per week', 'Hours per week')];
+        const ph = f.ph || [L('Bijv. offertes maken', 'E.g. making quotes'), L('Bijv. Sanne, binnendienst', 'E.g. Sanne, office'), '6'];
         const total = rows.reduce((a, r) => a + (parseFloat(String(r.uur || '').replace(',', '.')) || 0), 0);
         return `<div class="f">${head}<div class="f-tasks" data-tasks="${f.id}">
-          <div class="t-head"><span>Taak</span><span>Wie doet het</span><span>Uur per week</span><span></span></div>
+          <div class="t-head"><span>${esc(cols[0])}</span><span>${esc(cols[1])}</span><span>${esc(cols[2])}</span><span></span></div>
           ${rows.map((r, i) => `<div class="t-row" data-i="${i}">
-            <input class="f-in" data-t="taak" value="${esc(r.taak || '')}" placeholder="${i === 0 ? 'Bijv. offertes maken' : ''}">
-            <input class="f-in" data-t="wie" value="${esc(r.wie || '')}" placeholder="${i === 0 ? 'Bijv. Sanne, binnendienst' : ''}">
-            <input class="f-in" data-t="uur" value="${esc(r.uur || '')}" inputmode="decimal" placeholder="${i === 0 ? '6' : ''}">
-            <button type="button" class="t-del" data-tdel="${i}" aria-label="Rij weghalen">×</button></div>`).join('')}
-          <div class="t-foot"><button type="button" class="f-add" data-tadd="${f.id}">+ Taak toevoegen</button><span>Totaal <b data-ttotal>${total.toLocaleString('nl-NL')}</b> uur per week</span></div>
+            <input class="f-in" data-t="taak" value="${esc(r.taak || '')}" placeholder="${i === 0 ? esc(ph[0]) : ''}" aria-label="${esc(cols[0])}">
+            <input class="f-in" data-t="wie" value="${esc(r.wie || '')}" placeholder="${i === 0 ? esc(ph[1]) : ''}" aria-label="${esc(cols[1])}"${f.whoUnit ? ' inputmode="numeric"' : ''}>
+            <input class="f-in" data-t="uur" value="${esc(r.uur || '')}" inputmode="decimal" placeholder="${i === 0 ? esc(ph[2]) : ''}" aria-label="${esc(cols[2])}">
+            <button type="button" class="t-del" data-tdel="${i}" aria-label="${L('Rij weghalen', 'Remove row')}">×</button></div>`).join('')}
+          <div class="t-foot"><button type="button" class="f-add" data-tadd="${f.id}">${L('+ Taak toevoegen', '+ Add task')}</button><span>${L('Totaal', 'Total')} <b data-ttotal>${total.toLocaleString(LOC)}</b> ${L('uur per week', 'hours a week')}</span></div>
         </div></div>`;
       }
       return '';
@@ -75,7 +85,7 @@
         const rows = s.fields.map((f) => [f, valueText(f, data[f.id]), data[f.id + '__anders']]).filter((r) => r[1] || r[2]);
         if (!rows.length) return '';
         return `<div class="s-block"><h4>${esc(s.title)}</h4>${rows.map(([f, t, a]) => `<div class="s-row"><span>${esc(f.label)}</span><p>${esc([t, a].filter(Boolean).join(', ')).replace(/\n/g, '<br>')}</p></div>`).join('')}</div>`;
-      }).join('') || '<p class="f-help">Nog niets ingevuld.</p>';
+      }).join('') || `<p class="f-help">${L('Nog niets ingevuld.', 'Nothing filled in yet.')}</p>`;
     }
 
     function render() {
@@ -85,31 +95,31 @@
       root.innerHTML = `
         <div class="w-top">
           <div class="w-steps">${steps.map((x, i) => `<button type="button" class="w-dot ${i === step ? 'on' : ''} ${i < step ? 'done' : ''}" data-go="${i}" title="${esc(x.title)}"><span>${i + 1}</span><em>${esc(x.short || x.title)}</em></button>`).join('')}
-            <button type="button" class="w-dot ${last ? 'on' : ''}" data-go="${steps.length}"><span>✓</span><em>Overzicht</em></button></div>
+            <button type="button" class="w-dot ${last ? 'on' : ''}" data-go="${steps.length}"><span>✓</span><em>${L('Overzicht', 'Overview')}</em></button></div>
           <div class="w-bar"><i style="width:${pct}%"></i></div>
         </div>
         ${last ? `
           <div class="w-body">
-            <p class="w-kicker">Klaar</p>
+            <p class="w-kicker">${L('Klaar', 'Done')}</p>
             <h3 class="w-title">${esc(cfg.done.title)}</h3>
             <p class="w-intro">${esc(cfg.done.text)}</p>
             <div class="w-summary">${summaryHTML()}</div>
             <div class="w-actions end">
-              <button type="button" class="btn ghost" data-go="${steps.length - 1}">Terug</button>
-              <button type="button" class="btn" data-pdf>Download als PDF</button>
+              <button type="button" class="btn ghost" data-go="${steps.length - 1}">${L('Terug', 'Back')}</button>
+              <button type="button" class="btn" data-pdf>${L('Download als PDF', 'Download as PDF')}</button>
               ${(cfg.extra || []).map((x, i) => `<button type="button" class="btn" data-extra="${i}">${esc(x.label)}</button>`).join('')}
-              <button type="button" class="btn primary" data-call>${esc(cfg.callLabel || 'Plan je call')}</button>
+              <button type="button" class="btn primary" data-call>${esc(cfg.callLabel || L('Plan je call', 'Book your call'))}</button>
             </div>
-            <p class="w-note">Je antwoorden blijven op dit apparaat. Download de PDF en stuur hem naar <a href="mailto:${esc(window.IBE_CONFIG.mail)}">${esc(window.IBE_CONFIG.mail)}</a> of via WhatsApp. Kies daarna een moment voor de call.</p>
+            <p class="w-note">${L('Je antwoorden blijven op dit apparaat. Download de PDF en stuur hem naar', 'Your answers stay on this device. Download the PDF and send it to')} <a href="mailto:${esc(window.IBE_CONFIG.mail)}">${esc(window.IBE_CONFIG.mail)}</a> ${L('of via WhatsApp. Kies daarna een moment voor de call.', 'or via WhatsApp. Then pick a moment for the call.')}</p>
           </div>` : `
           <div class="w-body">
-            <p class="w-kicker">Stap ${step + 1} van ${steps.length}</p>
+            <p class="w-kicker">${L('Stap', 'Step')} ${step + 1} ${L('van', 'of')} ${steps.length}</p>
             <h3 class="w-title">${esc(s.title)}</h3>
             ${s.intro ? `<p class="w-intro">${esc(s.intro)}</p>` : ''}
             <div class="w-fields">${s.fields.map(field).join('')}</div>
             <div class="w-actions">
-              ${step > 0 ? '<button type="button" class="btn ghost" data-prev>Vorige</button>' : '<span></span>'}
-              <button type="button" class="btn primary" data-next>${step === steps.length - 1 ? 'Naar het overzicht' : 'Volgende'}</button>
+              ${step > 0 ? `<button type="button" class="btn ghost" data-prev>${L('Vorige', 'Previous')}</button>` : '<span></span>'}
+              <button type="button" class="btn primary" data-next>${step === steps.length - 1 ? L('Naar het overzicht', 'To the overview') : L('Volgende', 'Next')}</button>
             </div>
             <p class="w-err" hidden></p>
           </div>`}`;
@@ -123,7 +133,7 @@
       const s = steps[step]; if (!s) return true;
       const miss = s.fields.filter((f) => f.required && !valueText(f, data[f.id]));
       const err = root.querySelector('.w-err');
-      if (miss.length) { err.hidden = false; err.textContent = 'Vul nog even in: ' + miss.map((f) => f.label.replace(/\?$/, '')).join(', ') + '.'; return false; }
+      if (miss.length) { err.hidden = false; err.textContent = L('Vul nog even in: ', 'Please fill in: ') + miss.map((f) => f.label.replace(/\?$/, '')).join(', ') + '.'; return false; }
       return true;
     }
 
@@ -133,7 +143,7 @@
       const body = root.querySelector('.w-body');
       if (window.IBELoader && body) {
         const d = document.createElement('div'); d.className = 'fx-load'; d.style.minHeight = Math.min(body.offsetHeight, 420) + 'px';
-        d.append(IBELoader.make('denken', 34), step >= steps.length ? 'Overzicht maken' : 'Volgende stap');
+        d.append(IBELoader.make('denken', 34), step >= steps.length ? L('Overzicht maken', 'Making overview') : L('Volgende stap', 'Next step'));
         body.replaceChildren(d); setTimeout(render, 380);
       } else render();
       root.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -143,14 +153,18 @@
       const t = e.target;
       if (t.dataset.id) {
         data[t.dataset.id] = t.type === 'range' ? Number(t.value) : t.value;
-        if (t.type === 'range') { const o = root.querySelector(`[data-out="${t.dataset.id}"]`); const f = steps[step].fields.find((x) => x.id === t.dataset.id); if (o) o.textContent = `${t.value} ${f.unit || ''}`; }
+        if (t.type === 'range') {
+          const o = root.querySelector(`[data-out="${t.dataset.id}"]`), wo = root.querySelector(`[data-worth="${t.dataset.id}"]`), f = steps[step].fields.find((x) => x.id === t.dataset.id);
+          if (o) o.textContent = `${t.value} ${f.unit || ''}`;
+          if (wo) wo.innerHTML = worthHTML(f, Number(t.value));
+        }
         save();
       }
       const box = t.closest('[data-tasks]');
       if (box) {
         data[box.dataset.tasks] = readTasks(box); save();
         const tot = data[box.dataset.tasks].reduce((a, r) => a + (parseFloat(String(r.uur).replace(',', '.')) || 0), 0);
-        box.querySelector('[data-ttotal]').textContent = tot.toLocaleString('nl-NL');
+        box.querySelector('[data-ttotal]').textContent = tot.toLocaleString(LOC);
       }
     });
     root.addEventListener('click', (e) => {
@@ -167,12 +181,12 @@
       if (b.hasAttribute('data-prev')) return go(step - 1);
       if (b.dataset.go != null) { const n = Number(b.dataset.go); if (n <= step || validate()) go(n); return; }
       if (b.hasAttribute('data-pdf')) return pdf(b);
-      if (b.hasAttribute('data-call')) { IBEForm.call(data, { wa: !!cfg.callWa, topic: cfg.callTopic }); if (window.IBELoader) IBELoader.busy(b, 'Agenda openen', 'luisteren', 1600); return; }
+      if (b.hasAttribute('data-call')) { IBEForm.call(data, { wa: !!cfg.callWa, topic: cfg.callTopic }); if (window.IBELoader) IBELoader.busy(b, L('Agenda openen', 'Opening calendar'), 'luisteren', 1600); return; }
       if (b.dataset.extra != null) return cfg.extra[Number(b.dataset.extra)].onClick(data, steps);
     });
 
     function pdf(btn) {
-      if (window.IBELoader && btn) { IBELoader.busy(btn, 'PDF maken', 'maken', 1300); setTimeout(makePdf, 650); } else makePdf();
+      if (window.IBELoader && btn) { IBELoader.busy(btn, L('PDF maken', 'Making PDF'), 'maken', 1300); setTimeout(makePdf, 650); } else makePdf();
     }
     function makePdf() {
       const sections = steps.map((s) => ({ title: s.title, rows: s.fields.map((f) => [f.label, [valueText(f, data[f.id]), data[f.id + '__anders']].filter(Boolean).join(', ')]).filter((r) => r[1]) })).filter((s) => s.rows.length);
@@ -194,7 +208,9 @@
       if (data.email) u.searchParams.set('email', data.email);
       window.open(u.toString(), '_blank', 'noopener');
     } else {
-      const txt = `Hoi Bob, ${o.topic || `ik wil graag een call inplannen${data.bedrijf ? ' voor ' + data.bedrijf : ''}. ${c.callTopic || ''}`}`.trim();
+      const txt = EN
+        ? `Hi Bob, ${o.topic || `I'd like to book a call${data.bedrijf ? ' for ' + data.bedrijf : ''}. ${c.callTopicEn || ''}`}`.trim()
+        : `Hoi Bob, ${o.topic || `ik wil graag een call inplannen${data.bedrijf ? ' voor ' + data.bedrijf : ''}. ${c.callTopic || ''}`}`.trim();
       window.open(`https://wa.me/${c.wa}?text=${encodeURIComponent(txt)}`, '_blank', 'noopener');
     }
   };
@@ -207,7 +223,7 @@
 window.IBEPdf = {
   make({ title, sub, who, sections, filename, intro }) {
     const ascii = (s) => String(s || '').replace(/[–—]/g, '-').replace(/≈/g, 'ongeveer ').replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/×/g, 'x').replace(/✓/g, 'v');
-    if (!(window.jspdf && window.jspdf.jsPDF)) { alert('De PDF-maker kon niet laden. Ik open het printvenster, kies daar "Bewaar als PDF".'); window.print(); return; }
+    if (!(window.jspdf && window.jspdf.jsPDF)) { alert(window.IBEI18n && window.IBEI18n.en ? 'The PDF maker could not load. I\'ll open the print window, choose "Save as PDF" there.' : 'De PDF-maker kon niet laden. Ik open het printvenster, kies daar "Bewaar als PDF".'); window.print(); return; }
     const doc = new window.jspdf.jsPDF({ unit: 'pt', format: 'a4' });
     const M = 48, PW = 595, PH = 842, maxW = PW - M * 2;
     let y = 0;
@@ -218,7 +234,7 @@ window.IBEPdf = {
       doc.text('IBE MOTION', M, 34); doc.setCharSpace(0);
       doc.setTextColor(236, 238, 243); doc.setFontSize(19); doc.text(ascii(title), M, 60);
       doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(164, 170, 183);
-      const datum = new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+      const datum = new Date().toLocaleDateString(window.IBEI18n && window.IBEI18n.en ? 'en-GB' : 'nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
       doc.text(ascii([sub, who, datum].filter(Boolean).join('  ·  ')), M, 78);
       y = 124;
     };

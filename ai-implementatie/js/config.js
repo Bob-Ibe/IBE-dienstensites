@@ -12,4 +12,7 @@ window.IBE_CONFIG = {
   wa: '31655116082',
   mail: 'ibemotionmedia@gmail.com',
   callTopic: 'Het gaat over AI-implementatie.',
+  callTopicEn: "It's about AI implementation.",
+  // Prijsopbouw: hoeveel van de 4 plekken voor € 1.500 al vergeven zijn. Bij 4 van de 4 zet je de prijzen een trede op in index.html.
+  prijsPlekken: { bezet: 2, totaal: 4 },
 };

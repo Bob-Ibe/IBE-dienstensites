@@ -1,14 +1,16 @@
 // Gedrag van de Content Engine-pagina's: stippenveld, logo-morph, overgangen, rustig binnenkomen, reels, call-knoppen.
 (function () {
+  const TH = window.IBETheme ? IBETheme() : 'dark'; // licht of donker (js/theme.js)
   const hero = document.getElementById('hero-dots');
-  if (hero && window.IBEDots) IBEDots(hero, { theme: 'dark', lion: null }); // alleen nog een zachte textuur, de leeuw zit in de morph
+  if (hero && window.IBEDots) IBEDots(hero, { theme: TH, lion: null }); // alleen nog een zachte textuur, de leeuw zit in de morph
   const morph = document.getElementById('hero-morph');
   // onder de leeuw de namen van de pakketten
-  if (morph && window.IBEMorph) IBEMorph(morph, { theme: 'dark', shapes: ['leeuw', 'orb', 'kubus-producten', 'camera', 'play'], words: ['Aandrijving', 'Versnelling', 'Volle kracht'] });
-  if (window.IBEDither) document.querySelectorAll('canvas.fx-dither').forEach((c) => IBEDither(c, { top: c.dataset.top, bottom: c.dataset.bottom, mode: c.dataset.mode }));
+  if (morph && window.IBEMorph) IBEMorph(morph, { theme: TH, shapes: ['leeuw', 'orb', 'kubus-producten', 'camera', 'play'], words: ['Aandrijving', 'Versnelling', 'Volle kracht'] });
+  // in de lichte stand zijn alle vlakken licht, dan zijn de overgangen niet nodig (CSS verbergt ze)
+  if (window.IBEDither && TH === 'dark') document.querySelectorAll('canvas.fx-dither').forEach((c) => IBEDither(c, { top: c.dataset.top, bottom: c.dataset.bottom, mode: c.dataset.mode }));
   if (window.IBEFx) {
     IBEFx.words('.hero h1, .head h2, .problem .big');
-    IBEFx.highlight('.hl', 'zwerm'); // zwarte site: zwerm van dots rond de belangrijke woorden
+    IBEFx.highlight('.hl', TH === 'light' ? 'marker' : 'zwerm'); // donker: zwerm van dots rond de woorden, licht: halftone-marker
     IBEFx.count('.stat b, .fact b, .pack .count');
     IBEFx.sticky('Plan een meeting', '#start', '#start');
   }

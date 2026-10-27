@@ -92,3 +92,9 @@ html.ibe-intro-on { overflow: hidden; }
 }
 body.ibe-intro-land [data-land] { animation: ibeLandGlow 1.1s ease-out; }
 .wizard { scroll-margin-top: 90px; }
+
+/* bedrag onder een schuif met uren (veld met worth) */
+.f-worth { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin-top: 14px; }
+.f-worth b { font: 900 clamp(30px, 4vw, 42px)/1 'Doto', 'JetBrains Mono', monospace; color: #11131a; letter-spacing: -.01em; }
+.f-worth span { font-size: 14px; color: inherit; opacity: .75; }
+.f-worth small { flex-basis: 100%; font-size: 12.5px; opacity: .6; }
