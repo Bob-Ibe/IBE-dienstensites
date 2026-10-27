@@ -153,9 +153,10 @@
           <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="m8.6 10.6 6.8-3.2M8.6 13.4l6.8 3.2"/></svg></div><h3 data-i="wat.kopT">Koppelingen</h3><p data-i="wat.kop">Je systemen praten met elkaar. Geen overtypen meer van het ene programma in het andere.</p><span class="tag" data-i="wat.kopTag">Werkt met wat je al hebt</span></div>
           <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 8.7l5.4-.8z"/></svg></div><h3 data-i="wat.cusT">Maatwerk</h3><p data-i="wat.cus">We kijken wat voor jouw bedrijf het meeste waard is en bouwen precies dat. Een eigen klantportaal, een tool voor je werkvloer of iets wat nog niemand heeft.</p><span class="tag" data-i="wat.cusTag">Custom werk</span></div>
           <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M9 9.5h6M9 12.5h4"/></svg></div><h3 data-i="wat.swT">Eigen software in plaats van abonnementen</h3><p data-i="wat.sw">Betaal je elke maand voor software waar je maar een deel van gebruikt? Wij bouwen het na, precies zoals jullie werken. Zo bespaar je op de abonnementskosten.</p><span class="tag" data-i="wat.swTag">Bespaart abonnementskosten</span></div>
+          <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 8V4M9.5 13h.01M14.5 13h.01M9.5 16h5M3 12v3M21 12v3"/><circle cx="12" cy="3.5" r="1"/></svg></div><h3 data-i="wat.agT">AI-agents die zelf werken</h3><p data-i="wat.ag">Digitale collega's die taken echt uit handen nemen. Ze lezen mee, beslissen binnen jouw regels en voeren het werk zelf uit, ook buiten kantooruren.</p><span class="tag" data-i="wat.agTag">Werkt autonoom</span></div>
         </div>
       </div>
-      <div class="ring-meta" aria-hidden="true"><span class="ring-n" id="ring-n">01 / 09</span><div class="ring-dots" id="ring-dots"></div><span class="ring-hint" data-i="wat.hint">Scroll om te draaien</span></div>
+      <div class="ring-meta" aria-hidden="true"><span class="ring-n" id="ring-n">01 / 09</span><div class="ring-dots" id="ring-dots"></div></div>
     </div>
   </div>
 </section>
@@ -227,7 +228,7 @@
         <p class="sub" data-i="ti.sub">Wat we opleveren is veel waard. Daarom gaat de prijs omhoog per vier bedrijven die we geholpen hebben.</p>
       </div>
       <div class="tiers-val rv">
-        <span data-i="ti.val1">Bij gemiddeld 10 uur per week en € 50 per uur ga je erop vooruit met</span>
+        <span data-i="ti.val1">Bij gemiddeld <span class="hl">10 uur</span> per week en <span class="hl">€ 50</span> per uur ga je erop vooruit met</span>
         <b><span id="ti-month">€ 1.917</span> <i data-i="ti.pm">per maand</i></b>
         <small id="ti-year">Dat is € 23.000 per jaar.</small>
       </div>
@@ -314,7 +315,7 @@
       <div>
         <p class="kicker">Contact</p>
         <h2 data-i="ct.title">Even sparren?</h2>
-        <p class="dim" data-i="ct.sub">Bel me, stuur een appje of plan direct een call. In 30 minuten weet je hoeveel tijd er bij jou te winnen valt.</p>
+        <p class="dim" data-i="ct.sub">Bel me, stuur een appje of plan direct een call. In 30 minuten weet je hoeveel tijd er in jouw business te winnen valt.</p>
         <a class="btn red" href="#" data-call style="margin-top:12px"><span data-i="ct.call">Plan je call</span> <span class="arr">→</span></a>
       </div>
       <div class="contact-list">
@@ -388,7 +389,7 @@ const form = IBEForm(document.getElementById('wizard'), T({
       { id: 'telefoon', half: true, label: 'Telefoonnummer', type: 'tel', auto: 'tel' },
       { id: 'website', half: true, label: 'Website', type: 'url', placeholder: 'https://' },
       { id: 'team', label: 'Hoe groot is je team?', type: 'choice', options: ['1 tot 5', '6 tot 15', '16 tot 50', 'Meer dan 50'] },
-      { id: 'branche', label: 'In welke branche zit je?', type: 'choice', options: ['Activiteiten en events', 'Interieurzaak', 'Hovenier', 'Autogarage', 'Makelaar', 'Iets anders'] },
+      { id: 'branche', label: 'In welke branche zit je?', type: 'choice', options: ['Activiteiten en events', 'Interieurzaak', 'Hovenier', 'Autogarage', 'Makelaar', 'Textiel en kleding', 'Iets anders'] },
       { id: 'digitaal', label: 'Hoeveel mensen doen vooral werk op de computer?', type: 'text', placeholder: 'Bijv. 3' },
     ] },
     { title: 'Waar gaat de tijd heen?', short: 'Tijd', intro: 'Kort is goed. In de call en de onboarding gaan we dieper.', fields: [
@@ -423,7 +424,7 @@ const form = IBEForm(document.getElementById('wizard'), T({
       { id: 'telefoon', half: true, label: 'Phone number', type: 'tel', auto: 'tel' },
       { id: 'website', half: true, label: 'Website', type: 'url', placeholder: 'https://' },
       { id: 'team', label: 'How big is your team?', type: 'choice', options: ['1 to 5', '6 to 15', '16 to 50', 'More than 50'] },
-      { id: 'branche', label: 'What industry are you in?', type: 'choice', options: ['Activities and events', 'Interior store', 'Landscaping', 'Car garage', 'Real estate', 'Something else'] },
+      { id: 'branche', label: 'What industry are you in?', type: 'choice', options: ['Activities and events', 'Interior store', 'Landscaping', 'Car garage', 'Real estate', 'Textiles and clothing', 'Something else'] },
       { id: 'digitaal', label: 'How many people mainly work on a computer?', type: 'text', placeholder: 'E.g. 3' },
     ] },
     { title: 'Where does the time go?', short: 'Time', intro: 'Short is fine. We go deeper in the call and the onboarding.', fields: [

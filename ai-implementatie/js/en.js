@@ -89,7 +89,9 @@ window.IBE_EN = {
   'wat.swT': 'Your own software instead of subscriptions',
   'wat.sw': 'Paying every month for software you only use part of? We rebuild it, exactly the way you work. That saves you the subscription costs.',
   'wat.swTag': 'Saves subscription costs',
-  'wat.hint': 'Scroll to spin',
+  'wat.agT': 'AI agents that work on their own',
+  'wat.ag': 'Digital colleagues that really take tasks off your hands. They read along, decide within your rules and do the work themselves, also outside office hours.',
+  'wat.agTag': 'Works autonomously',
 
   'gar.seal': '<b>5</b>HOURS A<br>WEEK',
   'gar.title': 'If our systems don\'t save you five hours a week, you get <span class="hl">your money back</span>.',
@@ -132,7 +134,7 @@ window.IBE_EN = {
   'ti.kicker': 'Price structure',
   'ti.title': 'The sooner you start, the <span class="hl">better the deal</span>.',
   'ti.sub': 'What we deliver is worth a lot. That\'s why the price goes up for every four businesses we have helped.',
-  'ti.val1': 'At an average of 10 hours a week and €50 an hour, you gain',
+  'ti.val1': 'At an average of <span class="hl">10 hours</span> a week and <span class="hl">€50</span> an hour, you gain',
   'ti.pm': 'per month',
   'ti.1k': 'Step 1 · now',
   'ti.1t': 'The first 4 businesses',
@@ -177,7 +179,7 @@ window.IBE_EN = {
   'fq.6a': 'Then we adjust it. You can always reach me for questions and small changes, and we agree on bigger additions up front at a fixed price.',
 
   'ct.title': 'Want to talk it through?',
-  'ct.sub': 'Call me, send a message or book a call straight away. In 30 minutes you know how much time there is to win for you.',
+  'ct.sub': 'Call me, send a message or book a call straight away. In 30 minutes you know how much time there is to win in your business.',
   'ct.call': 'Book your call',
   'ct.tel': 'Phone',
   'ct.wa': 'Send a message',

@@ -431,7 +431,6 @@ footer img { width: 24px; }
 .ring-dots { display: flex; gap: 6px; }
 .ring-dots i { width: 7px; height: 7px; border-radius: 2px; background: var(--line-2); cursor: pointer; transition: background .25s, transform .25s; }
 .ring-dots i.on { background: var(--accent); transform: scale(1.35); }
-.ring-hint { font: 500 10.5px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); min-width: 64px; }
 
 /* branches: HQ-blok */
 .br-hq { display: grid; grid-template-columns: 38px 1fr; gap: 14px; margin-top: 18px; padding: 16px 18px; border-radius: 14px; background: var(--ink); color: #eceef3; }
@@ -488,5 +487,15 @@ footer img { width: 24px; }
   .lang-btn span { padding: 4px 7px; }
   .nav-r .btn { display: none; } /* op mobiel staat de knop onderin (fx-sticky) */
   .ring-on .head .sub { display: none; }
-  .ring-hint { display: none; }
 }
+
+/* branches: AI-agent en contentdistributie */
+.br-agent { display: grid; grid-template-columns: 38px 1fr; gap: 14px; margin-top: 12px; padding: 16px 18px; border-radius: 14px; border: 1px solid rgba(var(--accent-rgb), .3); background: var(--accent-soft); }
+.br-agent b { display: block; font: 600 15px var(--font-display); margin-bottom: 4px; }
+.br-agent p { margin: 0; font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+.br-agent-ico { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; background: var(--accent); color: #fff; }
+.br-agent-ico svg { width: 20px; height: 20px; }
+.br-content { border-color: var(--line-2); background: var(--panel-2); }
+.br-content .br-agent-ico { background: var(--ink); }
+.br-hq { margin-top: 12px; }
+.tiers-val .hl { color: var(--ink); font-weight: 700; }
