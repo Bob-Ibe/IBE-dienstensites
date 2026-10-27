@@ -499,3 +499,22 @@ footer img { width: 24px; }
 .tiers-val .hl { color: var(--ink); font-weight: 700; }
 .br-build li b { color: var(--text); }
 .br-sys span.more { background: none; border-style: dashed; color: var(--accent); }
+
+/* telefoon: laatste afwerking */
+@media (max-width: 560px) {
+  .hero .eyebrow { font-size: 12px; letter-spacing: .02em; padding: 0 6px; border: 0; background: none; line-height: 1.5; }
+  .vsl .corner { display: none; }
+  .vsl .vsl-in { gap: 10px; padding: 14px; }
+  .vsl .play { width: 58px; height: 58px; box-shadow: 0 0 0 7px rgba(var(--accent-rgb), 0.18), 0 0 30px rgba(var(--accent-rgb), 0.6); }
+  .vsl .play svg { width: 22px; height: 22px; margin-left: 3px; }
+  .vsl b { font-size: 16px; }
+  .vsl small { font-size: 12.5px; }
+  .calc, .contact { padding: 20px; }
+  .calc .rng { gap: 12px; }
+  .calc .rng b { white-space: nowrap; }
+  .result { padding: 22px 18px; }
+  .payback { padding: 14px; }
+  .pb-bars div { grid-template-columns: 82px 1fr auto; }
+  .br-row.t span:nth-child(2) { display: none; }
+  .br-row.t span:last-child { grid-column: 2 / -1; font-size: 16px !important; }
+}

@@ -435,10 +435,14 @@
     sticky(label, href, hideAt) {
       const a = Object.assign(document.createElement('a'), { className: 'fx-sticky', href, innerHTML: `<span>${label}</span><b>→</b>` });
       document.body.appendChild(a);
-      const target = hideAt && document.querySelector(hideAt);
-      let inTarget = false;
-      if (target && 'IntersectionObserver' in window) new IntersectionObserver((en) => { inTarget = en[0].isIntersecting; upd(); }).observe(target);
-      function upd() { a.classList.toggle('on', scrollY > innerHeight * 0.7 && !inTarget); }
+      // hideAt mag een lijst selectors zijn ('#start, .contact, footer'): zodra een daarvan in beeld is, gaat de knop weg
+      const targets = hideAt ? Array.from(document.querySelectorAll(hideAt)) : [];
+      const seen = new Set();
+      if (targets.length && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver((en) => { en.forEach((x) => (x.isIntersecting ? seen.add(x.target) : seen.delete(x.target))); upd(); });
+        targets.forEach((t) => io.observe(t));
+      }
+      function upd() { a.classList.toggle('on', scrollY > innerHeight * 0.7 && !seen.size); }
       addEventListener('scroll', upd, { passive: true }); upd();
     },
   };

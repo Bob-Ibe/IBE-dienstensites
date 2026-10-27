@@ -1,3 +1,6 @@
+/* niets mag breder zijn dan het scherm: voorkomt zijwaarts schuiven op iPhone (ook bij de 3D-ring) */
+html, body { overflow-x: clip; }
+
 /* IBE MOTION · gedeelde effecten (zelfde bestand in beide mappen). Gebruikt de kleuren en fonts van de site. */
 
 /* logo-morph */

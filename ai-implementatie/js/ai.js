@@ -25,7 +25,7 @@
     IBEFx.words('.hero h1, .head h2');
     IBEFx.highlight('.hl', 'marker'); // witte site: halftone-marker achter de belangrijke woorden
     IBEFx.count('.guarantee .seal b');
-    IBEFx.sticky(T('Plan een inventarisatie', 'Book an intake'), '#start', '#start');
+    IBEFx.sticky(T('Plan een inventarisatie', 'Book an intake'), '#start', '#start, .contact, footer');
   }
 
   const io = 'IntersectionObserver' in window ? new IntersectionObserver((en) => en.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.12 }) : null;
