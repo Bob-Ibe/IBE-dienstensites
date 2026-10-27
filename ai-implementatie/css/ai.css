@@ -485,7 +485,7 @@ footer img { width: 24px; }
 }
 @media (max-width: 560px) {
   .lang-btn span { padding: 4px 7px; }
-  .nav-r .btn { display: none; } /* op mobiel staat de knop onderin (fx-sticky) */
+  .nav-r .btn { display: none; } /* past niet naast de taalknop; de hero heeft zelf knoppen */
   .ring-on .head .sub { display: none; }
 }
 

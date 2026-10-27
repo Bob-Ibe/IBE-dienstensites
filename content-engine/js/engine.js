@@ -10,7 +10,6 @@
     IBEFx.words('.hero h1, .head h2, .problem .big');
     IBEFx.highlight('.hl', 'zwerm'); // zwarte site: zwerm van dots rond de belangrijke woorden
     IBEFx.count('.stat b, .fact b, .pack .count');
-    IBEFx.sticky('Plan een meeting', '#start', '#start, .contact, footer');
   }
 
   const io = 'IntersectionObserver' in window ? new IntersectionObserver((en) => en.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.15 }) : null;
