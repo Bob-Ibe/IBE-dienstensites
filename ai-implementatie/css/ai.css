@@ -498,3 +498,4 @@ footer img { width: 24px; }
 .br-hq { margin-top: 12px; }
 .tiers-val .hl { color: var(--ink); font-weight: 700; }
 .br-build li b { color: var(--text); }
+.br-sys span.more { background: none; border-style: dashed; color: var(--accent); }
