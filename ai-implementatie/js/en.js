@@ -132,7 +132,7 @@ window.IBE_EN = {
   'pr.text': 'A fixed price after the intro call, paid in full up front. With the 5-hours-a-week guarantee and 2 months of aftercare.',
 
   'ti.kicker': 'Price structure',
-  'ti.title': 'The sooner you start, the <span class="hl">better the deal</span>.',
+  'ti.title': 'The sooner you start, the <span class="hl">sharper the price</span> in your niche.',
   'ti.sub': 'What we deliver is worth a lot. That\'s why the price goes up for every four businesses we have helped.',
   'ti.val1': 'At an average of <span class="hl">10 hours</span> a week and <span class="hl">€50</span> an hour, you gain',
   'ti.pm': 'per month',
