@@ -167,31 +167,47 @@
   $('c-plus').onclick = () => { people = Math.min(50, people + 1); calc(); };
   $('c-hours').oninput = calc; $('c-rate').oninput = calc;
   calc();
-  // Scrol je na de rekensom verder, dan blijft de kaart even staan en loopt een rode markering achter het aantal uren
-  // mee met het scrollen. Is hij vol, dan scrolt de pagina gewoon door. Past de kaart niet in beeld (telefoon), dan
-  // vult de markering zich zodra het resultaat in beeld komt.
+  // Scrol je na de rekensom verder, dan blijft de kaart even staan en wordt de halftone-marker achter het aantal uren
+  // van links naar rechts onthuld. Is hij vol, dan scrolt de pagina gewoon door. Dit werkt alleen vooruit: scrol je
+  // daarna omhoog, dan blijft de marker staan en scrolt de kaart gewoon mee (geen animatie terug). Pas als de kaart
+  // onder het scherm verdwenen is, begint hij bij een volgende keer opnieuw. Past de kaart niet in beeld (telefoon),
+  // dan vult de marker zich zodra het resultaat in beeld komt.
   (function hours() {
     const sec = $('rekensom'), run = sec.querySelector('.calc-run'), card = sec.querySelector('.calc'), big = $('r-hours');
     if (!run || !card) return;
-    const set = (p) => { big.style.setProperty('--p', clamp(p).toFixed(3)); big.classList.toggle('lit', p >= 0.98); };
+    if (window.IBEHighlight) IBEHighlight(big, 'marker'); // zelfde markeerstift als "5 tot 15 uur" in de hero
+    const set = (p) => big.style.setProperty('--p', clamp(p).toFixed(3));
     if (reduce) { set(1); return; }
-    // De kaart schuift met het scrollen mee (transform), zodat hij stil lijkt te staan tot de markering vol is.
-    let on = false, top = 0, len = 1, ticking = false;
+    // De kaart schuift met het scrollen mee (transform), zodat hij stil lijkt te staan tot de marker vol is.
+    let on = false, top = 0, len = 1, ticking = false, done = false, released = false, lastY = scrollY;
     function size() {
       const fits = innerWidth > 1000 && innerHeight > card.offsetHeight + 90;
       if (fits !== on) { on = fits; sec.classList.toggle('pin', on); if (!on) { run.style.paddingBottom = ''; card.style.transform = ''; } }
       if (!on) return;
       len = Math.round(innerHeight * 0.7);
-      run.style.paddingBottom = len + 'px';
+      if (!released) run.style.paddingBottom = len + 'px';
       const sticky = Math.max(76, Math.round((innerHeight - card.offsetHeight) / 2));
       top = run.getBoundingClientRect().top + scrollY - sticky;
       draw();
     }
     function draw() {
       ticking = false; if (!on) return;
-      const p = clamp((scrollY - top) / len);
+      const y = scrollY, up = y < lastY; lastY = y;
+      if (released) {
+        // opnieuw klaarzetten zodra de kaart onder het scherm uit is (dan ziet niemand de uitloop terugkomen)
+        if (card.getBoundingClientRect().top > innerHeight) { released = done = false; run.style.paddingBottom = len + 'px'; set(0); }
+        return;
+      }
+      if (done && up) {
+        // omhoog: de uitloop onder de kaart weghalen en precies zoveel terugscrollen dat niets verspringt
+        released = true; run.style.paddingBottom = '0px'; card.style.transform = '';
+        scrollTo(0, y >= top + len ? y - len : top); lastY = scrollY;
+        return;
+      }
+      const p = clamp((y - top) / len);
       set(p);
       card.style.transform = p > 0 ? `translateY(${Math.round(p * len)}px)` : '';
+      if (p >= 1) done = true;
     }
     addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(draw); } }, { passive: true });
     addEventListener('resize', size);

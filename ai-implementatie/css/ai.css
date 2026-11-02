@@ -146,10 +146,10 @@ input[type=range] { accent-color: var(--accent); }
 .result { background: #0b0d12; color: #eceef3; border-radius: 18px; padding: 30px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
 .result .rl { font: 500 11px var(--font-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--sand); }
 .result .rbig { font: 800 clamp(58px, 7.6vw, 100px)/1 var(--font-num); letter-spacing: -.02em; margin: 10px 0 6px; }
-/* de rode markering achter het aantal uren loopt mee met het scrollen (--p van 0 tot 1, zie hours() in js/ai.js) */
-.result .rbig { --p: 0; display: inline-block; align-self: flex-start; padding: .06em .12em; margin-left: -.12em; border-radius: .12em;
-  background: linear-gradient(90deg, var(--accent), var(--accent)) no-repeat 0 0 / calc(var(--p) * 100%) 100%; transition: box-shadow .4s; }
-.result .rbig.lit { box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .35), 0 0 40px rgba(var(--accent-rgb), .45); }
+/* dezelfde halftone-markeerstift als "5 tot 15 uur" in de hero, van links naar rechts onthuld met het scrollen
+   (--p van 0 tot 1, zie hours() in js/ai.js) */
+.result .rbig { --p: 0; display: inline-block; align-self: flex-start; }
+.result .rbig > .hl-canvas { clip-path: inset(0 calc((1 - var(--p)) * 100%) 0 0); }
 .calc-band.pin .calc.in { transition: none; will-change: transform; }
 .result .rsub { color: #a4aab7; font-size: 15px; }
 .result .chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 26px; position: relative; }
