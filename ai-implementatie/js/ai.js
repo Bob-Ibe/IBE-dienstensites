@@ -179,14 +179,25 @@
     const set = (p) => big.style.setProperty('--p', clamp(p).toFixed(3));
     if (reduce) { set(1); return; }
     // De kaart schuift met het scrollen mee (transform), zodat hij stil lijkt te staan tot de marker vol is.
-    let on = false, top = 0, len = 1, ticking = false, done = false, released = false, lastY = scrollY;
+    let on = false, top = 0, len = 1, sticky = 0, ticking = false, p = 0, released = false, lastY = scrollY, anim = 0;
+    // De uitloop (padding onder de kaart) verschuift alles wat eronder staat. De ring en de prijstrap meten hun
+    // positie alleen bij resize, dus na elke verandering van de uitloop krijgen ze een resize-seintje.
+    const runway = (px) => { run.style.paddingBottom = px + 'px'; dispatchEvent(new Event('resize')); };
+    // de marker rustig vol laten lopen (als je halverwege al omhoog scrolt)
+    function finish() {
+      cancelAnimationFrame(anim);
+      const from = p, t0 = performance.now();
+      const step = (now) => { const k = Math.min(1, (now - t0) / 500); p = from + (1 - from) * (1 - Math.pow(1 - k, 3)); set(p); if (k < 1) anim = requestAnimationFrame(step); };
+      anim = requestAnimationFrame(step);
+    }
     function size() {
       const fits = innerWidth > 1000 && innerHeight > card.offsetHeight + 90;
       if (fits !== on) { on = fits; sec.classList.toggle('pin', on); if (!on) { run.style.paddingBottom = ''; card.style.transform = ''; } }
       if (!on) return;
       len = Math.round(innerHeight * 0.7);
-      if (!released) run.style.paddingBottom = len + 'px';
-      const sticky = Math.max(76, Math.round((innerHeight - card.offsetHeight) / 2));
+      if (!released && run.style.paddingBottom !== len + 'px') run.style.paddingBottom = len + 'px';
+      // de kaart staat net onder de navigatie; niet te laag, zodat er onder de kaart alleen band zichtbaar is
+      sticky = Math.max(76, Math.min(100, Math.round((innerHeight - card.offsetHeight) / 2)));
       top = run.getBoundingClientRect().top + scrollY - sticky;
       draw();
     }
@@ -195,19 +206,22 @@
       const y = scrollY, up = y < lastY; lastY = y;
       if (released) {
         // opnieuw klaarzetten zodra de kaart onder het scherm uit is (dan ziet niemand de uitloop terugkomen)
-        if (card.getBoundingClientRect().top > innerHeight) { released = done = false; run.style.paddingBottom = len + 'px'; set(0); }
+        if (card.getBoundingClientRect().top > innerHeight) { released = false; p = 0; set(0); runway(len); }
         return;
       }
-      if (done && up) {
-        // omhoog: de uitloop onder de kaart weghalen en precies zoveel terugscrollen dat niets verspringt
-        released = true; run.style.paddingBottom = '0px'; card.style.transform = '';
-        scrollTo(0, y >= top + len ? y - len : top); lastY = scrollY;
+      if (up && p > 0) {
+        // omhoog: niets terugspelen. Uitloop weg, kaart los, en precies zoveel terugscrollen dat niets verspringt.
+        // (scroll-behavior op de pagina is smooth, dus hier uitdrukkelijk instant)
+        released = true; card.style.transform = '';
+        if (p < 1) finish();
+        const to = y >= top + len ? y - len : y >= top ? top : y;
+        runway(0);
+        scrollTo({ top: to, behavior: 'instant' }); lastY = scrollY;
         return;
       }
-      const p = clamp((y - top) / len);
+      p = clamp((y - top) / len);
       set(p);
       card.style.transform = p > 0 ? `translateY(${Math.round(p * len)}px)` : '';
-      if (p >= 1) done = true;
     }
     addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(draw); } }, { passive: true });
     addEventListener('resize', size);
