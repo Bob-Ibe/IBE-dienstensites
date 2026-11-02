@@ -37,14 +37,17 @@
 
   /* ---------- je week, voor en na ---------- */
   // Per dag blokken van 8:00 tot 18:00. a = terugkerend computerwerk, s = uren die we eraf halen (samen 10 uur).
-  const MAIL = T('Mail en klantvragen', 'Email and questions'), KW = T('Klantwerk', 'Client work'), OFF = T('Offertes maken', 'Making quotes'),
+  // Elke ochtend begint met de inbox, maar niet elke dag hetzelfde: per dag een andere variant.
+  const MAILS = T(['Mail en klantvragen', 'Inbox en terugbelverzoeken', 'Klantvragen via mail en WhatsApp', 'Mail en bevestigingen', 'Inbox leegmaken en nabellen'],
+    ['Email and questions', 'Inbox and call-back requests', 'Questions via email and WhatsApp', 'Email and confirmations', 'Clearing the inbox and calling back']);
+  const KW = T('Klantwerk', 'Client work'), OFF = T('Offertes maken', 'Making quotes'),
     FAC = T('Facturen en bonnetjes', 'Invoices and receipts'), PLAN = T('Planning', 'Planning');
   const WEEK = [
-    [T('Ma', 'Mon'), [[MAIL, 1, 1, 0.75], [KW, 3], [OFF, 1.5, 1, 1], [KW, 2.5], [FAC, 1, 1, 0.5], [PLAN, 1, 1, 0.5]]],
-    [T('Di', 'Tue'), [[MAIL, 1.5, 1, 0.75], [KW, 4], [T('Overtypen tussen systemen', 'Retyping between systems'), 1, 1, 0.75], [KW, 3], [T('Afspraken heen en weer', 'Scheduling back and forth'), 0.5, 1, 0.25]]],
-    [T('Wo', 'Wed'), [[MAIL, 1, 1, 0.75], [KW, 3.5], [OFF, 1.5, 1, 0.75], [KW, 3], [T('Rapportage', 'Reporting'), 1, 1, 0.5]]],
-    [T('Do', 'Thu'), [[MAIL, 1, 1, 0.5], [KW, 4], [FAC, 1, 1, 0.75], [KW, 3], [PLAN, 1, 1, 0.25]]],
-    [T('Vr', 'Fri'), [[MAIL, 1, 1, 0.5], [KW, 3.5], [T('Weekoverzicht maken', 'Weekly overview'), 1.5, 1, 1], [KW, 2], [T('Administratie bijwerken', 'Updating admin'), 2, 1, 0.5]]],
+    [T('Ma', 'Mon'), [[MAILS[0], 1, 1, 0.75], [KW, 3], [OFF, 1.5, 1, 1], [KW, 2.5], [FAC, 1, 1, 0.5], [PLAN, 1, 1, 0.5]]],
+    [T('Di', 'Tue'), [[MAILS[1], 1.5, 1, 0.75], [KW, 4], [T('Overtypen tussen systemen', 'Retyping between systems'), 1, 1, 0.75], [KW, 3], [T('Afspraken heen en weer', 'Scheduling back and forth'), 0.5, 1, 0.25]]],
+    [T('Wo', 'Wed'), [[MAILS[2], 1, 1, 0.75], [KW, 3.5], [OFF, 1.5, 1, 0.75], [KW, 3], [T('Rapportage', 'Reporting'), 1, 1, 0.5]]],
+    [T('Do', 'Thu'), [[MAILS[3], 1, 1, 0.5], [KW, 4], [FAC, 1, 1, 0.75], [KW, 3], [PLAN, 1, 1, 0.25]]],
+    [T('Vr', 'Fri'), [[MAILS[4], 1, 1, 0.5], [KW, 3.5], [T('Weekoverzicht maken', 'Weekly overview'), 1.5, 1, 1], [KW, 2], [T('Administratie bijwerken', 'Updating admin'), 2, 1, 0.5]]],
   ];
   const AUTO = [[T('Mail gesorteerd, antwoord klaargezet', 'Email sorted, reply drafted'), 0.12], [T('Offertes in minuten', 'Quotes in minutes'), 0.3], [T('Facturen verwerkt', 'Invoices processed'), 0.5], [T('Systemen praten met elkaar', 'Systems talk to each other'), 0.68], [T('Weekoverzicht staat klaar', 'Weekly overview ready'), 0.85]];
   const USE = [[T('Groei', 'Growth'), '#c49a6c', (h) => T(`<b>${nl((h * WEEKS) / 40, 1)} werkweken</b> extra voor groei`, `<b>${nl((h * WEEKS) / 40, 1)} work weeks</b> extra for growth`)],
@@ -53,9 +56,10 @@
     [T('Jezelf', 'Yourself'), '#8a9bd0', (h) => T(`<b>${nl(h * WEEKS)} uur</b> voor sport, rust of nieuwe ideeën`, `<b>${nl(h * WEEKS)} hours</b> for sport, rest or new ideas`)]];
   let use = 0;
   const TOTAL = WEEK.reduce((t, [, bl]) => t + bl.reduce((u, b) => u + (b[3] || 0), 0), 0);
+  // De rode blokken krimpen en de vrijgekomen uren van een dag komen samen in één groot blok onderaan de dag.
   $('wk-grid').innerHTML = WEEK.map(([d, bl]) => `<div class="wk-day"><span class="wk-d">${d}</span><div class="wk-col">${bl.map((b) => b[2]
-    ? `<div class="wk-b a" style="flex-grow:${b[1]}" data-d="${b[1]}" data-s="${b[3]}"><i class="wk-red"><span>${b[0]}</span></i><i class="wk-free"><span>${T('vrij', 'free')}</span></i></div>`
-    : `<div class="wk-b k" style="flex-grow:${b[1]}"><span>${b[0]}</span></div>`).join('')}</div></div>`).join('')
+    ? `<div class="wk-b a" style="flex-grow:${b[1]}" data-d="${b[1]}" data-s="${b[3]}"><i class="wk-red"><span>${b[0]}</span></i></div>`
+    : `<div class="wk-b k" style="flex-grow:${b[1]}"><span>${b[0]}</span></div>`).join('')}<div class="wk-b sum" style="flex-grow:0"><b>0</b><span class="sum-l"></span></div></div></div>`).join('')
     + '<div class="wk-hours">' + Array.from({ length: 6 }, (_, i) => `<span>${8 + i * 2}:00</span>`).join('') + '</div>';
   // Pixelmannetjes aan het werk in de blokken met klantwerk: box 1, 3 en 5 (bovenste rij) en 7 en 9 (onderste rij).
   // Elk doet iets anders op zijn scherm: planning, rapportage, offertes, facturen en administratie.
@@ -99,11 +103,18 @@
   $('wk-use').innerHTML = USE.map(([l, col], i) => `<button type="button" class="${i === use ? 'on' : ''}" data-u="${i}" style="--c:${col}">${l}</button>`).join('');
   function week() {
     const v = +$('wk-r').value / 100, free = TOTAL * v;
-    document.querySelectorAll('.wk-b.a').forEach((b) => {
-      const d = +b.dataset.d, sv = +b.dataset.s * v;
-      b.querySelector('.wk-red').style.flexGrow = d - sv;
-      b.querySelector('.wk-free').style.flexGrow = sv;
-      b.classList.toggle('freed', sv > 0.15);
+    document.querySelectorAll('.wk-day').forEach((day) => {
+      let f = 0;
+      day.querySelectorAll('.wk-b.a').forEach((b) => {
+        const d = +b.dataset.d, sv = +b.dataset.s * v; f += sv;
+        b.style.flexGrow = d - sv;
+        b.classList.toggle('gone', d - sv < 0.3);
+      });
+      const sum = day.querySelector('.wk-b.sum');
+      sum.style.flexGrow = f;
+      sum.classList.toggle('on', f > 0.4);
+      sum.querySelector('b').textContent = uur(Math.round(f * 4) / 4);
+      sum.querySelector('.sum-l').textContent = USE[use][0].toLowerCase();
     });
     document.querySelectorAll('.wk-a').forEach((el, i) => el.classList.toggle('on', v >= AUTO[i][1]));
     const h = Math.round(free * 2) / 2;
@@ -112,7 +123,6 @@
     $('wk-title-h').textContent = uur(Math.round(TOTAL));
     const [, col, txt] = USE[use];
     document.querySelector('.week').style.setProperty('--use', col);
-    document.querySelectorAll('.wk-free span').forEach((s) => (s.textContent = USE[use][0].toLowerCase()));
     $('wk-year').innerHTML = v ? T('Per jaar: ', 'Per year: ') + txt(h) + '.' : '&nbsp;';
   }
   $('wk-r').addEventListener('input', week);
@@ -157,6 +167,49 @@
   $('c-plus').onclick = () => { people = Math.min(50, people + 1); calc(); };
   $('c-hours').oninput = calc; $('c-rate').oninput = calc;
   calc();
+  // Scrol je na de rekensom verder, dan blijft de kaart even staan en loopt een rode markering achter het aantal uren
+  // mee met het scrollen. Is hij vol, dan scrolt de pagina gewoon door. Past de kaart niet in beeld (telefoon), dan
+  // vult de markering zich zodra het resultaat in beeld komt.
+  (function hours() {
+    const sec = $('rekensom'), run = sec.querySelector('.calc-run'), card = sec.querySelector('.calc'), big = $('r-hours');
+    if (!run || !card) return;
+    const set = (p) => { big.style.setProperty('--p', clamp(p).toFixed(3)); big.classList.toggle('lit', p >= 0.98); };
+    if (reduce) { set(1); return; }
+    // De kaart schuift met het scrollen mee (transform), zodat hij stil lijkt te staan tot de markering vol is.
+    let on = false, top = 0, len = 1, ticking = false;
+    function size() {
+      const fits = innerWidth > 1000 && innerHeight > card.offsetHeight + 90;
+      if (fits !== on) { on = fits; sec.classList.toggle('pin', on); if (!on) { run.style.paddingBottom = ''; card.style.transform = ''; } }
+      if (!on) return;
+      len = Math.round(innerHeight * 0.7);
+      run.style.paddingBottom = len + 'px';
+      const sticky = Math.max(76, Math.round((innerHeight - card.offsetHeight) / 2));
+      top = run.getBoundingClientRect().top + scrollY - sticky;
+      draw();
+    }
+    function draw() {
+      ticking = false; if (!on) return;
+      const p = clamp((scrollY - top) / len);
+      set(p);
+      card.style.transform = p > 0 ? `translateY(${Math.round(p * len)}px)` : '';
+    }
+    addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(draw); } }, { passive: true });
+    addEventListener('resize', size);
+    if ('ResizeObserver' in window) new ResizeObserver(size).observe(card);
+    if (document.fonts) document.fonts.ready.then(size);
+    size();
+    // telefoon of een laag scherm: vullen zodra het resultaat goed in beeld is
+    if ('IntersectionObserver' in window) {
+      const mio = new IntersectionObserver((en) => {
+        if (on || !en[0].isIntersecting) return;
+        mio.disconnect();
+        const t0 = performance.now();
+        const step = (now) => { const k = Math.min(1, (now - t0) / 900); set(1 - Math.pow(1 - k, 3)); if (k < 1) requestAnimationFrame(step); };
+        requestAnimationFrame(step);
+      }, { threshold: 0.6 });
+      mio.observe(sec.querySelector('.result'));
+    }
+  })();
 
   /* ---------- wat we overnemen: draaiende ring ---------- */
   // De sectie blijft staan terwijl je scrolt; de 9 blokken draaien als een ring langs. Het voorste blok is scherp,
@@ -223,6 +276,9 @@
   // De belangrijkste koppelingen voor bedrijven, voor elke branche hetzelfde (er kan veel meer)
   const CONNECT = ['Gmail', 'Outlook', T('Google Agenda', 'Google Calendar'), 'WhatsApp Business', 'Microsoft Teams', 'Slack', 'Google Drive', 'Excel', 'Exact', 'Moneybird', 'HubSpot', 'Shopify', 'Mollie'];
   const HQ_TASK = T('Overzicht zoeken: cijfers, planning, lopende zaken', 'Searching for overview: numbers, planning, open items');
+  // Voor elke branche hetzelfde: video's maken en plaatsen kost elke week uren, daar bouwen we een systeem voor.
+  const CONTENT_BUILD = T('We bouwen een <b>content creatie- en distributiesysteem</b>. Dat lost op dat video\'s maken en plaatsen elke week uren kost.',
+    'We build a <b>content creation and distribution system</b>. That solves making and posting videos eating up hours every week.');
   const BR = [
     { id: 'events', tab: T('Activiteiten en events', 'Activities and events'), who: T('Klimhal of groepsuitje', 'Climbing gym or group outing'),
       intro: T('Klimhallen, escape rooms, groepsuitjes en andere zaken waar mensen een tijd boeken. Veel vragen, veel heen en weer, veel bevestigingen.', 'Climbing gyms, escape rooms, group outings and other places where people book a time slot. Lots of questions, lots of back and forth, lots of confirmations.'),
@@ -270,8 +326,7 @@
       <div class="br-table"><div class="br-row h"><span>${T('Waar de tijd nu heen gaat', 'Where the time goes now')}</span><span>${T('Nu', 'Now')}</span><span>${T('Straks', 'After')}</span></div>
       ${b.tasks.map(([t, a, z]) => `<div class="br-row"><span>${t}</span><span>${uur(a)}</span><span class="z">${uur(z)}</span></div>`).join('')}
       <div class="br-row t"><span>${T('Terug per week', 'Back per week')}</span><span></span><span>${uur(s)}</span></div></div>
-      <p class="br-k">${T('Wat we bouwen', 'What we build')}</p><ul class="br-build">${b.build.map((x) => `<li><span>${x}</span></li>`).join('')}</ul>
-      <div class="br-agent"><span class="br-agent-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 8V4M9.5 13h.01M14.5 13h.01M9.5 16h5"/><circle cx="12" cy="3.5" r="1"/></svg></span><div><b>${T('Je AI-agent die je systemen aanstuurt', 'Your AI agent that runs your systems')}</b><p>${T('Een digitale collega die zelfstandig werkt en je systemen aan elkaar knoopt. Welke taken hij krijgt, bepalen we samen. Dat is bij elk bedrijf net anders.', 'A digital colleague that works on its own and ties your systems together. Which tasks it gets, we decide together. That is different for every business.')}</p></div></div>
+      <p class="br-k">${T('Wat we bouwen', 'What we build')}</p><ul class="br-build">${[...b.build, CONTENT_BUILD].map((x) => `<li><span>${x}</span></li>`).join('')}</ul>
       <div class="br-hq"><span class="br-hq-ico" aria-hidden="true"><i></i><i></i><i></i><i></i></span><div><b>${T('Inclusief je Business Operations HQ', 'Including your Business Operations HQ')}</b>
         <p>${T('Al je bedrijfsdata in één overzicht', 'All your business data in one overview')}: ${b.hq.charAt(0).toLowerCase() + b.hq.slice(1)} ${T('Geen gezoek meer in vijf programma\'s, en veel meer ruimte in je hoofd.', 'No more searching through five programs, and a lot more room in your head.')}</p></div></div>
       <p class="br-k">${T('Koppelt met', 'Connects with')}</p><div class="br-sys">${CONNECT.map((x) => `<span>${x}</span>`).join('')}<span class="more">${T('en nog veel meer', 'and many more')}</span></div>`;

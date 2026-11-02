@@ -144,9 +144,13 @@ input[type=range] { accent-color: var(--accent); }
 .calc input[type=range] { width: 100%; margin: 10px 0 2px; }
 .calc .scale { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; }
 .result { background: #0b0d12; color: #eceef3; border-radius: 18px; padding: 30px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
-.result::before { content: ""; position: absolute; right: -80px; top: -80px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(circle, rgba(var(--accent-rgb), 0.35), transparent 70%); }
 .result .rl { font: 500 11px var(--font-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--sand); }
 .result .rbig { font: 800 clamp(58px, 7.6vw, 100px)/1 var(--font-num); letter-spacing: -.02em; margin: 10px 0 6px; }
+/* de rode markering achter het aantal uren loopt mee met het scrollen (--p van 0 tot 1, zie hours() in js/ai.js) */
+.result .rbig { --p: 0; display: inline-block; align-self: flex-start; padding: .06em .12em; margin-left: -.12em; border-radius: .12em;
+  background: linear-gradient(90deg, var(--accent), var(--accent)) no-repeat 0 0 / calc(var(--p) * 100%) 100%; transition: box-shadow .4s; }
+.result .rbig.lit { box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .35), 0 0 40px rgba(var(--accent-rgb), .45); }
+.calc-band.pin .calc.in { transition: none; will-change: transform; }
 .result .rsub { color: #a4aab7; font-size: 15px; }
 .result .chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 26px; position: relative; }
 .result .chip { border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px 14px; }
@@ -188,13 +192,17 @@ h2.xl { font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; }
 .wk-col { display: flex; flex-direction: column; gap: 3px; height: 400px; }
 .wk-b { display: flex; flex-direction: column; gap: 3px; min-height: 0; border-radius: 8px; }
 .wk-b.k { background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.06); padding: 6px 8px; font-size: 11.5px; color: #6c7280; overflow: hidden; }
-.wk-b.a i { display: flex; align-items: flex-start; min-height: 0; overflow: hidden; border-radius: 8px; font-style: normal; font-size: 11.5px; line-height: 1.25; transition: flex-grow .25s ease; }
+.wk-b.a { transition: flex-grow .25s ease, opacity .25s; }
+.wk-b.a i { display: flex; flex: 1; align-items: flex-start; min-height: 0; overflow: hidden; border-radius: 8px; font-style: normal; font-size: 11.5px; line-height: 1.25; }
 .wk-b.a .wk-red { background: linear-gradient(180deg, rgba(var(--accent-rgb), .92), rgba(var(--accent-rgb), .7)); color: #fff; padding: 0 8px; }
 .wk-b.a .wk-red span { padding-top: 6px; }
-.wk-b.a .wk-free { flex-grow: 0; background: color-mix(in srgb, var(--use) 22%, transparent); border: 1px dashed var(--use); color: var(--use); padding: 0 8px; font-weight: 600; }
-.wk-b.a .wk-free span { padding-top: 4px; opacity: 0; transition: opacity .3s; }
-.wk-b.freed .wk-free span { opacity: 1; }
-.wk-b.a:not(.freed) .wk-free { border-width: 0; }
+.wk-b.a.gone { opacity: .35; }
+/* de vrijgekomen uren van een dag, samen in één blok onderaan */
+.wk-b.sum { align-items: center; justify-content: center; gap: 2px; overflow: hidden; background: color-mix(in srgb, var(--use) 20%, transparent); border: 1.5px dashed var(--use); color: var(--use); transition: flex-grow .25s ease, border-color .3s, background .3s; }
+.wk-b.sum > * { opacity: 0; transition: opacity .3s; }
+.wk-b.sum.on > * { opacity: 1; }
+.wk-b.sum b { font: 800 clamp(16px, 1.8vw, 24px)/1 var(--font-num); color: #fff; white-space: nowrap; }
+.wk-b.sum .sum-l { font: 600 11px var(--font); letter-spacing: .04em; text-transform: uppercase; }
 .wk-hours { display: flex; flex-direction: column; justify-content: space-between; padding: 22px 0 0; font: 500 10px var(--font-mono); color: #6c7280; }
 .wk-auto, .wk-use { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.08); }
 .wk-auto-t { font: 500 10.5px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--sand); min-width: 150px; }
@@ -210,7 +218,7 @@ h2.xl { font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; }
 /* pixelmannetjes aan het werk in de blokken met klantwerk */
 .wk-b.k { position: relative; }
 .wk-b.k canvas.wk-px { position: absolute; left: 50%; bottom: 6px; transform: translateX(-50%); width: min(44px, calc(100% - 8px)); aspect-ratio: 4 / 3; image-rendering: pixelated; image-rendering: crisp-edges; pointer-events: none; }
-.wk-quote { margin: 68px auto 4px; max-width: 760px; text-align: center; font: 800 clamp(17px, 2vw, 23px)/1.35 var(--font-num); color: #fff; letter-spacing: .01em; }
+.wk-quote { margin: 68px auto 4px; max-width: 720px; text-align: center; font: 500 clamp(17px, 1.9vw, 21px)/1.55 var(--font); color: #fff; }
 #wk-year { margin: 0; color: #a4aab7; font-size: 14.5px; flex: 1 1 260px; }
 #wk-year b { color: #fff; }
 
@@ -358,6 +366,8 @@ footer img { width: 24px; }
   .wk-hours { display: none; }
   .wk-col { height: 330px; }
   .wk-b.k, .wk-b.a i { font-size: 9.5px; padding-left: 4px; padding-right: 4px; }
+  .wk-b.sum b { font-size: 11px; } /* telefoon: het aantal uren past in de smalle kolom */
+  .wk-b.sum .sum-l { font-size: 9px; }
   .payback { grid-template-columns: 1fr; }
   .pb-bars div { grid-template-columns: 96px 1fr auto; }
   .worth { gap: 10px; }
@@ -489,12 +499,7 @@ footer img { width: 24px; }
   .ring-on .head .sub { display: none; }
 }
 
-/* branches: AI-agent en contentdistributie */
-.br-agent { display: grid; grid-template-columns: 38px 1fr; gap: 14px; margin-top: 12px; padding: 16px 18px; border-radius: 14px; border: 1px solid rgba(var(--accent-rgb), .3); background: var(--accent-soft); }
-.br-agent b { display: block; font: 600 15px var(--font-display); margin-bottom: 4px; }
-.br-agent p { margin: 0; font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
-.br-agent-ico { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; background: var(--accent); color: #fff; }
-.br-agent-ico svg { width: 20px; height: 20px; }
+/* branches: contentdistributie */
 .br-hq { margin-top: 12px; }
 .tiers-val .hl { color: var(--ink); font-weight: 700; }
 .br-build li b { color: var(--text); }
