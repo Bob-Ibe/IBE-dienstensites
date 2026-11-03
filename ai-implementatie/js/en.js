@@ -9,7 +9,6 @@ window.IBE_EN = {
   'nav.rekensom': 'Calculator',
   'nav.branches': 'Your business',
   'nav.werkwijze': 'Process',
-  'nav.prijs': 'Pricing',
   'nav.cta': 'Book a free intake',
 
   'hero.morph': 'Click for the next shape',
