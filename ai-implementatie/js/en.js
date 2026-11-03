@@ -17,6 +17,7 @@ window.IBE_EN = {
   'hero.h1': 'We give you back <span class="hl">5 to 15 hours</span> a week.',
   'hero.h1b': 'Or you pay us nothing.',
   'hero.lead': 'We take over the recurring work on the computer: email, quotes, admin and planning. We measure it together in your own dashboard. If we don\'t save you 5 hours a week on average, you pay us nothing.',
+  'hero.leadNote': 'We put that in writing in the agreement.',
   'hero.cta1': 'Calculate your time savings',
   'hero.cta2': 'Book an intro call',
   'hero.worth': '<b id="w-h">10 hours</b> a week is worth <b id="w-v">€16,100</b> a year',
