@@ -354,13 +354,28 @@
       const a = hash(i, j), b = hash(i + 1, j), c = hash(i, j + 1), d = hash(i + 1, j + 1);
       return a + (b - a) * fx + (c - a) * fy + (a - b - c + d) * fx * fy;
     }
+    // De donkerste van de twee kleuren komt uit CSS (achtergrond van de canvas), niet uit de canvas zelf. Zo is het zwart
+    // precies hetzelfde als dat van de donkere sectie ernaast; een canvas rendert kleuren niet in elke browser exact gelijk.
+    const lum = (hex) => { const n = parseInt(hex.slice(1), 16); return ((n >> 16) & 255) * 0.3 + ((n >> 8) & 255) * 0.59 + (n & 255) * 0.11; };
+    const darkBottom = lum(opt.bottom) < lum(opt.top);
+    // De rand aan de lichte kant ook uit CSS (3px), zodat daar nooit een donker randje van de canvas-achtergrond doorkomt
+    // als de canvas op een halve pixel staat.
+    canvas.style.background = darkBottom ? `linear-gradient(to bottom, ${opt.top} 0 3px, ${opt.bottom} 3px)` : `linear-gradient(to top, ${opt.bottom} 0 3px, ${opt.top} 3px)`;
     function resize() { dpr = Math.min(2, devicePixelRatio || 1); W = canvas.clientWidth; H = canvas.clientHeight; canvas.width = W * dpr; canvas.height = H * dpr; }
     function draw(now) {
       const t = reduce ? 0 : now / 1000, r = canvas.getBoundingClientRect();
       const prog = clamp((innerHeight - r.top) / (innerHeight + r.height));
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.fillStyle = opt.top; ctx.fillRect(0, 0, W, H);
-      ctx.fillStyle = opt.bottom;
+      ctx.globalCompositeOperation = 'source-over';
+      if (darkBottom) {
+        // licht bovenaan: alles licht vullen en de donkere vormen eruit knippen, zodat de CSS-achtergrond erdoor komt
+        ctx.fillStyle = opt.top; ctx.fillRect(0, 0, W, H);
+        ctx.globalCompositeOperation = 'destination-out'; ctx.fillStyle = '#000';
+      } else {
+        // donker bovenaan: alleen de lichte vormen tekenen, de rest is de CSS-achtergrond
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = opt.bottom;
+      }
       const cols = Math.ceil(W / S) + 1, rows = Math.ceil(H / S) + 1;
       for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
         let v;

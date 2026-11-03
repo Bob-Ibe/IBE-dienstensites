@@ -35,111 +35,27 @@
   const worth = () => { const h = +$('w-r').value, rate = parseFloat($('w-rate').value) || 0; $('w-h').textContent = uur(h); $('w-v').textContent = eur(h * WEEKS * rate); };
   $('w-r').addEventListener('input', worth); $('w-rate').addEventListener('input', () => { worth(); $('c-rate').value = $('w-rate').value; calc(); }); worth();
 
-  /* ---------- je week, voor en na ---------- */
-  // Per dag blokken van 8:00 tot 18:00. a = terugkerend computerwerk, s = uren die we eraf halen (samen 10 uur).
-  // Elke ochtend begint met de inbox, maar niet elke dag hetzelfde: per dag een andere variant.
-  const MAILS = T(['Mail en klantvragen', 'Inbox en terugbelverzoeken', 'Klantvragen via mail en WhatsApp', 'Mail en bevestigingen', 'Inbox leegmaken en nabellen'],
-    ['Email and questions', 'Inbox and call-back requests', 'Questions via email and WhatsApp', 'Email and confirmations', 'Clearing the inbox and calling back']);
-  const KW = T('Klantwerk', 'Client work'), OFF = T('Offertes maken', 'Making quotes'),
-    FAC = T('Facturen en bonnetjes', 'Invoices and receipts'), PLAN = T('Planning', 'Planning');
-  const WEEK = [
-    [T('Ma', 'Mon'), [[MAILS[0], 1, 1, 0.75], [KW, 3], [OFF, 1.5, 1, 1], [KW, 2.5], [FAC, 1, 1, 0.5], [PLAN, 1, 1, 0.5]]],
-    [T('Di', 'Tue'), [[MAILS[1], 1.5, 1, 0.75], [KW, 4], [T('Overtypen tussen systemen', 'Retyping between systems'), 1, 1, 0.75], [KW, 3], [T('Afspraken heen en weer', 'Scheduling back and forth'), 0.5, 1, 0.25]]],
-    [T('Wo', 'Wed'), [[MAILS[2], 1, 1, 0.75], [KW, 3.5], [OFF, 1.5, 1, 0.75], [KW, 3], [T('Rapportage', 'Reporting'), 1, 1, 0.5]]],
-    [T('Do', 'Thu'), [[MAILS[3], 1, 1, 0.5], [KW, 4], [FAC, 1, 1, 0.75], [KW, 3], [PLAN, 1, 1, 0.25]]],
-    [T('Vr', 'Fri'), [[MAILS[4], 1, 1, 0.5], [KW, 3.5], [T('Weekoverzicht maken', 'Weekly overview'), 1.5, 1, 1], [KW, 2], [T('Administratie bijwerken', 'Updating admin'), 2, 1, 0.5]]],
-  ];
-  const AUTO = [[T('Mail gesorteerd, antwoord klaargezet', 'Email sorted, reply drafted'), 0.12], [T('Offertes in minuten', 'Quotes in minutes'), 0.3], [T('Facturen verwerkt', 'Invoices processed'), 0.5], [T('Systemen praten met elkaar', 'Systems talk to each other'), 0.68], [T('Weekoverzicht staat klaar', 'Weekly overview ready'), 0.85]];
-  const USE = [[T('Groei', 'Growth'), '#c49a6c', (h) => T(`<b>${nl((h * WEEKS) / 40, 1)} werkweken</b> extra voor groei`, `<b>${nl((h * WEEKS) / 40, 1)} work weeks</b> extra for growth`)],
-    [T('Klanten', 'Customers'), '#5f9a7f', (h) => T(`<b>${nl(h * WEEKS)} uur</b> extra voor je klanten`, `<b>${nl(h * WEEKS)} hours</b> extra for your customers`)],
-    [T('Familie', 'Family'), '#e0a458', (h) => T(`<b>${nl((h * WEEKS) / 4)} vrije middagen</b> met je familie`, `<b>${nl((h * WEEKS) / 4)} free afternoons</b> with your family`)],
-    [T('Jezelf', 'Yourself'), '#8a9bd0', (h) => T(`<b>${nl(h * WEEKS)} uur</b> voor sport, rust of nieuwe ideeën`, `<b>${nl(h * WEEKS)} hours</b> for sport, rest or new ideas`)]];
-  let use = 0;
-  const TOTAL = WEEK.reduce((t, [, bl]) => t + bl.reduce((u, b) => u + (b[3] || 0), 0), 0);
-  // De rode blokken krimpen en de vrijgekomen uren van een dag komen samen in één groot blok onderaan de dag.
-  $('wk-grid').innerHTML = WEEK.map(([d, bl]) => `<div class="wk-day"><span class="wk-d">${d}</span><div class="wk-col">${bl.map((b) => b[2]
-    ? `<div class="wk-b a" style="flex-grow:${b[1]}" data-d="${b[1]}" data-s="${b[3]}"><i class="wk-red"><span>${b[0]}</span></i></div>`
-    : `<div class="wk-b k" style="flex-grow:${b[1]}"><span>${b[0]}</span></div>`).join('')}<div class="wk-b sum" style="flex-grow:0"><b>0</b><span class="sum-l"></span></div></div></div>`).join('')
-    + '<div class="wk-hours">' + Array.from({ length: 6 }, (_, i) => `<span>${8 + i * 2}:00</span>`).join('') + '</div>';
-  // Pixelmannetjes aan het werk in de blokken met klantwerk: box 1, 3 en 5 (bovenste rij) en 7 en 9 (onderste rij).
-  // Elk doet iets anders op zijn scherm: planning, rapportage, offertes, facturen en administratie.
-  (function workers() {
-    const days = [...document.querySelectorAll('.wk-day')], spots = [[0, 0, 'planning'], [2, 0, 'rapportage'], [4, 0, 'offertes'], [1, 1, 'facturen'], [3, 1, 'administratie']];
-    const SK = '#f0c3a0', HAIR = '#2a1d18', SHIRT = '#d2404c', DESK = '#5a4636', FRAME = '#2a2c33', SCREEN = '#0f1116', DIM = '#3a3d45', GREEN = '#6fe3a1', PAPER = '#d7dae2', GOLD = '#e0a458';
-    const list = spots.map(([d, k, task], i) => {
-      const box = days[d] && days[d].querySelectorAll('.wk-b.k')[k];
-      if (!box) return null;
-      const cv = document.createElement('canvas'); cv.className = 'wk-px'; cv.width = 32; cv.height = 24; cv.setAttribute('aria-hidden', 'true'); box.appendChild(cv);
-      return { c: cv.getContext('2d'), task, seed: i * 1.7 };
-    }).filter(Boolean);
-    function draw(w, t) {
-      const c = w.c, P = (x, y, ww, h, col) => { c.fillStyle = col; c.fillRect(x, y, ww, h); };
-      const f = Math.floor(t * 6 + w.seed) % 4, slow = Math.floor(t * 1.5 + w.seed);
-      c.clearRect(0, 0, 32, 24);
-      // scherm
-      P(17, 3, 13, 11, FRAME); P(18, 4, 11, 9, SCREEN); P(22, 14, 3, 2, FRAME);
-      if (w.task === 'planning') { for (let i = 0; i < 6; i++) P(19 + (i % 3) * 3, 5 + Math.floor(i / 3) * 4, 2, 3, i === slow % 6 ? SHIRT : DIM); }
-      if (w.task === 'rapportage') { for (let i = 0; i < 3; i++) { const h = 2 + ((f + i * 2) % 4) + i; P(19 + i * 3, 12 - h, 2, h, GREEN); } }
-      if (w.task === 'offertes') { for (let i = 0; i < 3; i++) P(19, 5 + i * 2, Math.min(9, ((t * 7 + i * 4 + w.seed) % 12) | 0), 1, PAPER); P(26, 11, 2, 1, SHIRT); }
-      if (w.task === 'facturen') { P(19, 5, 3, 1, GOLD); P(19, 6, 1, 3, GOLD); P(19, 9, 3, 1, GOLD); P(18, 7, 3, 1, GOLD); for (let i = 0; i < 3; i++) P(23, 5 + i * 2, 5, 1, slow % 3 === i ? GREEN : PAPER); }
-      if (w.task === 'administratie') { P(19, 7, 4, 4, GOLD); P(19, 6, 2, 1, GOLD); P(24, 7, 4, 4, GOLD); P(24, 6, 2, 1, GOLD); const x = 20 + ((t * 4 + w.seed) % 6); P(Math.floor(x), 5, 2, 2, PAPER); }
-      // bureau, toetsenbord en stoel
-      P(0, 16, 32, 2, DESK); P(2, 18, 2, 6, DESK); P(28, 18, 2, 6, DESK); P(13, 15, 5, 1, '#8b909b'); P(3, 8, 2, 11, DIM);
-      // het mannetje: kijkt naar zijn scherm, knikt af en toe en typt
-      const hy = 4 + (f === 3 ? 1 : 0);
-      P(7, hy, 5, 2, HAIR); P(7, hy + 2, 5, 3, SK); P(11, hy + 3, 1, 1, HAIR); P(6, hy + 1, 1, 2, HAIR);
-      P(6, hy + 5, 7, 7, SHIRT); P(12, hy + 6, 3, 2, SHIRT);
-      P(14, 15 - (f % 2), 2, 1, SK); P(16, 15 - ((f + 1) % 2), 2, 1, SK);
-      P(7, 18, 2, 5, '#26282e'); P(10, 18, 2, 5, '#26282e');
+  /* ---------- reviews: drie rijen die langzaam langsschuiven ---------- */
+  // Reviews komen uit js/config.js (reviews: [{ naam, bedrijf, tekst, sterren }]). Zolang die lijst leeg is, staan er
+  // voorbeeldkaartjes. Elke rij is twee keer dezelfde reeks, zodat hij naadloos door kan lopen (CSS-animatie). Zonder reviews staat er alleen het Google-logo.
+  (function reviews() {
+    const box = $('reviews'); if (!box) return;
+    const list = c.reviews || [];
+    // Zolang er geen reviews in config staan: alleen het Google-logo, rustig in het midden
+    if (!list.length) {
+      box.classList.add('empty');
+      box.innerHTML = `<div class="rv-logo"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><b>Google Reviews</b><span class="rv-stars" aria-hidden="true">★★★★★</span></div>`;
+      return;
     }
-    let last = 0;
-    const vis = { on: false };
-    if ('IntersectionObserver' in window) new IntersectionObserver((en) => { vis.on = en[0].isIntersecting; }).observe($('wk-grid')); else vis.on = true;
-    const loop = (now) => { if (vis.on && now - last > 110) { last = now; list.forEach((w) => draw(w, now / 1000)); } requestAnimationFrame(loop); };
-    list.forEach((w) => draw(w, 0));
-    if (!reduce) requestAnimationFrame(loop);
+    const esc = (x) => String(x).replace(/[&<>"]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
+    const card = (r) => `<article class="rv-card${r.voorbeeld ? ' ex' : ''}"><div class="rv-top"><span class="rv-stars" aria-label="${r.sterren || 5} ${T('sterren', 'stars')}">${'★'.repeat(r.sterren || 5)}</span><span class="rv-g" aria-hidden="true">G</span></div><p>${esc(r.tekst)}</p><footer><b>${esc(r.naam)}</b><span>${esc(r.bedrijf || '')}</span>${r.voorbeeld ? `<i>${T('Voorbeeld', 'Example')}</i>` : ''}</footer></article>`;
+    const per = Math.ceil(list.length / 3);
+    box.innerHTML = [0, 1, 2].map((row) => {
+      const items = list.slice(row * per, row * per + per);
+      const seq = items.map(card).join('');
+      return `<div class="rv-row${row === 1 ? ' rev' : ''}" style="--n:${items.length}"><div class="rv-track">${seq}${seq}</div></div>`;
+    }).join('');
   })();
-  $('wk-auto').innerHTML = AUTO.map(([t]) => `<span class="wk-a">${t}</span>`).join('');
-  $('wk-use').innerHTML = USE.map(([l, col], i) => `<button type="button" class="${i === use ? 'on' : ''}" data-u="${i}" style="--c:${col}">${l}</button>`).join('');
-  function week() {
-    const v = +$('wk-r').value / 100, free = TOTAL * v;
-    document.querySelectorAll('.wk-day').forEach((day) => {
-      let f = 0;
-      day.querySelectorAll('.wk-b.a').forEach((b) => {
-        const d = +b.dataset.d, sv = +b.dataset.s * v; f += sv;
-        b.style.flexGrow = d - sv;
-        b.classList.toggle('gone', d - sv < 0.3);
-      });
-      const sum = day.querySelector('.wk-b.sum');
-      sum.style.flexGrow = f;
-      sum.classList.toggle('on', f > 0.4);
-      sum.querySelector('b').textContent = uur(Math.round(f * 4) / 4);
-      sum.querySelector('.sum-l').textContent = USE[use][0].toLowerCase();
-    });
-    document.querySelectorAll('.wk-a').forEach((el, i) => el.classList.toggle('on', v >= AUTO[i][1]));
-    const h = Math.round(free * 2) / 2;
-    $('wk-free').textContent = uur(h) + T(' vrij', ' free');
-    $('wk-days').textContent = v ? T(`Dat is ${nl(h / 8, 1)} werkdag per week`, `That is ${nl(h / 8, 1)} working days a week`) : T('Sleep de schuif naar "na"', 'Drag the slider to "after"');
-    $('wk-title-h').textContent = uur(Math.round(TOTAL));
-    const [, col, txt] = USE[use];
-    document.querySelector('.week').style.setProperty('--use', col);
-    $('wk-year').innerHTML = v ? T('Per jaar: ', 'Per year: ') + txt(h) + '.' : '&nbsp;';
-  }
-  $('wk-r').addEventListener('input', week);
-  $('wk-use').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; use = +b.dataset.u; $('wk-use').querySelectorAll('button').forEach((x, i) => x.classList.toggle('on', i === use)); week(); });
-  week();
-  // Schuift een keer vanzelf open als de sectie in beeld komt, daarna is hij van jou
-  if ('IntersectionObserver' in window) {
-    const wio = new IntersectionObserver((en) => {
-      if (!en[0].isIntersecting) return;
-      wio.disconnect();
-      if (+$('wk-r').value) return;
-      const t0 = performance.now();
-      const step = (now) => { const k = Math.min(1, (now - t0) / 2600); $('wk-r').value = Math.round(100 * (1 - Math.pow(1 - k, 3))); week(); if (k < 1) requestAnimationFrame(step); };
-      setTimeout(() => requestAnimationFrame(step), 700);
-    }, { threshold: 0.45 });
-    wio.observe($('wk-grid'));
-  }
 
   /* ---------- rekensom ---------- */
   let people = 3;
@@ -237,6 +153,14 @@
   const CONTENT_BUILD = T('We bouwen een <b>content creatie- en distributiesysteem</b>. Dat lost op dat video\'s maken en plaatsen elke week uren kost.',
     'We build a <b>content creation and distribution system</b>. That solves making and posting videos eating up hours every week.');
   const BR = [
+    // Dit is wat op de site staat: een gewone week op kantoor, zonder vaste niche. De branches eronder staan nog in de code
+    // (tabs zijn op 3 nov weggehaald) voor als Bob later wel een niche kiest: dan de tabs in index.html en hieronder weer aanzetten.
+    { id: 'algemeen', tab: T('Jouw zaak', 'Your business'), who: T('Jouw bedrijf', 'Your business'),
+      intro: T('Herken je dit? Een gewone week op kantoor, bij een team van een paar mensen. Alles wat rood wordt in je agenda, komt hier terug.', 'Recognise this? A normal week in the office, with a team of a few people. Everything that turns red in your calendar comes back here.'),
+      tasks: [[T('Mail en klantvragen', 'Email and customer questions'), 3.5, 1], [T('Planning en afspraken', 'Planning and appointments'), 3, 0.75], [T('Offertes en aanvragen', 'Quotes and requests'), 3, 0.5], [T('Content maken en plaatsen', 'Making and posting content'), 3, 0.5], [T('Administratie en facturen', 'Admin and invoices'), 2.5, 0.5], [T('Maatwerk: een eigen tool of klantportaal', 'Custom work: your own tool or client portal'), 2, 0.75], [T('Overtypen tussen systemen', 'Retyping between systems'), 1.5, 0.5], [HQ_TASK, 1.5, 0.5]],
+      build: T(['We bouwen een <b>planningssysteem</b>. Dat lost het heen en weer over afspraken, roosters en leveringen op.', 'We bouwen een <b>content creatie- en distributiesysteem</b>. Dat lost op dat video\'s maken en plaatsen elke week uren kost.', 'We bouwen een <b>administratiesysteem</b>. Dat lost losse bonnetjes, late facturen en overtypen op.', 'We bouwen een <b>mail- en offertesysteem</b>. Dat lost op dat vragen blijven liggen en elke offerte handwerk is.', 'We bouwen <b>maatwerk</b> en <b>DFY-systemen</b>.'],
+        ['We build a <b>planning system</b>. That solves the back and forth about appointments, schedules and deliveries.', 'We build a <b>content creation and distribution system</b>. That solves making and posting videos eating up hours every week.', 'We build an <b>admin system</b>. That solves loose receipts, late invoices and retyping.', 'We build an <b>email and quoting system</b>. That solves questions being left unanswered and every quote being manual work.', 'We build <b>custom work</b> and <b>DFY systems</b>.']),
+      hq: T('Omzet, openstaande facturen, de planning van de week, lopende projecten en uren per persoon.', 'Revenue, outstanding invoices, the week\'s planning, running projects and hours per person.'), },
     { id: 'events', tab: T('Activiteiten en events', 'Activities and events'), who: T('Klimhal of groepsuitje', 'Climbing gym or group outing'),
       intro: T('Klimhallen, escape rooms, groepsuitjes en andere zaken waar mensen een tijd boeken. Veel vragen, veel heen en weer, veel bevestigingen.', 'Climbing gyms, escape rooms, group outings and other places where people book a time slot. Lots of questions, lots of back and forth, lots of confirmations.'),
       tasks: [[T('Boekingsvragen via mail en WhatsApp', 'Booking questions via email and WhatsApp'), 5, 1], [T('Groepsaanvragen en offertes', 'Group requests and quotes'), 3, 0.5], [T('Bevestigingen, herinneringen en reviews', 'Confirmations, reminders and reviews'), 2.5, 0], [T('Personeelsrooster rond drukke dagen', 'Staff schedule around busy days'), 2, 0.5], [T('Social: video\'s maken en plaatsen', 'Social: making and posting videos'), 3, 0.5], [HQ_TASK, 2, 0.25]],
@@ -287,7 +211,7 @@
       hq: T('Projecten per fase, shoots van deze week, video\'s die wachten op goedkeuring, uren per klant en de omzet per maand.', 'Projects per stage, this week\'s shoots, videos waiting for approval, hours per client and revenue per month.'), },
   ];
   let br = 0;
-  $('br-tabs').innerHTML = BR.map((b, i) => `<button type="button" role="tab" data-b="${i}" class="${i === br ? 'on' : ''}">${b.tab}</button>`).join('');
+  if ($('br-tabs')) $('br-tabs').innerHTML = BR.map((b, i) => `<button type="button" role="tab" data-b="${i}" class="${i === br ? 'on' : ''}">${b.tab}</button>`).join('');
   function saved(b) { return b.tasks.reduce((t, x) => t + x[1] - x[2], 0); }
   function info(b) {
     const s = saved(b);
@@ -295,7 +219,7 @@
       <div class="br-table"><div class="br-row h"><span>${T('Waar de tijd nu heen gaat', 'Where the time goes now')}</span><span>${T('Nu', 'Now')}</span><span>${T('Straks', 'After')}</span></div>
       ${b.tasks.map(([t, a, z]) => `<div class="br-row"><span>${t}</span><span>${uur(a)}</span><span class="z">${uur(z)}</span></div>`).join('')}
       <div class="br-row t"><span>${T('Terug per week', 'Back per week')}</span><span></span><span>${uur(s)}</span></div></div>
-      <p class="br-k">${T('Wat we bouwen', 'What we build')}</p><ul class="br-build">${[...b.build, CONTENT_BUILD].map((x) => `<li><span>${x}</span></li>`).join('')}</ul>
+      <p class="br-k">${T('Wat we bouwen', 'What we build')}</p><ul class="br-build">${(b.id === 'algemeen' ? b.build : [...b.build, CONTENT_BUILD]).map((x) => `<li><span>${x}</span></li>`).join('')}</ul>
       <div class="br-hq"><span class="br-hq-ico" aria-hidden="true"><i></i><i></i><i></i><i></i></span><div><b>${T('Inclusief je Business Operations HQ', 'Including your Business Operations HQ')}</b>
         <p>${T('Al je bedrijfsdata in één overzicht', 'All your business data in one overview')}: ${b.hq.charAt(0).toLowerCase() + b.hq.slice(1)} ${T('Geen gezoek meer in vijf programma\'s, en veel meer ruimte in je hoofd.', 'No more searching through five programs, and a lot more room in your head.')}</p></div></div>
       <p class="br-k">${T('Koppelt met', 'Connects with')}</p><div class="br-sys">${CONNECT.map((x) => `<span>${x}</span>`).join('')}<span class="more">${T('en nog veel meer', 'and many more')}</span></div>`;
@@ -317,7 +241,7 @@
   }
   function showBranch(i, quick) {
     br = i; const b = BR[i];
-    $('br-tabs').querySelectorAll('button').forEach((x, k) => x.classList.toggle('on', k === i));
+    if ($('br-tabs')) $('br-tabs').querySelectorAll('button').forEach((x, k) => x.classList.toggle('on', k === i));
     $('br-info').innerHTML = info(b);
     const d = $('br-dash');
     if (quick || !window.IBELoader) { d.innerHTML = dash(b); requestAnimationFrame(() => d.classList.add('grow')); return; }
@@ -328,22 +252,14 @@
     d.replaceChildren(l);
     setTimeout(() => { d.innerHTML = dash(b); d.style.minHeight = ''; requestAnimationFrame(() => d.classList.add('grow')); }, 420);
   }
-  $('br-tabs').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) showBranch(+b.dataset.b); });
+  if ($('br-tabs')) $('br-tabs').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) showBranch(+b.dataset.b); });
   showBranch(0, true);
 
-  /* ---------- prijsopbouw: trede voor trede, gevormd door dots ---------- */
-  // De prijzen staan gewoon als tekst in de HTML (voor zoekmachines en schermlezers). Met beweging aan wordt die tekst
-  // onzichtbaar en vormen rode dots hem na: ze vallen van boven naar binnen terwijl je naar beneden scrolt.
+  /* ---------- tijdlijn: van nulmeting tot resultaat, stap voor stap gevormd door dots ---------- */
+  // De tijd per stap (Week 0, Week 2, ...) staat gewoon als tekst in de HTML (voor zoekmachines en schermlezers). Met beweging
+  // aan wordt die tekst onzichtbaar en vormen rode dots hem na: ze vallen van boven naar binnen terwijl je naar beneden scrolt.
   (function tiers() {
     const box = $('tiers'); if (!box) return;
-    const H10 = 10, R50 = 50, perMonth = (H10 * R50 * WEEKS) / 12;
-    $('ti-month').textContent = eur(perMonth);
-    $('ti-year').textContent = T(`Dat is ${eur(H10 * R50 * WEEKS)} per jaar. Je verdient het traject dus snel terug.`, `That is ${eur(H10 * R50 * WEEKS)} a year. So you earn the project back quickly.`);
-    box.querySelectorAll('[data-pay]').forEach((el) => { el.textContent = weken(Math.ceil(+el.dataset.pay / (H10 * R50))); });
-    const sp = c.prijsPlekken || { bezet: 2, totaal: 4 }, vrij = Math.max(0, sp.totaal - sp.bezet);
-    $('t-spots').innerHTML = `<span class="sq">${Array.from({ length: sp.totaal }, (_, i) => `<i class="${i < sp.bezet ? 'on' : ''}"></i>`).join('')}</span>
-      <span>${T(`${sp.bezet} van de ${sp.totaal} plekken vergeven · <b>nog ${vrij} ${vrij === 1 ? 'plek' : 'plekken'} voor deze prijs</b>`, `${sp.bezet} of ${sp.totaal} spots taken · <b>${vrij} ${vrij === 1 ? 'spot' : 'spots'} left at this price</b>`)}</span>`;
-
     const rows = [...box.querySelectorAll('.tier')], railEl = box.querySelector('.tiers-rail'), fill = railEl.querySelector('i');
     const rowProg = (r) => clamp((innerHeight * 0.9 - r.top) / (innerHeight * 0.42));
     // de lijn loopt precies van het midden van het eerste bolletje naar het midden van het laatste
@@ -372,7 +288,8 @@
       cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); cv.style.width = W + 'px'; cv.style.height = H + 'px';
       const b = box.getBoundingClientRect(); pts = [];
       rows.forEach((row, ri) => {
-        const el = row.querySelector('.t-amt'), r = el.getBoundingClientRect(), cs = getComputedStyle(el);
+        const el = row.querySelector('.t-amt'); if (!el) return;
+        const r = el.getBoundingClientRect(), cs = getComputedStyle(el);
         const fs = parseFloat(cs.fontSize), gap = Math.max(3, fs / 17), w = Math.ceil(r.width) + 6, h = Math.ceil(r.height) + 6;
         const oc = document.createElement('canvas'); oc.width = w; oc.height = h;
         const o = oc.getContext('2d');
@@ -439,6 +356,8 @@
     if (k === 'wa') el.href = 'https://wa.me/' + c.wa;
     if (k === 'mail') { el.href = 'mailto:' + c.mail; el.querySelector('b').textContent = c.mail; }
   });
+  // de knop in de nav opent de agenda zodra er een Calendly-link in config staat; tot die tijd gaat hij naar de intake
+  if (c.calendly && $('nav-cta')) { $('nav-cta').setAttribute('data-call', ''); $('nav-cta').href = c.calendly; $('nav-cta').removeAttribute('data-land'); }
   document.querySelectorAll('[data-call]').forEach((b) => b.addEventListener('click', (e) => {
     e.preventDefault(); IBEForm.call(window.__formData ? window.__formData() : {});
     if (window.IBELoader) IBELoader.busy(b, T('Agenda openen', 'Opening calendar'), 'luisteren', 1600);

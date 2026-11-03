@@ -156,7 +156,7 @@ input[type=range] { accent-color: var(--accent); }
 .calc-note b { color: var(--text); }
 
 /* rekensom groter uitgelicht */
-.calc-band { background: var(--bg-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.calc-band { background: var(--bg-2); border-bottom: 1px solid var(--line); } /* geen lijn bovenaan: daar loopt de overgang in */
 h2.xl { font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; }
 @media (max-width: 440px) { h2.xl { font-size: 32px; } }
 .calc-band .calc { grid-template-columns: 0.85fr 1.15fr; }
@@ -263,7 +263,7 @@ h2.xl { font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; }
 
 /* garantie */
 .guarantee { display: grid; grid-template-columns: auto 1fr auto; gap: 30px; align-items: center; background: var(--ink); color: #eceef3; border-radius: 24px; padding: 36px 40px; position: relative; overflow: hidden; }
-.guarantee .seal { width: 96px; height: 96px; border-radius: 50%; border: 1px solid rgba(216,195,165,0.5); display: grid; place-items: center; text-align: center; font: 600 11px/1.2 var(--font-mono); letter-spacing: .1em; color: var(--sand); }
+.guarantee .seal { width: 96px; height: 96px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.45); display: grid; place-items: center; text-align: center; font: 600 11px/1.2 var(--font-mono); letter-spacing: .1em; color: #fff; }
 .guarantee .seal b { display: block; font: 800 34px/1 var(--font-num); color: #fff; }
 .guarantee h3 { font-size: clamp(22px, 2.6vw, 30px); margin: 0 0 8px; }
 .guarantee p { margin: 0; color: #a4aab7; }
@@ -386,7 +386,7 @@ footer img { width: 24px; }
 /* einde van de pagina: donker vlak dat van onder opkomt */
 .end-band.dark { background: #0b0d12; color: #eceef3; }
 .end-band.dark .contact { background: radial-gradient(600px 300px at 0% 0%, rgba(var(--accent-rgb), 0.14), transparent 70%), #11131a; border: 1px solid rgba(255,255,255,.08); }
-.end-band.dark footer { border-top-color: rgba(255,255,255,.08); color: #8b909b; }
+.end-band.dark footer { border-top: 0; color: #8b909b; } /* geen lichte streep boven de footer op het donkere vlak */
 
 /* telefoon: niets breder dan het scherm */
 .br-body > *, .calc > *, .kpi-split > *, .contact > * { min-width: 0; }
@@ -518,3 +518,57 @@ footer img { width: 24px; }
   .br-row.t span:nth-child(2) { display: none; }
   .br-row.t span:last-child { grid-column: 2 / -1; font-size: 16px !important; }
 }
+
+/* 3 nov: de knop in de nav vraagt elke 10 seconden even aandacht met een rode rand die naar buiten wegvloeit */
+.btn.cta-pulse { animation: cta-ring 10s ease-out infinite; }
+@keyframes cta-ring {
+  0% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), .9); }
+  7% { box-shadow: 0 0 0 4px rgba(var(--accent-rgb), .75); }
+  18% { box-shadow: 0 0 0 12px rgba(var(--accent-rgb), 0); }
+  100% { box-shadow: 0 0 0 12px rgba(var(--accent-rgb), 0); }
+}
+@media (prefers-reduced-motion: reduce) { .btn.cta-pulse { animation: none; } }
+
+
+
+/* 3 nov: reviews in drie rijen die langzaam langsschuiven (de tweede rij de andere kant op) */
+.reviews-sec { padding: 60px 0 70px; overflow: hidden; }
+.reviews-sec .head { margin-bottom: 36px; }
+.reviews-sec .wk-title { margin: 0 auto; max-width: 820px; }
+.reviews { display: grid; gap: 14px; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.rv-row { overflow: hidden; }
+.rv-track { display: flex; gap: 14px; width: max-content; animation: rv-slide calc(var(--n) * 14s) linear infinite; }
+.rv-row.rev .rv-track { animation-direction: reverse; }
+.rv-row:nth-child(3) .rv-track { animation-duration: calc(var(--n) * 16s); }
+.rv-row:hover .rv-track { animation-play-state: paused; }
+@keyframes rv-slide { to { transform: translateX(-50%); } }
+.rv-card { width: 340px; flex: 0 0 auto; background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.09); border-radius: 16px; padding: 18px 20px; color: #d7dae2; }
+.rv-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.rv-stars { color: #e0a458; letter-spacing: .1em; font-size: 14px; }
+.rv-g { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: #11131a; font: 700 13px var(--font-display); }
+.rv-card p { margin: 0 0 14px; font-size: 14.5px; line-height: 1.55; }
+.rv-card footer { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; font-size: 13px; color: #8b909b; }
+.rv-card footer b { color: #fff; font-weight: 600; }
+.rv-card footer i { margin-left: auto; font: 500 10px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--sand); font-style: normal; }
+.rv-card.ex { border-style: dashed; }
+@media (prefers-reduced-motion: reduce) { .rv-track { animation: none; } }
+@media (max-width: 560px) { .rv-card { width: 270px; padding: 14px 16px; } .rv-card p { font-size: 13.5px; } .reviews { gap: 10px; } }
+
+/* reviews: alleen het Google-logo zolang er geen reviews zijn */
+.reviews.empty { display: flex; justify-content: center; mask-image: none; -webkit-mask-image: none; padding: 30px 0 10px; }
+.rv-logo { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.rv-logo svg { width: 64px; height: 64px; }
+.rv-logo b { font: 600 22px var(--font-display); color: #fff; letter-spacing: -.01em; }
+.rv-logo .rv-stars { font-size: 20px; letter-spacing: .14em; }
+
+/* kennismaking: tekst links, donkere kaart met de Calendly-knop rechts (variant A) */
+.kn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.kn-text { font-size: 17px; max-width: 460px; margin: 0; }
+.kn-card { background: var(--ink); color: #eceef3; border-radius: 24px; padding: 40px; }
+.kn-card ul { list-style: none; padding: 0; margin: 0 0 26px; display: grid; gap: 12px; }
+.kn-card li { display: flex; gap: 12px; align-items: center; color: #d7dae2; font-size: 15px; }
+.kn-card li::before { content: ""; width: 18px; height: 18px; border-radius: 50%; flex: none; background: rgba(var(--accent-rgb), .25) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.2 2.2 4.8-4.8' fill='none' stroke='%23ff6b76' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat; }
+.kn-card .btn { width: 100%; font-size: 16px; padding: 16px 22px; }
+.kn-card small { display: block; margin-top: 16px; color: #8b909b; font-size: 13.5px; }
+.kn-card small a { color: #fff; }
+@media (max-width: 820px) { .kn-grid { grid-template-columns: 1fr; gap: 24px; } .kn-card { padding: 26px 22px; } }

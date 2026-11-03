@@ -2,7 +2,7 @@
 window.IBE_CONFIG = {
   // Plak hier je Calendly-link, bijvoorbeeld 'https://calendly.com/ibemotion/kennismaking-ai'.
   // Zolang dit leeg is, opent "Plan je call" WhatsApp met een kort bericht.
-  calendly: '',
+  calendly: 'https://calendly.com/ibemotionmedia',
   // De VSL-video. Zet het mp4-bestand in assets/ en vul de naam in, bijv. 'assets/vsl.mp4',
   // of plak een YouTube- of Vimeo-link. Leeg = de nette placeholder.
   vsl: '',
@@ -13,6 +13,9 @@ window.IBE_CONFIG = {
   mail: 'ibemotionmedia@gmail.com',
   callTopic: 'Het gaat over AI-implementatie.',
   callTopicEn: "It's about AI implementation.",
+  // Reviews onder "De echte waarde", drie rijen die langsschuiven. Leeg = voorbeeldkaartjes.
+  // Plak hier je Google-reviews: { naam: 'Sanne de Vries', bedrijf: 'Interieurzaak, Roermond', sterren: 5, tekst: '...' }
+  reviews: [],
   // Prijsopbouw: hoeveel van de 4 plekken voor € 1.500 al vergeven zijn. Bij 4 van de 4 zet je de prijzen een trede op in index.html.
   prijsPlekken: { bezet: 2, totaal: 4 },
 };
