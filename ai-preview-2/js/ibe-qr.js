@@ -114,8 +114,8 @@
     function setTarget(v) {
       from = k; to = v; t0 = performance.now();
       const kort = wrap.dataset.hint === 'kort'; // data-hint="kort": alleen "klik", zonder "op de boom"
-      if (hint) hint.innerHTML = EN ? (v ? `Scan to WhatsApp Bob directly · <b>${kort ? 'click' : 'click for ' + name}</b>` : `${kort ? 'Click' : 'Click ' + name} · <b>scan to WhatsApp Bob directly</b>`)
-        : v ? `Scan voor direct WhatsApp-contact met Bob · <b>${kort ? 'klik' : 'klik voor ' + name}</b>` : `${kort ? 'Klik' : 'Klik op ' + name} · <b>scan voor direct WhatsApp-contact met Bob</b>`;
+      if (hint) hint.innerHTML = EN ? (v ? `Scan to WhatsApp Bob directly · <b>${kort ? 'click' : 'click for ' + name}</b>` : `${kort ? 'Click QR' : 'Click ' + name} · <b>scan to WhatsApp Bob directly</b>`)
+        : v ? `Scan voor direct WhatsApp-contact met Bob · <b>${kort ? 'klik' : 'klik voor ' + name}</b>` : `${kort ? 'Klik QR' : 'Klik op ' + name} · <b>scan voor direct WhatsApp-contact met Bob</b>`;
       wrap.classList.toggle('is-qr', !!v);
     }
 

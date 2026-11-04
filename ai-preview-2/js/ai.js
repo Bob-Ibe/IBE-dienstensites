@@ -314,7 +314,7 @@
   if (c.vsl) $('vsl-sub').textContent = T('Klik om af te spelen', 'Click to play');
   $('vsl-play').onclick = () => {
     const box = $('vsl');
-    if (!c.vsl) { location.hash = '#start'; return; }
+    if (!c.vsl) { location.hash = '#contact'; return; }
     const yt = c.vsl.match(/(?:youtu\.be\/|v=|embed\/)([\w-]{11})/), vm = c.vsl.match(/vimeo\.com\/(\d+)/);
     if (yt) box.insertAdjacentHTML('beforeend', `<iframe src="https://www.youtube-nocookie.com/embed/${yt[1]}?autoplay=1&rel=0" allow="autoplay; fullscreen" allowfullscreen title="Video"></iframe>`);
     else if (vm) box.insertAdjacentHTML('beforeend', `<iframe src="https://player.vimeo.com/video/${vm[1]}?autoplay=1" allow="autoplay; fullscreen" allowfullscreen title="Video"></iframe>`);
