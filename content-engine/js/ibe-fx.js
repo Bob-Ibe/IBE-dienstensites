@@ -358,13 +358,15 @@
     // precies hetzelfde als dat van de donkere sectie ernaast; een canvas rendert kleuren niet in elke browser exact gelijk.
     const lum = (hex) => { const n = parseInt(hex.slice(1), 16); return ((n >> 16) & 255) * 0.3 + ((n >> 8) & 255) * 0.59 + (n & 255) * 0.11; };
     const darkBottom = lum(opt.bottom) < lum(opt.top);
-    // Die kleur komt van een gewone div om de canvas heen, niet van de canvas zelf: Safari zet een canvas in een eigen laag
-    // en kleurt die (ook zijn CSS-achtergrond) net iets anders in dan de rest van de pagina. De canvas is daar doorzichtig.
-    // De rand aan de lichte kant komt ook uit CSS (3px), zodat daar nooit een donker randje doorkomt op een halve pixel.
+    // Gemeten in Safari: zwart dat in een canvas of met een CSS-gradient getekend wordt, kleurt daar blauwer en donkerder in
+    // dan een gewone achtergrondkleur. Dus: de donkere kleur is een gewone background-color op een div om de canvas heen,
+    // de canvas is daar doorzichtig, en het lichte randje van 3px (tegen een donker randje op een halve pixel) is een
+    // pseudo-element met een gewone kleur, geen gradient.
     const box = document.createElement('div');
-    box.className = 'fx-dither-wrap' + (rise ? ' rise' : '');
+    box.className = 'fx-dither-wrap ' + (darkBottom ? 'edge-top' : 'edge-bottom');
     canvas.parentNode.insertBefore(box, canvas); box.appendChild(canvas);
-    box.style.background = darkBottom ? `linear-gradient(to bottom, ${opt.top} 0 3px, ${opt.bottom} 3px)` : `linear-gradient(to top, ${opt.bottom} 0 3px, ${opt.top} 3px)`;
+    box.style.backgroundColor = darkBottom ? opt.bottom : opt.top;
+    box.style.setProperty('--edge', darkBottom ? opt.top : opt.bottom);
     function resize() { dpr = Math.min(2, devicePixelRatio || 1); W = canvas.clientWidth; H = canvas.clientHeight; canvas.width = W * dpr; canvas.height = H * dpr; }
     function draw(now) {
       const t = reduce ? 0 : now / 1000, r = canvas.getBoundingClientRect();

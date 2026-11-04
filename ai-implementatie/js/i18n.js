@@ -1,14 +1,11 @@
 // Taal van de AI-site: Nederlands (standaard) of Engels.
-// Kiezen met de NL/EN-knop in de nav of met ?lang=en achter de link; de keuze wordt onthouden.
+// Alleen Nederlands zichtbaar; Engels staat nog klaar via ?lang=en achter de link.
 // Vaste teksten: elk element met data-i="sleutel" krijgt in het Engels de tekst uit js/en.js.
 // Attributen: data-i-attr="aria-label:sleutel;title:sleutel2". Teksten die JS maakt gebruiken IBEI18n.t('nl', 'en').
 (function () {
+  // Sinds 4 nov staat de taalknop uit: de site is alleen Nederlands. Engels kan nog met ?lang=en (voor later).
   let lang = 'nl';
-  try {
-    const q = new URLSearchParams(location.search).get('lang');
-    if (q === 'en' || q === 'nl') { lang = q; localStorage.setItem('ibe-lang', q); }
-    else lang = localStorage.getItem('ibe-lang') === 'en' ? 'en' : 'nl';
-  } catch (e) {}
+  try { if (new URLSearchParams(location.search).get('lang') === 'en') lang = 'en'; } catch (e) {}
   const EN = lang === 'en', D = window.IBE_EN || {};
   document.documentElement.lang = lang;
 

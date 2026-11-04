@@ -7,6 +7,7 @@
 //
 // Gebruik: IBEIntro.play({ title: 'IBE MOTION // CONTENT ENGINE', head: '> opstarten',
 //   lines: [{ label: 'REELS', v: '5 tot 30 per maand' }, ...], online: 'ENGINE ONLINE', land: '[data-land]' })
+// Met duration: 500 speelt de hele animatie (inclusief uitfaden) in die tijd af, alle fases naar verhouding sneller.
 (function () {
   const T = { fill: 1300, grey: 450, pulse: 1100, implode: 380, wave: 650, land: 1050 }; // ms per fase
   const S = {}; let TOTAL = 0;
@@ -46,6 +47,9 @@
       const gap = Math.max(11, Math.round(Math.min(W, H) / 62));
       const cx = W / 2, cy = H / 2, maxD = Math.hypot(W, H) / 2;
       let dots = [], t0 = 0, raf = 0, done = false, land = null, landed = false;
+      const FADE = opt.duration ? Math.min(250, opt.duration * 0.2) : 250;
+      const SPEED = opt.duration ? TOTAL / Math.max(100, opt.duration - FADE) : 1; // sneller afspelen
+      if (opt.duration) el.style.transitionDuration = FADE + 'ms';
       let lion = { x: cx, y: cy, size: Math.min(W, H) * 0.64 };
 
       const img = new Image();
@@ -243,13 +247,13 @@
         if (!landed && eW > 900) {
           landed = true;
           document.body.classList.add('ibe-intro-land');
-          setTimeout(() => document.body.classList.remove('ibe-intro-land'), 1300);
+          setTimeout(() => document.body.classList.remove('ibe-intro-land'), 1300 / SPEED);
         }
       }
 
       function frame(now) {
         if (done) return;
-        const e = now - t0;
+        const e = (now - t0) * SPEED;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         ctx.clearRect(0, 0, W, H);
         if (e < S.wave) { el.style.backgroundColor = ''; drawField(e); drawHud(e); } else drawLand(e);
@@ -262,14 +266,14 @@
         done = true; cancelAnimationFrame(raf); clearTimeout(guard);
         el.classList.add('out');
         document.documentElement.classList.remove('ibe-intro-on');
-        setTimeout(() => { el.remove(); resolve(); }, 260);
+        setTimeout(() => { el.remove(); resolve(); }, FADE + 10);
         removeEventListener('keydown', key);
       }
       const key = (e) => { if (e.key === 'Escape' || e.key === ' ' || e.key === 'Enter') { e.preventDefault(); finish(); } };
       el.addEventListener('pointerdown', finish);
       addEventListener('keydown', key);
       const guard = setTimeout(finish, 9000); // vangnet
-      el.frameAt = (ms) => { cancelAnimationFrame(raf); clearTimeout(guard); frame(t0 + ms); cancelAnimationFrame(raf); }; // voor testen
+      el.frameAt = (ms) => { cancelAnimationFrame(raf); clearTimeout(guard); frame(t0 + ms / SPEED); cancelAnimationFrame(raf); }; // voor testen
     });
   }
 

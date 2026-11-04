@@ -1,4 +1,4 @@
-// Gedrag van de AI-pagina: morph, overgangen, je week voor en na, rekensom, ring met wat we overnemen,
+// Gedrag van de AI-pagina: morph, overgangen, je week voor en na, ring met wat we overnemen,
 // branches met dashboard, prijsopbouw met dots, VSL, contact. Teksten in twee talen via T('nl', 'en') (js/i18n.js).
 (function () {
   const $ = (id) => document.getElementById(id);
@@ -17,9 +17,8 @@
     IBEDots($('hero-dots'), { theme: 'light', gap: 22 });
     IBEDots($('vsl-dots'), { theme: 'dark', lion: { x: 0.5, y: 0.5, size: 0.86 } });
   }
-  // AI-site: zandloper (tijd) en een netwerk van tools, met onder de leeuw wat het de ondernemer oplevert
-  if (window.IBEMorph) IBEMorph($('hero-morph'), { theme: 'light', shapes: ['leeuw', 'zandloper', 'kubus-persoon', 'puzzel', 'netwerk'],
-    words: T(['Tijdswinst', 'Efficiëntie', 'Overzicht', 'Minder fouten', 'Rust in je hoofd', 'Ruimte om te groeien'], ['Time saved', 'Efficiency', 'Overview', 'Fewer mistakes', 'Peace of mind', 'Room to grow']) });
+  // AI-site: zandloper (tijd) en een netwerk van tools
+  if (window.IBEMorph) IBEMorph($('hero-morph'), { theme: 'light', shapes: ['leeuw', 'zandloper', 'kubus-persoon', 'puzzel', 'netwerk'] }); // zonder woorden eronder: rustiger
   if (window.IBEDither) document.querySelectorAll('canvas.fx-dither').forEach((cv) => IBEDither(cv, { top: cv.dataset.top, bottom: cv.dataset.bottom, mode: cv.dataset.mode }));
   if (window.IBEFx) {
     IBEFx.words('.hero h1, .head h2');
@@ -33,7 +32,7 @@
   // standaard 10 uur (het gemiddelde); het uurloon kun je zelf invullen
   $('w-r').value = 10;
   const worth = () => { const h = +$('w-r').value, rate = parseFloat($('w-rate').value) || 0; $('w-h').textContent = uur(h); $('w-v').textContent = eur(h * WEEKS * rate); };
-  $('w-r').addEventListener('input', worth); $('w-rate').addEventListener('input', () => { worth(); $('c-rate').value = $('w-rate').value; calc(); }); worth();
+  $('w-r').addEventListener('input', worth); $('w-rate').addEventListener('input', worth); worth();
 
   /* ---------- reviews: drie rijen die langzaam langsschuiven ---------- */
   // Reviews komen uit js/config.js (reviews: [{ naam, bedrijf, tekst, sterren }]). Zolang die lijst leeg is, staan er
@@ -56,33 +55,6 @@
       return `<div class="rv-row${row === 1 ? ' rev' : ''}" style="--n:${items.length}"><div class="rv-track">${seq}${seq}</div></div>`;
     }).join('');
   })();
-
-  /* ---------- rekensom ---------- */
-  let people = 3;
-  function calc() {
-    const h = +$('c-hours').value, rate = parseFloat($('c-rate').value) || 0;
-    const week = h * people, year = week * WEEKS, value = year * rate;
-    $('c-people').textContent = people + T(people === 1 ? ' persoon' : ' personen', people === 1 ? ' person' : ' people');
-    $('c-hv').textContent = uur(h);
-    $('r-hours').textContent = uur(year);
-    $('r-money').textContent = T(`± ${eur(value)} per jaar aan werk dat naar iets beters gaat`, `± ${eur(value)} a year of work that goes to something better`);
-    $('r-week').textContent = uur(week);
-    $('r-month').textContent = eur(value / 12);
-    $('r-weeks').textContent = nl(year / 40);
-    const pay = week * rate > 0 ? Math.ceil(PRICE / (week * rate)) : 0;
-    $('r-pay').textContent = pay ? weken(pay) : '-';
-    const max = Math.max(PRICE, value);
-    $('pb-in').style.width = (PRICE / max) * 100 + '%';
-    $('pb-out').style.width = (value / max) * 100 + '%';
-    $('pb-in-v').textContent = eur(PRICE);
-    $('pb-out-v').textContent = eur(value);
-    $('r-means').textContent = T(`Dat zijn ${nl(year / 40)} volle werkweken per jaar. ${week >= 5 ? 'Binnen ons doel van 5 tot 15 uur per week.' : 'Ons doel is minimaal 5 uur per week, op het hele team.'} Gerekend met een traject vanaf ${eur(PRICE)}.`,
-      `That is ${nl(year / 40)} full work weeks a year. ${week >= 5 ? 'Within our goal of 5 to 15 hours a week.' : 'Our goal is at least 5 hours a week, across the whole team.'} Calculated with a project from ${eur(PRICE)}.`);
-  }
-  $('c-min').onclick = () => { people = Math.max(1, people - 1); calc(); };
-  $('c-plus').onclick = () => { people = Math.min(50, people + 1); calc(); };
-  $('c-hours').oninput = calc; $('c-rate').oninput = calc;
-  calc();
 
   /* ---------- wat we overnemen: draaiende ring ---------- */
   // De sectie blijft staan terwijl je scrolt; de 9 blokken draaien als een ring langs. Het voorste blok is scherp,
@@ -253,7 +225,7 @@
     setTimeout(() => { d.innerHTML = dash(b); d.style.minHeight = ''; requestAnimationFrame(() => d.classList.add('grow')); }, 420);
   }
   if ($('br-tabs')) $('br-tabs').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) showBranch(+b.dataset.b); });
-  showBranch(0, true);
+  if ($('br-body')) showBranch(0, true);
 
   /* ---------- tijdlijn: van nulmeting tot resultaat, stap voor stap gevormd door dots ---------- */
   // De tijd per stap (Week 0, Week 2, ...) staat gewoon als tekst in de HTML (voor zoekmachines en schermlezers). Met beweging
@@ -342,7 +314,7 @@
   if (c.vsl) $('vsl-sub').textContent = T('Klik om af te spelen', 'Click to play');
   $('vsl-play').onclick = () => {
     const box = $('vsl');
-    if (!c.vsl) { location.hash = '#start'; return; }
+    if (!c.vsl) { location.hash = '#contact'; return; }
     const yt = c.vsl.match(/(?:youtu\.be\/|v=|embed\/)([\w-]{11})/), vm = c.vsl.match(/vimeo\.com\/(\d+)/);
     if (yt) box.insertAdjacentHTML('beforeend', `<iframe src="https://www.youtube-nocookie.com/embed/${yt[1]}?autoplay=1&rel=0" allow="autoplay; fullscreen" allowfullscreen title="Video"></iframe>`);
     else if (vm) box.insertAdjacentHTML('beforeend', `<iframe src="https://player.vimeo.com/video/${vm[1]}?autoplay=1" allow="autoplay; fullscreen" allowfullscreen title="Video"></iframe>`);

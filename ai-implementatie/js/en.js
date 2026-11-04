@@ -4,7 +4,7 @@ window.IBE_EN = {
   't.title': 'AI implementation · IBE MOTION',
   't.desc': 'We give you back 5 to 15 hours a week, or you pay us nothing. IBE MOTION takes over the recurring computer work for entrepreneurs and small businesses.',
 
-  'nav.sub': 'AI implementation',
+  'nav.sub': 'AI & automation',
   'nav.waarde': 'Reviews',
   'nav.rekensom': 'Calculator',
   'nav.branches': 'Your business',
@@ -12,14 +12,15 @@ window.IBE_EN = {
   'nav.cta': 'Book a free intake',
 
   'hero.morph': 'Click for the next shape',
-  'hero.eyebrow': 'AI implementation · for entrepreneurs and small businesses',
+  'hero.eyebrow': 'AI & automation',
   'hero.h1': 'We give you back <span class="hl">5 to 15 hours</span> a week.',
-  'hero.h1b': 'Or you pay us nothing.',
+  'hero.h1b': 'For entrepreneurs and small businesses.',
   'hero.lead': 'We take over the recurring work on the computer: email, quotes, admin and planning. We measure it together in your own dashboard. If we don\'t save you 5 hours a week on average, you pay us nothing.',
   'hero.leadNote': 'We put that in writing in the agreement.',
   'hero.cta1': 'Calculate your time savings',
   'hero.cta2': 'Book an intro call',
-  'hero.worth': '<b id="w-h">10 hours</b> a week is worth <b id="w-v">€16,100</b> a year',
+  'hero.worthL': '<b id="w-h">10 hours</b> a week back through our AI systems & automation',
+  'hero.worthV': 'is worth <b id="w-v">€16,100</b> a year',
   'hero.worthAria': 'Hours per week',
   'hero.at': 'at',
   'hero.rateAria': 'Hourly rate in euros',
@@ -88,11 +89,11 @@ window.IBE_EN = {
   'wat.agTag': 'Works autonomously',
 
   'gar.seal': '<b>5</b>HOURS A<br>WEEK',
-  'gar.title': 'If our systems don\'t save you five hours a week, you get <span class="hl">your money back</span>.',
-  'gar.text': 'We measure it together in your KPI dashboard, from the baseline. If the savings stay under 5 hours a week, you get your payment back. Depending on the size of your business, we save on average 10 to 15 hours a week.',
+  'gar.title': 'If our systems don\'t save you five hours a week, you get <span class="hl">your deposit back</span>.',
+  'gar.text': 'We measure it together in your KPI dashboard, from the baseline. If the savings stay under 5 hours a week, you get your payment back. Depending on the size of your business, we save on average 10 to 15 hours a week. We track this in the KPI dashboard with the baseline, so it is based on data.',
 
   'ww.kicker': 'Process',
-  'ww.title': 'From intake to AI systems that give you your time back.',
+  'ww.title': 'Process',
   'ww.sub': 'A project with a <span class="hl">fixed price</span>, a fixed date and a measurable goal.',
   'ww.1t': 'Intro call',
   'ww.1': 'In 30 minutes we look at where your time goes and what there is to gain. No obligation, online or at your office.',
@@ -122,7 +123,7 @@ window.IBE_EN = {
   'br.note': 'The hours are an estimate. How much it is for you, we measure from the baseline in your own dashboard.',
 
   'pr.kicker': 'Pricing',
-  'pr.big': 'Projects are tailored to your business.',
+  'pr.big': 'AI & automation projects are tailored to your business.',
   'pr.text': 'A fixed price after the intro call, paid in full up front. With the 5-hours-a-week guarantee and 3 months of aftercare.',
 
   'ti.kicker': 'From baseline to results',
@@ -140,7 +141,7 @@ window.IBE_EN = {
   'ti.2x': 'everything running',
   'ti.3k': 'Step 3',
   'ti.3t': 'Aftercare and client success',
-  'ti.3d': 'For three months we stay close: questions, small changes and measuring the savings together. If it stays under 5 hours a week, you get your money back.',
+  'ti.3d': 'For three months we stay close: questions, small changes and measuring the savings together. If it stays under 5 hours a week, you get your deposit back.',
   'ti.3a': 'Phase 3',
   'ti.3x': '5-hours-a-week guarantee',
   'ti.4k': 'Step 4',
@@ -176,5 +177,5 @@ window.IBE_EN = {
   'ct.tel': 'Phone',
   'ct.wa': 'Send a message',
   'ct.qr': 'Click the tree · <b>scan to WhatsApp Bob directly</b>',
-  'ft.line': 'AI implementation · 5 to 15 hours a week back through AI systems',
+  'ft.line': 'AI & automation · 5 to 15 hours a week back through AI systems and automation. Tracked in data: hours per week down, output up (x1 to x5).',
 };
