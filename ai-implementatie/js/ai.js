@@ -11,7 +11,7 @@
   const weken = (w) => w + ' ' + T(w === 1 ? 'week' : 'weken', w === 1 ? 'week' : 'weeks');
   const c = window.IBE_CONFIG || {};
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const WEEKS = 46, RATE = 35, PRICE = 1500;
+  const WEEKS = 46, RATE = 80, PRICE = 1500; // RATE: gemiddeld uurtarief, zelfde als de schuif in de header
 
   if (window.IBEDots) {
     IBEDots($('hero-dots'), { theme: 'light', gap: 22 });

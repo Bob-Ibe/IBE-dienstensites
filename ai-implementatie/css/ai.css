@@ -580,3 +580,17 @@ footer img { width: 24px; }
   .tiers.simple .tier { grid-template-columns: 1fr; gap: 8px; padding: 22px 20px; }
   .tiers.simple .t-price { grid-column: 1; }
 }
+
+/* Telefoon: grotere tikvlakken voor de duim en geen inzoomen bij het typen van het uurtarief */
+@media (pointer: coarse) {
+  .worth input[type=range] { height: 40px; }
+  .w-rate span { padding: 8px 10px; }
+  .w-rate input { font-size: 16px; width: 52px; }
+  .nav .brand { min-height: 44px; }
+}
+/* Kleine telefoon (320 breed): contactregels passen binnen het blok, het mailadres mag afbreken */
+@media (max-width: 380px) {
+  .contact { padding-left: 16px; padding-right: 16px; }
+  .contact-list a, .contact-list div { min-width: 0; padding: 12px 14px; gap: 10px; }
+  .contact-list b { min-width: 0; overflow-wrap: anywhere; }
+}
