@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plan je kennismaking · IBE MOTION</title>
+  <meta name="description" content="Plan een gratis kennismaking van 30 minuten over AI en automatisering. Online via Google Meet.">
+  <link rel="icon" href="../assets/lion-ink.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Doto:wght@600;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/ai.css?v=20261104d">
+  <link rel="stylesheet" href="../css/ibe-fx.css?v=20261104d">
+  <link rel="stylesheet" href="../css/plan.css?v=20261104d">
+</head>
+<body class="plan-page">
+<canvas id="pl-dots" aria-hidden="true"></canvas>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="../"><img src="../assets/lion-ink.png" alt=""><span><b>IBE MOTION</b><small>AI &amp; automatisering</small></span></a>
+    <div class="nav-r"><a class="btn ghost" href="../">Terug naar de site</a></div>
+  </div>
+</nav>
+
+<main class="wrap pl">
+  <!-- links: wat de kennismaking is -->
+  <aside class="pl-info">
+    <div class="ibe-morph pl-morph" id="pl-morph" title="Klik voor de volgende vorm" aria-hidden="true"></div>
+    <p class="kicker">Kennismaking</p>
+    <h1>Plan je kennismaking.</h1>
+    <div class="pl-meta"><span>30 minuten</span><span>Google Meet</span><span>Gratis</span></div>
+    <p class="pl-lead">In 30 minuten kijken we samen waar jouw tijd nu heen gaat: mail, offertes, administratie en planning. Je hoort wat er bij jouw bedrijf te winnen valt.</p>
+    <ul class="pl-list">
+      <li>Een eerlijk beeld van waar de uren zitten</li>
+      <li>Binnen 3 dagen een plan met een vaste prijs</li>
+      <li>Ons doel: 5 tot 15 uur per week terug</li>
+      <li>Vrijblijvend, je zit nergens aan vast</li>
+    </ul>
+    <div class="pl-who"><img src="../assets/lion-ink.png" alt=""><div><b>Bob · IBE MOTION</b><span>Landgraaf</span></div></div>
+  </aside>
+
+  <!-- rechts: kiezen, invullen, klaar -->
+  <section class="pl-card" id="pl-card" aria-live="polite">
+    <div class="pl-steps" aria-hidden="true"><span class="on">1 · Moment</span><span>2 · Gegevens</span><span>3 · Klaar</span></div>
+
+    <div class="pl-step" id="st-1">
+      <h2>Kies een dag en tijd</h2>
+      <p class="pl-sub">Tijden in Nederlandse tijd.</p>
+      <div class="pl-days" id="pl-days"><div class="pl-load">Vrije tijden ophalen…</div></div>
+      <div class="pl-times" id="pl-times"></div>
+    </div>
+
+    <form class="pl-step" id="st-2" hidden novalidate>
+      <button type="button" class="pl-back" id="pl-back">← Ander moment</button>
+      <div class="pl-chosen" id="pl-chosen"></div>
+      <h2>Je gegevens</h2>
+      <div class="pl-grid">
+        <label>Naam<input name="naam" autocomplete="name" required></label>
+        <label>Bedrijf<input name="bedrijf" autocomplete="organization" required></label>
+        <label>E-mail<input name="email" type="email" autocomplete="email" required></label>
+        <label>Telefoon<input name="telefoon" type="tel" autocomplete="tel" required></label>
+      </div>
+      <label class="pl-full">Hoeveel mensen werken er bij jullie op kantoor?
+        <select name="mensen" required>
+          <option value="">Kies…</option>
+          <option>Alleen ik</option><option>2 tot 5</option><option>6 tot 15</option><option>16 tot 50</option><option>Meer dan 50</option>
+        </select>
+      </label>
+      <fieldset class="pl-full">
+        <legend>Waar gaat nu de meeste tijd in? <small>Meerdere mag</small></legend>
+        <div class="pl-chips" id="pl-tijd">
+          <label><input type="checkbox" value="Mail en klantvragen"><span>Mail en klantvragen</span></label>
+          <label><input type="checkbox" value="Offertes"><span>Offertes</span></label>
+          <label><input type="checkbox" value="Administratie en facturen"><span>Administratie en facturen</span></label>
+          <label><input type="checkbox" value="Planning"><span>Planning</span></label>
+          <label><input type="checkbox" value="Rapportages"><span>Rapportages</span></label>
+          <label><input type="checkbox" value="Iets anders"><span>Iets anders</span></label>
+        </div>
+      </fieldset>
+      <label class="pl-full">Welke software gebruiken jullie nu? <small>Mag ook later</small>
+        <input name="software" placeholder="Bijvoorbeeld Outlook, Exact, Excel of een eigen CRM">
+      </label>
+      <input class="pl-hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <p class="pl-err" id="pl-err" hidden></p>
+      <button class="btn red pl-go" type="submit" id="pl-go">Bevestig de kennismaking <span class="arr">→</span></button>
+      <p class="pl-fine">Je krijgt direct een uitnodiging in je mail, met de Google Meet-link.</p>
+    </form>
+
+    <div class="pl-step pl-done" id="st-3" hidden>
+      <div class="pl-tick" aria-hidden="true">✓</div>
+      <h2>Staat gepland.</h2>
+      <p class="pl-when" id="pl-when"></p>
+      <p class="pl-sub">De uitnodiging met de Google Meet-link staat in je mail. Tot dan!</p>
+      <a class="btn primary" id="pl-meet" href="#" target="_blank" rel="noopener" hidden>Open Google Meet</a>
+    </div>
+
+    <div class="pl-step pl-done" id="st-x" hidden>
+      <h2>Online plannen lukt nu even niet.</h2>
+      <p class="pl-sub">Stuur me een appje of bel, dan plannen we het samen.</p>
+      <div class="pl-alt"><a class="btn red" id="pl-wa" href="#" target="_blank" rel="noopener">App Bob</a><a class="btn" id="pl-tel" href="#">Bel Bob</a></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span style="display:flex;align-items:center;gap:12px"><img src="../assets/lion-ink.png" alt="">IBE MOTION · Landgraaf · KvK 98929879</span>
+    <span>AI &amp; automatisering · 5 tot 15 uur per week terug</span>
+  </div>
+</footer>
+
+<script src="../js/config.js?v=20261104d"></script>
+<script src="../js/lion-mask.js?v=20261104d"></script>
+<script src="../js/ibe-dots.js?v=20261104d"></script>
+<script src="../js/ibe-fx.js?v=20261104d"></script>
+<script src="../js/plan.js?v=20261104d"></script>
+</body>
+</html>
