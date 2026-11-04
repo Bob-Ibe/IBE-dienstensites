@@ -32,7 +32,7 @@ window.IBE_EN = {
   'vsl.sub': 'The video will be here soon. Until then, I\'m happy to tell you myself.',
 
   'trust.1': 'Goal: 5 to 15 hours a week',
-  'trust.2': 'Guaranteed 5 hours',
+  'trust.2': 'Guaranteed 10 hours',
   'trust.3': 'Works with your current software',
 
   'wk.kicker': 'The real value',
@@ -88,9 +88,9 @@ window.IBE_EN = {
   'wat.ag': 'Digital colleagues that really take tasks off your hands. They read along, decide within your rules and do the work themselves, also outside office hours.',
   'wat.agTag': 'Works autonomously',
 
-  'gar.seal': '<b>5</b>HOURS A<br>WEEK',
-  'gar.title': 'If our systems don\'t save you five hours a week, you get <span class="hl">your deposit back</span>.',
-  'gar.text': 'We measure it together in your KPI dashboard, from the baseline. If the savings stay under 5 hours a week, you get your payment back. Depending on the size of your business, we save on average 10 to 15 hours a week. We track this in the KPI dashboard with the baseline, so it is based on data.',
+  'gar.seal': '<b>10</b>HOURS A<br>WEEK',
+  'gar.title': 'If our systems don\'t save you ten hours a week, you get <span class="hl">your deposit back</span>.',
+  'gar.text': 'We measure it together in your KPI dashboard, from the baseline. If the savings stay under 10 hours a week, you get your payment back. Depending on the size of your business, we save on average 10 to 15 hours a week. We track this in the KPI dashboard with the baseline, so it is based on data.',
 
   'ww.kicker': 'Process',
   'ww.title': 'Process',
@@ -141,7 +141,7 @@ window.IBE_EN = {
   'ti.2x': 'everything running',
   'ti.3k': 'Step 3',
   'ti.3t': 'Aftercare and client success',
-  'ti.3d': 'For three months we stay close: questions, small changes and measuring the savings together. If it stays under 5 hours a week, you get your deposit back.',
+  'ti.3d': 'For three months we stay close: questions, small changes and measuring the savings together. If it stays under 10 hours a week, you get your deposit back.',
   'ti.3a': 'Phase 3',
   'ti.3x': '5-hours-a-week guarantee',
   'ti.4k': 'Step 4',
@@ -167,7 +167,7 @@ window.IBE_EN = {
   'fq.4q': 'How fast is it up and running?',
   'fq.4a': 'After the onboarding we set a fixed date. All systems are up and running within one to two weeks. After that, aftercare and client success continue for 3 months, so everything keeps working as intended and your team is fully comfortable with it.',
   'fq.5q': 'How exactly does the guarantee work?',
-  'fq.5a': 'We record a baseline per task up front. After delivery we measure together in your KPI dashboard. If the savings stay under 5 hours a week, you get your payment back.',
+  'fq.5a': 'We record a baseline per task up front. After delivery we measure together in your KPI dashboard. If the savings stay under 10 hours a week, you get your payment back.',
   'fq.6q': 'What if something changes later?',
   'fq.6a': 'Then we adjust it. You can always reach me for questions and small changes, and we agree on bigger additions up front at a fixed price. This technology moves fast. We stay in touch and keep you posted on what is new. If something changes that affects the systems we built for you, you will hear it from us.',
 

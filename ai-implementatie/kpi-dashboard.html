@@ -101,7 +101,7 @@
 // Alles staat in de opslag van deze browser (localStorage). Maak regelmatig een back-up met de knop "Back-up".
 // Een klant toevoegen kan ook met het KPI-startbestand uit de onboarding (Importeer).
 (function () {
-  const KEY = 'ibe-kpi-v1', GUARANTEE = 5;
+  const KEY = 'ibe-kpi-v1', GUARANTEE = 10;
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const nl = (n, d = 0) => (Number(n) || 0).toLocaleString('nl-NL', { minimumFractionDigits: d, maximumFractionDigits: d });

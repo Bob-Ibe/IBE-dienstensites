@@ -206,7 +206,7 @@
         <div class="kd-tile"><small>${T('Totaal', 'Total')}</small><b>${nl(total)}<i>${U}</i></b></div>
         <div class="kd-tile"><small>${T('Waarde per jaar', 'Value per year')}</small><b>${eur(s * WEEKS * RATE)}</b></div>
       </div>
-      <div class="kd-chart"><div class="goal" style="bottom:${(goal / max) * 100}%"><span>${T('DOEL', 'GOAL')} ${goal} ${T('U', 'H')}</span></div><div class="goal g5" style="bottom:${(5 / max) * 100}%"><span>${T('GARANTIE 5 U', 'GUARANTEE 5 H')}</span></div>
+      <div class="kd-chart"><div class="goal" style="bottom:${(goal / max) * 100}%"><span>${T('DOEL', 'GOAL')} ${goal} ${T('U', 'H')}</span></div><div class="goal g5" style="bottom:${(10 / max) * 100}%"><span>${T('GARANTIE 10 U', 'GUARANTEE 10 H')}</span></div>
         ${wk.map((v, i) => `<i style="--h:${(v / max) * 100}%;--d:${i * 50}ms" title="${uur(Math.round(v * 10) / 10)}"></i>`).join('')}</div>
       <div class="kd-x">${wk.map((_, i) => `<span>${i < 2 ? T('Nul', 'Base') : T('W', 'W') + (i - 1)}</span>`).join('')}</div>
       <div class="kd-list">${b.tasks.slice(0, 3).map(([t, a, z]) => `<div><span>${t}</span><b>${uur(a - z)} ${T('terug', 'back')}</b></div>`).join('')}</div>`;
