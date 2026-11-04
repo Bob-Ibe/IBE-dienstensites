@@ -19,7 +19,7 @@ window.IBE_EN = {
   'hero.leadNote': 'We put that in writing in the agreement.',
   'hero.cta1': 'Calculate your time savings',
   'hero.cta2': 'Book an intro call',
-  'hero.worthL': '<b id="w-h">10 hours</b> a week through our AI systems & automation',
+  'hero.worthL': '<b id="w-h">10 hours</b> a week back through our AI systems & automation',
   'hero.worthV': 'is worth <b id="w-v">€16,100</b> a year',
   'hero.worthAria': 'Hours per week',
   'hero.at': 'at',

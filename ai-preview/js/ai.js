@@ -225,7 +225,7 @@
     setTimeout(() => { d.innerHTML = dash(b); d.style.minHeight = ''; requestAnimationFrame(() => d.classList.add('grow')); }, 420);
   }
   if ($('br-tabs')) $('br-tabs').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) showBranch(+b.dataset.b); });
-  showBranch(0, true);
+  if ($('br-body')) showBranch(0, true);
 
   /* ---------- tijdlijn: van nulmeting tot resultaat, stap voor stap gevormd door dots ---------- */
   // De tijd per stap (Week 0, Week 2, ...) staat gewoon als tekst in de HTML (voor zoekmachines en schermlezers). Met beweging

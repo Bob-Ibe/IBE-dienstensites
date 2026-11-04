@@ -570,3 +570,13 @@ footer img { width: 24px; }
 .kn-card small { display: block; margin-top: 16px; color: #8b909b; font-size: 13.5px; }
 .kn-card small a { color: #fff; }
 @media (max-width: 820px) { .kn-grid { grid-template-columns: 1fr; gap: 24px; } .kn-card { padding: 26px 22px; } }
+
+/* Variant 2: drie stappen, zonder bolletjes en lijn. Links "Stap 1" in dots, rechts de uitleg */
+.tiers.simple .t-node, .tiers.simple .tiers-rail { display: none; }
+.tiers.simple .tier { grid-template-columns: minmax(230px, auto) 1fr; gap: 36px; padding: 30px 36px; }
+.tiers.simple .t-price { align-items: flex-start; text-align: left; }
+.tiers.simple .t-d { margin: 0; max-width: 560px; }
+@media (max-width: 760px) {
+  .tiers.simple .tier { grid-template-columns: 1fr; gap: 8px; padding: 22px 20px; }
+  .tiers.simple .t-price { grid-column: 1; }
+}
