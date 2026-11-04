@@ -10,10 +10,6 @@
   const longWhen = (t, dur) => `${fmt(t, { weekday: 'long', day: 'numeric', month: 'long' })}, ${fmt(t, { hour: '2-digit', minute: '2-digit' })} tot ${fmt(t + dur * 60000, { hour: '2-digit', minute: '2-digit' })}`;
   let slots = [], dur = 30, pick = null, day = null;
 
-  // huisstijl: dezelfde dots en leeuw-morph als op de site
-  if (window.IBEDots) IBEDots($('pl-dots'), { theme: 'light', gap: 22 });
-  if (window.IBEMorph) IBEMorph($('pl-morph'), { theme: 'light', shapes: ['leeuw', 'zandloper', 'netwerk'] });
-
   // naam en mail invullen als de link ze meegeeft (de knoppen op de site sturen ze mee, net als bij Calendly)
   const q = new URLSearchParams(location.search), form = $('st-2');
   if (q.get('name')) form.naam.value = q.get('name');
@@ -49,7 +45,7 @@
   $('pl-days').addEventListener('click', (e) => { const b = e.target.closest('.pl-day'); if (b) { day = b.dataset.k; renderDays(); } });
   $('pl-times').addEventListener('click', (e) => {
     const b = e.target.closest('.pl-time'); if (!b) return;
-    pick = +b.dataset.t;
+    pick = +b.dataset.t; $('pl-note').hidden = true;
     $('pl-chosen').innerHTML = `<b>${longWhen(pick, dur)}</b><span>Kennismaking · 30 minuten · Google Meet</span>`;
     show('st-2');
     setTimeout(() => (form.naam.value ? form.bedrijf : form.naam).focus({ preventScroll: true }), 300);
@@ -85,7 +81,8 @@
     try {
       const r = await fetch(api('book'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) });
       const j = await r.json().catch(() => ({}));
-      if (r.status === 409) { err('Dit moment is net door iemand anders geboekt. Kies een ander moment.'); await load(); setTimeout(() => show('st-1'), 1600); return; }
+      if (r.status === 409) { await load(); show('st-1'); $('pl-note').textContent = 'Dat moment is net door iemand anders geboekt. Kies een ander moment.'; $('pl-note').hidden = false; return; }
+      if (r.status === 429) return err('Je hebt al een kennismaking staan. Wil je hem verzetten of nog een gesprek? App me even.');
       if (!r.ok || !j.ok) throw new Error(j.error || r.status);
       $('pl-when').textContent = longWhen(j.start || pick, dur);
       if (j.meet) { $('pl-meet').href = j.meet; $('pl-meet').hidden = false; }

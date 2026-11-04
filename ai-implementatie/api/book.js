@@ -17,6 +17,8 @@ async function readBody(req) {
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return send(res, 405, { error: 'method' });
   if (!configured()) return send(res, 503, { error: 'setup' });
+  // alleen JSON: een gewoon formulier van een andere site kan zo niets insturen
+  if (!/application\/json/i.test(req.headers['content-type'] || '')) return send(res, 415, { error: 'invoer' });
   let b;
   try { b = await readBody(req); } catch (e) { return send(res, 400, { error: 'invoer' }); }
   if (b.website) return send(res, 200, { ok: true }); // honeypot: bots vullen dit veld in
@@ -36,6 +38,7 @@ module.exports = async (req, res) => {
     send(res, 200, { ok: true, start: ev.start, end: ev.end, meet: ev.hangoutLink });
   } catch (e) {
     console.error(e);
-    send(res, e.code === 409 ? 409 : 502, { error: e.code === 409 ? 'bezet' : 'agenda' });
+    if (e.code === 409 || e.code === 429) return send(res, e.code, { error: e.code === 409 ? 'bezet' : 'te-veel' });
+    send(res, 502, { error: 'agenda' });
   }
 };

@@ -91,6 +91,19 @@ async function busy(fromMs, toMs, tok) {
   return (cal.busy || []).map((b) => [Date.parse(b.start), Date.parse(b.end)]);
 }
 
+// hoeveel open boekingen dit mailadres al heeft (tegen spam: niemand kan je hele agenda volzetten)
+const crypto = require('crypto');
+const mailKey = (mail) => crypto.createHash('sha256').update(mail.toLowerCase()).digest('hex').slice(0, 24);
+async function openBookings(mail, tok) {
+  if (MOCK()) return 0;
+  const q = new URLSearchParams({ privateExtendedProperty: 'mail=' + mailKey(mail), timeMin: new Date().toISOString(), singleEvents: 'true', maxResults: '10' });
+  const r = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CAL())}/events?${q}`, { headers: { Authorization: 'Bearer ' + tok } });
+  const j = await r.json();
+  if (!r.ok) throw new Error('google-list: ' + r.status);
+  return (j.items || []).filter((e) => e.status !== 'cancelled').length;
+}
+const MAX_PER_MAIL = 2;
+
 function freeSlots(cands, busyList) {
   const pad = BUFFER * 60000, len = DURATION * 60000;
   return cands.filter((t) => !busyList.some(([s, e]) => t - pad < e && t + len + pad > s));
@@ -106,16 +119,22 @@ async function available() {
 
 async function createEvent(startMs, f) {
   const endMs = startMs + DURATION * 60000;
+  // de klant ziet deze tekst ook in zijn uitnodiging, dus eerst een kort welkom en daarna zijn antwoorden
   const lines = [
-    'Kennismaking IBE MOTION · AI & automatisering',
-    'In 30 minuten kijken we waar je tijd nu heen gaat en wat er bij jouw bedrijf te winnen valt.',
-    'Bob Ibe · IBE MOTION · 06 55 11 60 82 · ai.ibemotion.nl',
+    `Hoi ${f.naam.split(' ')[0]},`,
     '',
-    `Naam: ${f.naam}`,
+    'Fijn dat je een kennismaking hebt ingepland. In 30 minuten kijken we samen waar je tijd nu heen gaat',
+    'en wat er bij jouw bedrijf te winnen valt. Je hoeft niets voor te bereiden.',
+    'De Google Meet-link staat in deze uitnodiging.',
+    '',
+    'Past het toch niet? App of bel me even: 06 55 11 60 82.',
+    '',
+    'Groet, Bob Ibe · IBE MOTION · ai.ibemotion.nl',
+    '',
+    'Jouw antwoorden:',
     `Bedrijf: ${f.bedrijf}`,
     `E-mail: ${f.email}`,
     `Telefoon: ${f.telefoon}`,
-    '',
     `Mensen op kantoor: ${f.mensen}`,
     `Meeste tijd gaat in: ${f.tijd.join(', ')}`,
     `Software nu: ${f.software || '-'}`,
@@ -125,6 +144,7 @@ async function createEvent(startMs, f) {
   // vlak voor het boeken nog een keer kijken of het tijdstip echt vrij is (twee mensen tegelijk)
   const list = await busy(startMs - 3600000, endMs + 3600000, tok);
   if (!freeSlots([startMs], list).length) { const e = new Error('bezet'); e.code = 409; throw e; }
+  if ((await openBookings(f.email, tok)) >= MAX_PER_MAIL) { const e = new Error('te veel'); e.code = 429; throw e; }
   const body = {
     summary: `IBE MOTION × ${f.bedrijf} · Kennismaking AI & automatisering`,
     description: lines.join('\n'),
@@ -133,7 +153,7 @@ async function createEvent(startMs, f) {
     attendees: [{ email: f.email, displayName: f.naam }],
     conferenceData: { createRequest: { requestId: 'ibe-' + startMs + '-' + Math.random().toString(36).slice(2, 8), conferenceSolutionKey: { type: 'hangoutsMeet' } } },
     reminders: { useDefault: true },
-    extendedProperties: { private: { bron: 'ibe-planner' } },
+    extendedProperties: { private: { bron: 'ibe-planner', mail: mailKey(f.email) } },
   };
   const r = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CAL())}/events?conferenceDataVersion=1&sendUpdates=all`, {
     method: 'POST',

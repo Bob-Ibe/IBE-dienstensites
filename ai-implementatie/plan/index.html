@@ -8,12 +8,10 @@
   <link rel="icon" href="../assets/lion-ink.png">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Doto:wght@600;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/ai.css?v=20261104d">
-  <link rel="stylesheet" href="../css/ibe-fx.css?v=20261104d">
-  <link rel="stylesheet" href="../css/plan.css?v=20261104d">
+  <link rel="stylesheet" href="../css/ai.css?v=20261104f">
+  <link rel="stylesheet" href="../css/plan.css?v=20261104f">
 </head>
 <body class="plan-page">
-<canvas id="pl-dots" aria-hidden="true"></canvas>
 
 <nav class="nav">
   <div class="wrap">
@@ -25,10 +23,8 @@
 <main class="wrap pl">
   <!-- links: wat de kennismaking is -->
   <aside class="pl-info">
-    <div class="ibe-morph pl-morph" id="pl-morph" title="Klik voor de volgende vorm" aria-hidden="true"></div>
     <p class="kicker">Kennismaking</p>
     <h1>Plan je kennismaking.</h1>
-    <div class="pl-meta"><span>30 minuten</span><span>Google Meet</span><span>Gratis</span></div>
     <p class="pl-lead">In 30 minuten kijken we samen waar jouw tijd nu heen gaat: mail, offertes, administratie en planning. Je hoort wat er bij jouw bedrijf te winnen valt.</p>
     <ul class="pl-list">
       <li>Een eerlijk beeld van waar de uren zitten</li>
@@ -46,6 +42,7 @@
     <div class="pl-step" id="st-1">
       <h2>Kies een dag en tijd</h2>
       <p class="pl-sub">Tijden in Nederlandse tijd.</p>
+      <p class="pl-err" id="pl-note" hidden></p>
       <div class="pl-days" id="pl-days"><div class="pl-load">Vrije tijden ophalen…</div></div>
       <div class="pl-times" id="pl-times"></div>
     </div>
@@ -100,19 +97,17 @@
       <div class="pl-alt"><a class="btn red" id="pl-wa" href="#" target="_blank" rel="noopener">App Bob</a><a class="btn" id="pl-tel" href="#">Bel Bob</a></div>
     </div>
   </section>
+
+  <!-- onder het inplanblok: de garanties -->
+  <ul class="pl-gar" aria-label="Onze garanties">
+    <li><span><b>Garantie op 10 uur per week terug.</b> Halen we dat niet, dan krijg je je aanbetaling terug.</span></li>
+    <li><span><b>Je bent zelf maar 90 minuten kwijt.</b> Daarna ga ik aan de slag met het bouwen van je systemen en tools.</span></li>
+    <li><span><b>We bespreken je dataveiligheid.</b> Je weet vooraf precies wat er met je gegevens gebeurt.</span></li>
+  </ul>
 </main>
 
-<footer>
-  <div class="wrap">
-    <span style="display:flex;align-items:center;gap:12px"><img src="../assets/lion-ink.png" alt="">IBE MOTION · Landgraaf · KvK 98929879</span>
-    <span>AI &amp; automatisering · 5 tot 15 uur per week terug</span>
-  </div>
-</footer>
 
-<script src="../js/config.js?v=20261104d"></script>
-<script src="../js/lion-mask.js?v=20261104d"></script>
-<script src="../js/ibe-dots.js?v=20261104d"></script>
-<script src="../js/ibe-fx.js?v=20261104d"></script>
-<script src="../js/plan.js?v=20261104d"></script>
+<script src="../js/config.js?v=20261104f"></script>
+<script src="../js/plan.js?v=20261104f"></script>
 </body>
 </html>
