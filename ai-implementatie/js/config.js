@@ -13,7 +13,7 @@ window.IBE_CONFIG = {
   mail: 'ibemotionmedia@gmail.com',
   callTopic: 'Het gaat over AI-implementatie.',
   callTopicEn: "It's about AI implementation.",
-  // Reviews onder "De echte waarde", drie rijen die langsschuiven. Leeg = voorbeeldkaartjes.
+  // Reviews onder "De echte waarde": onder de 6 vaste kaartjes, vanaf 6 rijen die langsschuiven. Leeg = alleen het Google-logo.
   // Plak hier je Google-reviews: { naam: 'Sanne de Vries', bedrijf: 'Interieurzaak, Roermond', sterren: 5, tekst: '...' }
   reviews: [
     { naam: 'Dennis van den Berg', bedrijf: 'Tuinen die verbazen', sterren: 5, tekst: 'Bob heeft voor mij een hele mooie website gebouwd voor mijn hoveniersbedrijf, ook heeft hij me goed op weg geholpen om de bedrijfsvoering mbt facturen, offertes en diverse andere dingen te laten automatiseren waardoor er meer tijd vrij is gekomen voor andere dingen. Ik ben helemaal tevreden met de gang van zaken en de resultaten! 😄' },

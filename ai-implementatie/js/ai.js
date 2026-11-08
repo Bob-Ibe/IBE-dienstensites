@@ -31,12 +31,12 @@
   // header: wat 5 tot 15 uur per week waard is per maand (een maand telt als 4 weken, 10 uur per week = 40 uur per maand)
   // standaard 10 uur (het gemiddelde); het uurloon kun je zelf invullen
   $('w-r').value = 10;
-  const worth = () => { const h = +$('w-r').value, rate = parseFloat($('w-rate').value) || 0; $('w-h').textContent = uur(h); $('w-v').textContent = eur(h * 4 * rate); };
+  const worth = () => { const h = +$('w-r').value, rate = Math.max(0, parseFloat($('w-rate').value) || 0); $('w-h').textContent = uur(h); $('w-v').textContent = eur(h * 4 * rate); };
   $('w-r').addEventListener('input', worth); $('w-rate').addEventListener('input', worth); worth();
 
-  /* ---------- reviews: drie rijen die langzaam langsschuiven ---------- */
-  // Reviews komen uit js/config.js (reviews: [{ naam, bedrijf, tekst, sterren }]). Zolang die lijst leeg is, staan er
-  // voorbeeldkaartjes. Elke rij is twee keer dezelfde reeks, zodat hij naadloos door kan lopen (CSS-animatie). Zonder reviews staat er alleen het Google-logo.
+  /* ---------- reviews: vaste kaartjes, vanaf 6 reviews drie rijen die langzaam langsschuiven ---------- */
+  // Reviews komen uit js/config.js (reviews: [{ naam, bedrijf, tekst, sterren }]). Zonder reviews staat er alleen het Google-logo.
+  // Elke schuivende rij is twee keer dezelfde reeks, zodat hij naadloos door kan lopen (CSS-animatie).
   (function reviews() {
     const box = $('reviews'); if (!box) return;
     const list = (c.reviews || []).filter((r) => r.tekst);
