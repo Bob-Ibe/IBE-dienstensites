@@ -517,8 +517,8 @@ footer img { width: 24px; }
   .br-row.t span:last-child { grid-column: 2 / -1; font-size: 16px !important; }
 }
 
-/* 3 nov: de knop in de nav vraagt elke 10 seconden even aandacht met een rode rand die naar buiten wegvloeit */
-.btn.cta-pulse { animation: cta-ring 10s ease-out infinite; }
+/* 3 nov: de knop in de nav vraagt elke 6,7 seconden even aandacht met een rode rand die naar buiten wegvloeit */
+.btn.cta-pulse { animation: cta-ring 6.67s ease-out infinite; }
 @keyframes cta-ring {
   0% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), .9); }
   7% { box-shadow: 0 0 0 4px rgba(var(--accent-rgb), .75); }
@@ -543,7 +543,6 @@ footer img { width: 24px; }
 .rv-card { width: 340px; flex: 0 0 auto; background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.09); border-radius: 16px; padding: 18px 20px; color: #d7dae2; }
 .rv-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .rv-stars { color: #e0a458; letter-spacing: .1em; font-size: 14px; }
-.rv-g { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: #11131a; font: 700 13px var(--font-display); }
 .rv-card p { margin: 0 0 14px; font-size: 14.5px; line-height: 1.55; }
 .rv-card footer { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; font-size: 13px; color: #8b909b; }
 .rv-card footer b { color: #fff; font-weight: 600; }
@@ -553,7 +552,7 @@ footer img { width: 24px; }
 @media (max-width: 560px) { .rv-card { width: 270px; padding: 14px 16px; } .rv-card p { font-size: 13.5px; } .reviews { gap: 10px; } }
 
 /* reviews: alleen het Google-logo zolang er geen reviews zijn */
-.reviews.empty { display: flex; justify-content: center; mask-image: none; -webkit-mask-image: none; padding: 30px 0 10px; }
+.reviews.empty { display: flex; flex-direction: column; align-items: center; gap: 34px; justify-content: center; mask-image: none; -webkit-mask-image: none; padding: 30px 0 10px; }
 .rv-logo { display: flex; flex-direction: column; align-items: center; gap: 12px; }
 .rv-logo svg { width: 64px; height: 64px; }
 .rv-logo b { font: 600 22px var(--font-display); color: #fff; letter-spacing: -.01em; }
@@ -594,3 +593,15 @@ footer img { width: 24px; }
   .contact-list a, .contact-list div { min-width: 0; padding: 12px 14px; gap: 10px; }
   .contact-list b { min-width: 0; overflow-wrap: anywhere; }
 }
+
+/* Vaste reviewkaartjes onder het Google-logo: naast elkaar op desktop, onder elkaar op telefoon */
+.rv-static { display: flex; justify-content: center; gap: 14px; width: 100%; max-width: 982px; margin: 0 auto; padding: 0 24px; }
+.rv-static .rv-card { flex: 1 1 0; min-width: 0; width: auto; max-width: 460px; display: flex; flex-direction: column; }
+.rv-static .rv-card footer { margin-top: auto; }
+.rv-text { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
+.rv-card.open .rv-text { display: block; overflow: visible; }
+.rv-more { align-self: flex-start; margin: -6px 0 14px; padding: 0; background: none; border: 0; color: var(--sand); font: 600 13.5px var(--font); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.rv-more:hover { color: #fff; }
+@media (pointer: coarse) { .rv-more { min-height: 40px; margin: -10px 0 6px; } }
+.rv-card footer { padding: 0; margin: 0; border: 0; background: none; text-align: left; }
+@media (max-width: 760px) { .rv-static { flex-direction: column; padding: 0 16px; } .rv-static .rv-card { flex: none; max-width: none; } }

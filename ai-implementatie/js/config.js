@@ -15,7 +15,10 @@ window.IBE_CONFIG = {
   callTopicEn: "It's about AI implementation.",
   // Reviews onder "De echte waarde", drie rijen die langsschuiven. Leeg = voorbeeldkaartjes.
   // Plak hier je Google-reviews: { naam: 'Sanne de Vries', bedrijf: 'Interieurzaak, Roermond', sterren: 5, tekst: '...' }
-  reviews: [],
+  reviews: [
+    { naam: 'Dennis van den Berg', bedrijf: 'Tuinen die verbazen', sterren: 5, tekst: 'Bob heeft voor mij een hele mooie website gebouwd voor mijn hoveniersbedrijf, ook heeft hij me goed op weg geholpen om de bedrijfsvoering mbt facturen, offertes en diverse andere dingen te laten automatiseren waardoor er meer tijd vrij is gekomen voor andere dingen. Ik ben helemaal tevreden met de gang van zaken en de resultaten! 😄' },
+    { naam: 'Victor', bedrijf: 'Victors smaakatelier', sterren: 5, tekst: 'Bob heeft mij geweldig in de markt geplaatst en ben hier heel dankbaar voor!' },
+  ],
   // Prijsopbouw: hoeveel van de 4 plekken voor € 1.500 al vergeven zijn. Bij 4 van de 4 zet je de prijzen een trede op in index.html.
   prijsPlekken: { bezet: 2, totaal: 4 },
 };

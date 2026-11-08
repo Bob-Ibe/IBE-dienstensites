@@ -11,7 +11,7 @@
   const weken = (w) => w + ' ' + T(w === 1 ? 'week' : 'weken', w === 1 ? 'week' : 'weeks');
   const c = window.IBE_CONFIG || {};
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const WEEKS = 46, RATE = 80, PRICE = 1500; // RATE: gemiddeld uurtarief, zelfde als de schuif in de header
+  const WEEKS = 46, RATE = 60, PRICE = 1500; // RATE: gemiddeld uurtarief, zelfde als de schuif in de header
 
   if (window.IBEDots) {
     IBEDots($('hero-dots'), { theme: 'light', gap: 22 });
@@ -28,10 +28,10 @@
 
   const io = 'IntersectionObserver' in window ? new IntersectionObserver((en) => en.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.12 }) : null;
 
-  // header: wat 5 tot 15 uur per jaar waard is
+  // header: wat 5 tot 15 uur per week waard is per maand (een maand telt als 4 weken, 10 uur per week = 40 uur per maand)
   // standaard 10 uur (het gemiddelde); het uurloon kun je zelf invullen
   $('w-r').value = 10;
-  const worth = () => { const h = +$('w-r').value, rate = parseFloat($('w-rate').value) || 0; $('w-h').textContent = uur(h); $('w-v').textContent = eur(h * WEEKS * rate); };
+  const worth = () => { const h = +$('w-r').value, rate = parseFloat($('w-rate').value) || 0; $('w-h').textContent = uur(h); $('w-v').textContent = eur(h * 4 * rate); };
   $('w-r').addEventListener('input', worth); $('w-rate').addEventListener('input', worth); worth();
 
   /* ---------- reviews: drie rijen die langzaam langsschuiven ---------- */
@@ -39,15 +39,24 @@
   // voorbeeldkaartjes. Elke rij is twee keer dezelfde reeks, zodat hij naadloos door kan lopen (CSS-animatie). Zonder reviews staat er alleen het Google-logo.
   (function reviews() {
     const box = $('reviews'); if (!box) return;
-    const list = c.reviews || [];
-    // Zolang er geen reviews in config staan: alleen het Google-logo, rustig in het midden
-    if (!list.length) {
+    const list = (c.reviews || []).filter((r) => r.tekst);
+    // Weinig reviews: het Google-logo in het midden met de kaartjes er vast onder. Langsschuivende rijen pas vanaf 6 reviews.
+    const esc = (x) => String(x).replace(/[&<>"]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
+    const card = (r) => `<article class="rv-card${r.voorbeeld ? ' ex' : ''}"><div class="rv-top"><span class="rv-stars" aria-label="${r.sterren || 5} ${T('sterren', 'stars')}">${'★'.repeat(r.sterren || 5)}</span></div><p class="rv-text">“${esc(r.tekst)}”</p><button type="button" class="rv-more" hidden aria-expanded="false">${T('Lees meer', 'Read more')}</button><footer><b>${esc(r.naam)}</b><span>${esc(r.bedrijf || '')}</span>${r.voorbeeld ? `<i>${T('Voorbeeld', 'Example')}</i>` : ''}</footer></article>`;
+    if (list.length < 6) {
       box.classList.add('empty');
-      box.innerHTML = `<div class="rv-logo"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><b>Google Reviews</b><span class="rv-stars" aria-hidden="true">★★★★★</span></div>`;
+      box.innerHTML = `<div class="rv-logo"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><b>Google Reviews</b><span class="rv-stars" aria-hidden="true">★★★★★</span></div>${list.length ? `<div class="rv-static">${list.map(card).join('')}</div>` : ''}`;
+      // Lange reviews staan ingeklapt op 3 regels; de knop verschijnt alleen als er echt tekst is afgekapt
+      const meet = () => box.querySelectorAll('.rv-card:not(.open)').forEach((k) => { const p = k.querySelector('.rv-text'); k.querySelector('.rv-more').hidden = p.scrollHeight <= p.clientHeight + 1; });
+      box.addEventListener('click', (e) => {
+        const b = e.target.closest('.rv-more'); if (!b) return;
+        const open = b.closest('.rv-card').classList.toggle('open');
+        b.textContent = open ? T('Lees minder', 'Read less') : T('Lees meer', 'Read more');
+        b.setAttribute('aria-expanded', open);
+      });
+      meet(); addEventListener('resize', meet); if (document.fonts) document.fonts.ready.then(meet);
       return;
     }
-    const esc = (x) => String(x).replace(/[&<>"]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
-    const card = (r) => `<article class="rv-card${r.voorbeeld ? ' ex' : ''}"><div class="rv-top"><span class="rv-stars" aria-label="${r.sterren || 5} ${T('sterren', 'stars')}">${'★'.repeat(r.sterren || 5)}</span><span class="rv-g" aria-hidden="true">G</span></div><p>${esc(r.tekst)}</p><footer><b>${esc(r.naam)}</b><span>${esc(r.bedrijf || '')}</span>${r.voorbeeld ? `<i>${T('Voorbeeld', 'Example')}</i>` : ''}</footer></article>`;
     const per = Math.ceil(list.length / 3);
     box.innerHTML = [0, 1, 2].map((row) => {
       const items = list.slice(row * per, row * per + per);

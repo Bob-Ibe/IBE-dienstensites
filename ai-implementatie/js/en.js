@@ -13,14 +13,14 @@ window.IBE_EN = {
 
   'hero.morph': 'Click for the next shape',
   'hero.eyebrow': 'AI & automation',
-  'hero.h1': 'We give you back <span class="hl">5 to 15 hours</span> a week.',
+  'hero.h1': 'We give you back <span class="hl">40 hours</span> a month.',
   'hero.h1b': 'For entrepreneurs and small businesses.',
   'hero.lead': 'We take over the recurring work on the computer: email, quotes, admin and planning. We measure it together in your own dashboard. If we don\'t save you 5 hours a week on average, you pay us nothing.',
   'hero.leadNote': 'We put that in writing in the agreement.',
   'hero.cta1': 'Calculate your time savings',
   'hero.cta2': 'Book an intro call',
   'hero.worthL': '<b id="w-h">10 hours</b> a week back through our AI systems & automation',
-  'hero.worthV': 'is worth <b id="w-v">€36,800</b> a year',
+  'hero.worthV': 'is worth <b id="w-v">€2,400</b> a month',
   'hero.worthAria': 'Hours per week',
   'hero.at': 'at',
   'hero.rateAria': 'Hourly rate in euros',
@@ -28,15 +28,15 @@ window.IBE_EN = {
   'hero.worthLink': 'Calculate it for your business →',
 
   'vsl.aria': 'Play video',
-  'vsl.title': 'How we free up 5 to 15 hours a week',
+  'vsl.title': 'How we free up 40 hours a month',
   'vsl.sub': 'The video will be here soon. Until then, I\'m happy to tell you myself.',
 
   'trust.1': 'Goal: 5 to 15 hours a week',
-  'trust.2': 'Guaranteed 10 hours',
+  'trust.2': 'Guaranteed 10 hours a week',
   'trust.3': 'Works with your current software',
 
   'wk.kicker': 'The real value',
-  'wk.title': 'This is what <span class="hl"><em>10 hours</em></span> a week back looks like.',
+  'wk.title': 'This is what <span class="hl"><em>40 hours</em></span> a month back looks like.',
   'rv.aria': 'Customer reviews',
 
   'calc.kicker': 'The math',
@@ -141,7 +141,7 @@ window.IBE_EN = {
   'ti.2x': 'everything running',
   'ti.3k': 'Step 3',
   'ti.3t': 'Aftercare and client success',
-  'ti.3d': 'For three months we stay close: questions, small changes and measuring the savings together. If it stays under 10 hours a week, you get your deposit back.',
+  'ti.3d': 'For three months we stay close: questions, small changes and measuring the savings together. If it stays under 40 hours a month, you get your deposit back.',
   'ti.3a': 'Phase 3',
   'ti.3x': '5-hours-a-week guarantee',
   'ti.4k': 'Step 4',
@@ -167,7 +167,7 @@ window.IBE_EN = {
   'fq.4q': 'How fast is it up and running?',
   'fq.4a': 'After the onboarding we set a fixed date. All systems are up and running within one to two weeks. After that, aftercare and client success continue for 3 months, so everything keeps working as intended and your team is fully comfortable with it.',
   'fq.5q': 'How exactly does the guarantee work?',
-  'fq.5a': 'We record a baseline per task up front. After delivery we measure together in your KPI dashboard. If the savings stay under 10 hours a week, you get your payment back.',
+  'fq.5a': 'We record a baseline per task up front. After delivery we measure together in your KPI dashboard. If the savings stay under 40 hours a month, you get your payment back.',
   'fq.6q': 'What if something changes later?',
   'fq.6a': 'Then we adjust it. You can always reach me for questions and small changes, and we agree on bigger additions up front at a fixed price. This technology moves fast. We stay in touch and keep you posted on what is new. If something changes that affects the systems we built for you, you will hear it from us.',
 
