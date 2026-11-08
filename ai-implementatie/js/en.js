@@ -10,6 +10,7 @@ window.IBE_EN = {
   'nav.branches': 'Your business',
   'nav.werkwijze': 'Process',
   'nav.cta': 'Book a free intake',
+  'nav.ctaShort': 'Intake',
 
   'hero.morph': 'Click for the next shape',
   'hero.eyebrow': 'AI & automation',

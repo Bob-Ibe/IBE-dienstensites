@@ -338,7 +338,7 @@
     if (k === 'mail') { el.href = 'mailto:' + c.mail; el.querySelector('b').textContent = c.mail; }
   });
   // de knop in de nav opent de agenda zodra er een Calendly-link in config staat; tot die tijd gaat hij naar de intake
-  if (c.calendly && $('nav-cta')) { $('nav-cta').setAttribute('data-call', ''); $('nav-cta').href = c.calendly; $('nav-cta').removeAttribute('data-land'); }
+  if (c.calendly) ['nav-cta', 'float-cta'].forEach((id) => { const b = $(id); if (!b) return; b.setAttribute('data-call', ''); b.href = c.calendly; b.removeAttribute('data-land'); });
   document.querySelectorAll('[data-call]').forEach((b) => b.addEventListener('click', (e) => {
     e.preventDefault(); IBEForm.call(window.__formData ? window.__formData() : {});
     if (window.IBELoader) IBELoader.busy(b, T('Agenda openen', 'Opening calendar'), 'luisteren', 1600);

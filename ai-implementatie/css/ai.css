@@ -488,7 +488,7 @@ footer img { width: 24px; }
   .t-price { grid-column: 2; align-items: flex-start; text-align: left; }
 }
 @media (max-width: 560px) {
-    .nav-r .btn { display: none; } /* past niet naast de taalknop; de hero heeft zelf knoppen */
+    .nav-r .btn { display: none; } /* op telefoon staat de knop vast rechtsonder (.cta-float) */
   .ring-on .head .sub { display: none; }
 }
 
@@ -605,3 +605,10 @@ footer img { width: 24px; }
 @media (pointer: coarse) { .rv-more { min-height: 40px; margin: -10px 0 6px; } }
 .rv-card footer { padding: 0; margin: 0; border: 0; background: none; text-align: left; }
 @media (max-width: 760px) { .rv-static { flex-direction: column; padding: 0 16px; } .rv-static .rv-card { flex: none; max-width: none; } }
+
+/* Telefoon: de inventarisatie-knop staat vast rechtsonder, met dezelfde rode gloed als de knop in de nav */
+.cta-float { display: none; }
+@media (max-width: 560px) {
+  .btn.cta-float { display: inline-flex; position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); z-index: 200; border-color: rgba(255,255,255,.28); } /* lichte rand: blijft zichtbaar op de donkere vlakken */
+  footer { padding-bottom: calc(84px + env(safe-area-inset-bottom)); } /* de knop bedekt de laatste regels niet */
+}
