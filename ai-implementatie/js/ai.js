@@ -28,10 +28,10 @@
 
   const io = 'IntersectionObserver' in window ? new IntersectionObserver((en) => en.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.12 }) : null;
 
-  // header: wat 5 tot 15 uur per week waard is per maand (een maand telt als 4 weken, 10 uur per week = 40 uur per maand)
+  // header: wat 5 tot 15 uur per week waard is per week
   // standaard 10 uur (het gemiddelde); het uurloon kun je zelf invullen
   $('w-r').value = 10;
-  const worth = () => { const h = +$('w-r').value, rate = Math.max(0, parseFloat($('w-rate').value) || 0); $('w-h').textContent = uur(h); $('w-v').textContent = eur(h * 4 * rate); };
+  const worth = () => { const h = +$('w-r').value, rate = Math.max(0, parseFloat($('w-rate').value) || 0); $('w-h').textContent = uur(h); $('w-v').textContent = eur(h * rate); };
   $('w-r').addEventListener('input', worth); $('w-rate').addEventListener('input', worth); worth();
 
   /* ---------- reviews: vaste kaartjes, vanaf 6 reviews drie rijen die langzaam langsschuiven ---------- */

@@ -21,7 +21,7 @@ window.IBE_EN = {
   'hero.cta1': 'Calculate your time savings',
   'hero.cta2': 'Book an intro call',
   'hero.worthL': '<b id="w-h">10 hours</b> a week back through our AI systems & automation',
-  'hero.worthV': 'is worth <b id="w-v">€2,400</b> a month',
+  'hero.worthV': 'is worth <b id="w-v">€600</b> a week',
   'hero.worthAria': 'Hours per week',
   'hero.at': 'at',
   'hero.rateAria': 'Hourly rate in euros',
@@ -178,5 +178,5 @@ window.IBE_EN = {
   'ct.tel': 'Phone',
   'ct.wa': 'Send a message',
   'ct.qr': 'Click the tree · <b>scan to WhatsApp Bob directly</b>',
-  'ft.line': 'AI & automation · 5 to 15 hours a week back. Measured in your own dashboard: fewer hours on recurring work, up to 5 times the output.',
+  'ft.line': 'AI & automation · 5 to 15 hours a week back. Measured in your own dashboard: fewer hours on recurring work, up to (2x - 5x) times the output.',
 };
