@@ -29,7 +29,7 @@ window.IBE_EN = {
   'hero.worthLink': 'Calculate it for your business →',
 
   'vsl.aria': 'Play video',
-  'vsl.title': 'How we free up 40 hours a month',
+  'vsl.title': 'How we save 40 hours a month with AI systems & automation',
   'vsl.sub': 'The video will be here soon. Until then, I\'m happy to tell you myself.',
 
   'trust.1': 'Goal: 5 to 15 hours a week',
