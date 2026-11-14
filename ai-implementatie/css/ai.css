@@ -94,6 +94,13 @@ a { color: inherit; }
 .vsl small { color: #a4aab7; font-size: 14px; }
 .vsl .corner { position: absolute; top: 16px; left: 18px; font: 500 10.5px var(--font-mono); letter-spacing: .16em; color: #a4aab7; text-transform: uppercase; }
 .vsl .corner.r { left: auto; right: 18px; }
+.vsl .vsl-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* Met stilstaand beeld: afspeelknop in het midden, titel linksonder op een donkere verloop zodat het gezicht zichtbaar blijft */
+.vsl.has-poster canvas { display: none; }
+.vsl.has-poster .vsl-in { background: linear-gradient(to top, rgba(13,15,20,.82), rgba(13,15,20,.25) 45%, rgba(13,15,20,.05)); justify-content: flex-end; align-items: flex-start; text-align: left; padding: 28px 32px; }
+.vsl.has-poster .play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+.vsl.has-poster .play:hover { transform: translate(-50%, -50%) scale(1.06); }
+.vsl.has-poster .corner { color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,.5); }
 .vsl video, .vsl iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
 .trust { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; margin-top: 30px; color: var(--text-2); font-size: 14.5px; }
 .trust span { display: flex; align-items: center; gap: 8px; }
@@ -611,4 +618,12 @@ footer img { width: 24px; }
 @media (max-width: 560px) {
   .btn.cta-float { display: inline-flex; position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); z-index: 200; border-color: rgba(255,255,255,.28); } /* lichte rand: blijft zichtbaar op de donkere vlakken */
   footer { padding-bottom: calc(84px + env(safe-area-inset-bottom)); } /* de knop bedekt de laatste regels niet */
+}
+
+/* Telefoon: titel en tekst bij de video compacter, zodat de afspeelknop vrij blijft */
+@media (max-width: 560px) {
+  .vsl.has-poster .vsl-in { padding: 12px 14px; gap: 2px; }
+  .vsl.has-poster .play { top: 35%; width: 50px; height: 50px; }
+  .vsl.has-poster b { font-size: 14px; }
+  .vsl.has-poster small { font-size: 11.5px; }
 }

@@ -15,7 +15,7 @@
 
   if (window.IBEDots) {
     IBEDots($('hero-dots'), { theme: 'light', gap: 22 });
-    IBEDots($('vsl-dots'), { theme: 'dark', lion: { x: 0.5, y: 0.5, size: 0.86 } });
+    if (!c.vslPoster) IBEDots($('vsl-dots'), { theme: 'dark', lion: { x: 0.5, y: 0.5, size: 0.86 } }); // met een video staat daar het stilstaande beeld
   }
   // AI-site: zandloper (tijd) en een netwerk van tools
   if (window.IBEMorph) IBEMorph($('hero-morph'), { theme: 'light', shapes: ['leeuw', 'zandloper', 'kubus-persoon', 'puzzel', 'netwerk'] }); // zonder woorden eronder: rustiger
@@ -319,15 +319,20 @@
   })();
 
   /* ---------- VSL ---------- */
+  // De video laadt pas als iemand op afspelen drukt, zodat de pagina zelf licht blijft. Op telefoon en tablet de 720p-versie.
   $('vsl-len').textContent = 'Video · ' + (c.vslLength || '3 min');
-  if (c.vsl) $('vsl-sub').textContent = T('Klik om af te spelen', 'Click to play');
+  const touch = matchMedia('(pointer: coarse)').matches;
+  if (c.vsl) $('vsl-sub').textContent = (touch ? T('Tik om af te spelen', 'Tap to play') : T('Klik om af te spelen', 'Click to play')) + (c.vslLength ? ' · ' + c.vslLength : '');
+  if (c.vslPoster) { $('vsl').classList.add('has-poster'); $('vsl').querySelector('.vsl-poster').hidden = false; }
   $('vsl-play').onclick = () => {
     const box = $('vsl');
     if (!c.vsl) { location.hash = '#contact'; return; }
+    if (box.querySelector('video, iframe')) return;
+    const src = c.vslMobiel && matchMedia('(max-width: 820px)').matches ? c.vslMobiel : c.vsl;
     const yt = c.vsl.match(/(?:youtu\.be\/|v=|embed\/)([\w-]{11})/), vm = c.vsl.match(/vimeo\.com\/(\d+)/);
     if (yt) box.insertAdjacentHTML('beforeend', `<iframe src="https://www.youtube-nocookie.com/embed/${yt[1]}?autoplay=1&rel=0" allow="autoplay; fullscreen" allowfullscreen title="Video"></iframe>`);
     else if (vm) box.insertAdjacentHTML('beforeend', `<iframe src="https://player.vimeo.com/video/${vm[1]}?autoplay=1" allow="autoplay; fullscreen" allowfullscreen title="Video"></iframe>`);
-    else { box.insertAdjacentHTML('beforeend', `<video src="${c.vsl}" controls autoplay playsinline></video>`); }
+    else { box.insertAdjacentHTML('beforeend', `<video src="${src}"${c.vslPoster ? ` poster="${c.vslPoster}"` : ''} controls autoplay playsinline preload="auto"></video>`); }
   };
 
   /* ---------- contact ---------- */

@@ -5,8 +5,10 @@ window.IBE_CONFIG = {
   calendly: 'https://calendly.com/ibemotionmedia',
   // De VSL-video. Zet het mp4-bestand in assets/ en vul de naam in, bijv. 'assets/vsl.mp4',
   // of plak een YouTube- of Vimeo-link. Leeg = de nette placeholder.
-  vsl: '',
-  vslLength: '3 min',
+  vsl: 'assets/vsl-1080.mp4',
+  vslMobiel: 'assets/vsl-720.mp4', // kleinere versie voor telefoon en tablet
+  vslPoster: 'assets/vsl-poster.jpg', // stilstaand beeld uit de video; assets/vsl-poster-640.jpg is de telefoonversie
+  vslLength: '1:15',
   phone: '06 55 11 60 82',
   tel: '+31655116082',
   wa: '31655116082',
