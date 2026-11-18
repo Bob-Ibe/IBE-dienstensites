@@ -332,7 +332,17 @@
     const yt = c.vsl.match(/(?:youtu\.be\/|v=|embed\/)([\w-]{11})/), vm = c.vsl.match(/vimeo\.com\/(\d+)/);
     if (yt) box.insertAdjacentHTML('beforeend', `<iframe src="https://www.youtube-nocookie.com/embed/${yt[1]}?autoplay=1&rel=0" allow="autoplay; fullscreen" allowfullscreen title="Video"></iframe>`);
     else if (vm) box.insertAdjacentHTML('beforeend', `<iframe src="https://player.vimeo.com/video/${vm[1]}?autoplay=1" allow="autoplay; fullscreen" allowfullscreen title="Video"></iframe>`);
-    else { box.insertAdjacentHTML('beforeend', `<video src="${src}"${c.vslPoster ? ` poster="${c.vslPoster}"` : ''} controls autoplay playsinline preload="auto"></video>`); }
+    else {
+      // Video zelf aanmaken en direct in de klik starten: Safari (iPhone en Mac) blokkeert anders het afspelen met geluid
+      const v = document.createElement('video');
+      v.controls = true; v.playsInline = true; v.preload = 'auto';
+      v.setAttribute('playsinline', ''); v.setAttribute('webkit-playsinline', '');
+      if (c.vslPoster) v.poster = c.vslPoster;
+      v.src = src;
+      box.appendChild(v);
+      const p = v.play();
+      if (p && p.catch) p.catch(() => {}); // lukt starten niet, dan staan de bedieningsknoppen er en kan iemand zelf op play tikken
+    }
   };
 
   /* ---------- contact ---------- */
