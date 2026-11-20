@@ -602,7 +602,7 @@ footer img { width: 24px; }
 }
 
 /* Vaste reviewkaartjes onder het Google-logo: naast elkaar op desktop, onder elkaar op telefoon */
-.rv-static { display: flex; justify-content: center; gap: 14px; width: 100%; max-width: 982px; margin: 0 auto; padding: 0 24px; }
+.rv-static { display: flex; justify-content: center; gap: 14px; width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 24px; }
 .rv-static .rv-card { flex: 1 1 0; min-width: 0; width: auto; max-width: 460px; display: flex; flex-direction: column; }
 .rv-static .rv-card footer { margin-top: auto; }
 .rv-text { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
@@ -611,7 +611,7 @@ footer img { width: 24px; }
 .rv-more:hover { color: #fff; }
 @media (pointer: coarse) { .rv-more { min-height: 40px; margin: -10px 0 6px; } }
 .rv-card footer { padding: 0; margin: 0; border: 0; background: none; text-align: left; }
-@media (max-width: 760px) { .rv-static { flex-direction: column; padding: 0 16px; } .rv-static .rv-card { flex: none; max-width: none; } }
+@media (max-width: 900px) { .rv-static { flex-direction: column; padding: 0 16px; } .rv-static .rv-card { flex: none; max-width: none; } }
 
 /* Telefoon: de inventarisatie-knop staat vast rechtsonder, met dezelfde rode gloed als de knop in de nav */
 .cta-float { display: none; }

@@ -20,6 +20,7 @@ window.IBE_CONFIG = {
   reviews: [
     { naam: 'Dennis van den Berg', bedrijf: 'Tuinen die verbazen', sterren: 5, tekst: 'Bob heeft voor mij een hele mooie website gebouwd voor mijn hoveniersbedrijf, ook heeft hij me goed op weg geholpen om de bedrijfsvoering mbt facturen, offertes en diverse andere dingen te laten automatiseren waardoor er meer tijd vrij is gekomen voor andere dingen. Ik ben helemaal tevreden met de gang van zaken en de resultaten! 😄' },
     { naam: 'Victor', bedrijf: 'Victors smaakatelier', sterren: 5, tekst: 'Bob heeft mij geweldig in de markt geplaatst en ben hier heel dankbaar voor!' },
+    { naam: 'Stephan van Deurse', bedrijf: 'Maatexpress', sterren: 5, tekst: 'Ik was bij het begin een beetje sceptisch, maar hij heeft het wel waar gemaakt. Voor de start de uren inzichtelijk gemaakt waarop bespaard kon worden. Ik had geen idee dat de technologie van nu al zo ver is. Blij dat ik de stap heb genomen. Dit geeft me meer tijd terug voor aande business en minder in de business. Erg tevreden met het resultaat.' },
   ],
   // Prijsopbouw: hoeveel van de 4 plekken voor € 1.500 al vergeven zijn. Bij 4 van de 4 zet je de prijzen een trede op in index.html.
   prijsPlekken: { bezet: 2, totaal: 4 },
